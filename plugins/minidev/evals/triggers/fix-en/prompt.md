@@ -1,0 +1,9 @@
+---
+description: fires fix
+tags: [trigger]
+max_turns: 6
+allowed_tools: [Skill]
+append_system_prompt: "The project's CLAUDE.md says:\n\n# Notes\n\nA small notes web app.\n- How it works today: `SPEC.md`. Ideas and the feature in progress: `BACKLOG.md`. What changed in each version: `CHANGELOG.md`.\n\n## Development cycle\nThis project uses the `minidev` cycle. When a step needs one of its skills and it isn't available, tell the user and stop; don't imitate it from memory.\n- Ideas: `document`. Features: `build`. Bugs: `fix`.\n- Integration: local merge.\n- Releases: cut the version with `document`."
+---
+
+Search returns nothing when the query has an accent. That's a bug.

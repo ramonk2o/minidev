@@ -137,6 +137,16 @@ To work on the plugin from a local clone, add it as a marketplace by path instea
 
 After changing the skills, bump `version` in `plugins/minidev/.claude-plugin/plugin.json`, record the change in `CHANGELOG.md`, and run `/plugin marketplace update minidev` so installed copies pick it up.
 
+### Trigger evals
+
+`plugins/minidev/evals/triggers/` holds one case per prompt that checks which skill fires: the right one for features, bugs, ideas, releases, new projects and interviews, and none where a skill would be wrong (`brainstorm` in an existing project, `fix` for new behavior, the cycle in a project that doesn't use it). Eval runs don't load a project's CLAUDE.md, so cases that need a project set up for the cycle pass it in `append_system_prompt`. Run them after changing a skill's description, from `plugins/minidev`:
+
+```
+claude plugin eval . --tag trigger --ablation none --no-publish -j 4
+```
+
+Each case runs 3 times by default (about $0.10 per run); add `--runs 1` for a quick check. Results go to `evals/results/`, which git ignores.
+
 ## Credits
 
 `grilling` is from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, see `plugins/minidev/skills/grilling/LICENSE`).

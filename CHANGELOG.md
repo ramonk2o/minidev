@@ -4,6 +4,9 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+### Added
+- **Trigger evals** (plugin development only, the skills don't change): 12 `claude plugin eval` cases checking that each skill fires on its own requests and that `brainstorm`, `fix` and the cycle's skills stay quiet where they'd be wrong.
+
 ## [0.8.0] - 2026-11-03
 
 ### Added
