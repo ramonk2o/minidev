@@ -89,8 +89,8 @@ A clear idea is recorded straight into `BACKLOG.md` as an **Idea**. If it leaves
 
 `build` works on one feature at a time, in a fixed order:
 
-1. **Rules check.** If the entry is missing a few rules, Claude asks them directly; if it's still a bare idea, it offers a `grilling` interview first. Tests built on guessed rules would encode assumptions nobody approved.
-2. **Critical test list.** In plain language, no code, split in two: what the test suite will check, and what you'll **check by hand** in the real app (visuals, focus, dragging…). You approve the list; the entry becomes **In progress**.
+1. **Rules check.** The entry needs its rules and its **Constraints**: what it must respect besides behavior (speed, security, accessibility, compatibility, how much data), written so they can be checked. If a few are missing, or the feature has an obvious risk nobody addressed, Claude asks them directly; if it's still a bare idea, it offers a `grilling` interview first. Tests built on guessed rules would encode assumptions nobody approved.
+2. **Critical test list.** In plain language, no code, split in two: what the test suite will check (measurable constraints included), and what you'll **check by hand** in the real app (visuals, focus, dragging…). You approve the list; the entry becomes **In progress**.
 
 All the work happens on a `feature/<name>` branch created from an up-to-date main branch, so main only receives finished, verified features.
 3. **Tests first.** The automated tests are written and run (against a stub of the public interface, if the module is new), and must fail for the right reason: the feature is missing. A test that passes before the code exists isn't testing the feature.
@@ -122,7 +122,7 @@ Each answers one question, so they never repeat each other:
 | Document | Answers | Time |
 |---|---|---|
 | `BACKLOG.md` | What may come, and why you want it | future |
-| `SPEC.md` | How the product works **today**: rules, data, technical decisions | present |
+| `SPEC.md` | How the product works **today**: rules, data, technical decisions, constraints | present |
 | `CHANGELOG.md` | What changed in each version, for the people who use it | past |
 
 `SPEC.md` describes only what exists: it's updated when a feature is finished, from what was built, not when it's planned. Each fact lives in one place, and git history keeps the detail behind all three.

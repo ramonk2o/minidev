@@ -1,6 +1,6 @@
 {
   "name": "minidev",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A fixed development cycle: plan and scaffold new projects (brainstorm), interview ideas (grilling), keep BACKLOG/SPEC/CHANGELOG (document), build features test-first with an independent tester (build), fix bugs test-first (fix), and set up any project for it (setup).",
   "author": {
     "name": "Ramon",

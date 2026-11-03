@@ -17,7 +17,7 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names 
 
 1. Find the feature's entry in `BACKLOG.md`. For a direct request with no entry, create one with the `document` skill.
 2. If another feature is In progress, the `document` skill asks what to do; resolve it before going on.
-3. Check that the entry has enough rules to derive tests from: what the user sees, plus the edge cases that matter. Guessing missing rules would make the tests, and then the code, encode assumptions nobody approved, so settle them first, with the smallest step that does it:
+3. Check that the entry has enough rules to derive tests from: what the user sees, plus the edge cases that matter, plus the Constraints the feature must respect. When the feature has an obvious risk the entry doesn't address (data that can grow without limit, user input reaching a query or the page, a public surface), count it as an open point, with a recommended limit. Guessing missing rules would make the tests, and then the code, encode assumptions nobody approved, so settle them first, with the smallest step that does it:
    - **Enough rules** (usually, when the idea was interviewed): go on. Don't re-ask what the entry already decides.
    - **One to three specific points open:** ask them directly, each with your recommended answer, and record the answers in the entry's Decisions.
    - **Key behavior undecided across several connected decisions** (e.g. the entry is still a bare idea): stop and offer a `grilling` interview, recording the answers in the entry.
@@ -26,7 +26,7 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names 
 
 ## 2. Critical test list
 
-A critical test checks a rule the user can see and that, if broken, means the feature fails. Take the rules from the entry's Description and Decisions, including the edge cases that were decided. Each one tests behavior from the outside, through the public function or module, never internal details. Internal details change during implementation; the user-visible rules don't.
+A critical test checks a rule the user can see and that, if broken, means the feature fails. Take the rules from the entry's Description and Decisions, including the edge cases that were decided, and its Constraints. A measurable constraint becomes an automated test (e.g. a search over 10,000 generated notes, with a time limit loose enough not to fail on a slow machine) or a check the project already runs (an accessibility or security linter); one that only shows in the real app goes to **To check by hand**. Each one tests behavior from the outside, through the public function or module, never internal details. Internal details change during implementation; the user-visible rules don't.
 
 Show the list to the user in plain language, without code, in two groups:
 - **Automated tests:** the rules the test suite can check.

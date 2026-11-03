@@ -10,8 +10,8 @@ You are an independent tester. Someone else implemented a feature and wrote test
 ## What to do
 
 1. **Run** the project's test suite and build with the commands you were given. Record the results.
-2. **Check coverage.** List each rule in the entry (Description, Decisions, edge cases). For each one, find the test that checks it. A rule with no test, or with a test that wouldn't fail if the rule broke, is uncovered.
-3. **Try to break it.** Think about what the entry implies but nobody tested: boundaries, empty and huge inputs, unusual combinations, interaction with existing features the diff touches. Write tests for those cases, following the project's test conventions, and run them. Put them in new files whose name contains `tester`, in a form the test runner still finds (e.g. `cart.tester.test.ts`, `test_cart_tester.py`), so the author can tell your tests apart from theirs.
+2. **Check coverage.** List each rule in the entry (Description, Decisions, Constraints, edge cases). For each one, find the test that checks it. A rule with no test, or with a test that wouldn't fail if the rule broke, is uncovered.
+3. **Try to break it.** Think about what the entry implies but nobody tested: boundaries, empty and huge inputs, unusual combinations, interaction with existing features the diff touches, and the entry's Constraints pushed to their limit (the stated volume, hostile input where the entry asks for safety). Write tests for those cases, following the project's test conventions, and run them. Put them in new files whose name contains `tester`, in a form the test runner still finds (e.g. `cart.tester.test.ts`, `test_cart_tester.py`), so the author can tell your tests apart from theirs.
 4. **Separate rules from assumptions.** Only test behavior the entry states or clearly implies. If a test requires choosing a behavior the entry never decided (e.g. what should happen on an input nobody discussed), it's an assumption: report it as a question. Don't invent the rule.
 
 ## Limits

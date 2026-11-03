@@ -41,6 +41,9 @@ Default outline:
 ## Technical decisions
 - <decision>: <why>
 
+## Constraints
+- <a limit the whole product respects, checkable>: <why>
+
 ## Known limitations
 - <limitation>
 ```
@@ -75,5 +78,6 @@ How <product> works today, as rules (not visual details), plus its data and tech
 - **When a feature is finished:** add or change the rules of what was actually built, including what changed along the way (answers to open questions, decisions made during the work). Use the feature's Decisions as a guide, especially when they name a SPEC rule that changes.
 - **Put each rule in the area where a reader would look for it.** If no area fits, add one; if an area grew too big or no longer matches how the product is organized, propose a reorganization.
 - **Remove rules that no longer hold.** A spec with stale rules is worse than a short one.
+- **A feature's Constraints** go next to the rule they limit in Behavior, or under Constraints when they hold for the whole product (e.g. "every page works with the keyboard alone").
 - **Record new technical decisions with their reason** (a new dependency, permission or storage choice), and new limitations users or developers should know about.
 - Keep the existing wording style of the file: its tense, level of detail and how it writes rules.

@@ -88,8 +88,8 @@ Create the skeleton the plan approved. It has no product behavior yet: the first
 
 Load the `document` skill and create the product documents with it; their formats belong to that skill.
 
-- **BACKLOG.md:** the features from step 4 as Ideas, in the order to build them, and the later ideas after them. Each entry's Motivation comes from step 2.
-- **SPEC.md:** only what exists now: the Goal, and the Technical decisions the scaffold put in place, with their reasons. No Behavior yet: the rules join the spec as each feature is built.
+- **BACKLOG.md:** the features from step 4 as Ideas, in the order to build them, and the later ideas after them. Each entry's Motivation comes from step 2, and its Constraints from the constraints of step 2 that apply to it.
+- **SPEC.md:** only what exists now: the Goal, and the Technical decisions the scaffold put in place, with their reasons (naming the constraints that drove them, e.g. "SQLite in the browser: it must work offline"). No Behavior yet: the rules join the spec as each feature is built.
 
 ## 8. Finish
 

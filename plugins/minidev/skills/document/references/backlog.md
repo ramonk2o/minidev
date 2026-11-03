@@ -57,6 +57,8 @@ Only the user moves a feature to Discarded. A new entry is always an Idea.
 - **Description:** <the solution, from the user's point of view>
 - **Decisions:**
   - <a rule or choice already made>
+- **Constraints:**
+  - <a limit the feature must respect, checkable: performance, security, accessibility, compatibility, privacy, volume>
 - **Out of scope:** <what was explicitly left out>
 - **Open questions:**
   - <what is still undecided>
@@ -69,7 +71,8 @@ Omit any field with nothing to say; Status, Motivation and Description are alway
 How to fill it:
 - **Motivation** comes first because it's what everything else is judged against. Don't copy the user literally: condense what they said into a short statement of the problem, quoting only key phrases or expressions when they help understanding. Add "When…, I want…" sub-items only when the feature serves distinct situations that would shape the solution differently; otherwise they just repeat the motivation. If the motivation was never stated, write "not recorded" rather than inventing one.
 - **Description** describes the behavior the user will see, not the implementation.
-- **Decisions** hold choices already made (rules, behaviors, constraints, technical options chosen). When the feature changes existing behavior, name the SPEC.md rule that changes and how. No file paths or code snippets: they go stale fast.
+- **Decisions** hold choices already made (rules, behaviors, technical options chosen). When the feature changes existing behavior, name the SPEC.md rule that changes and how. No file paths or code snippets: they go stale fast.
+- **Constraints** hold what the feature must respect besides its behavior: speed, security, accessibility, compatibility, privacy, how much data it handles. Write each so it can be checked ("searching 10,000 notes answers in under 200 ms", "works without a network", "usable with the keyboard alone"), not as a wish ("fast", "secure"); a limit nobody can name yet is an open question. Constraints of the whole product live in SPEC.md, not repeated in each entry.
 - **Open questions** keep undecided points visible instead of silently assuming an answer.
 - **Notes** keep context that isn't a decision yet: research findings, a trial's results, options weighed. Date them and say what they are (e.g. "options discussed on 2026-10-12, nothing decided").
 - Write only what the user said or decided. Don't invent requirements; an assumption is an open question.
