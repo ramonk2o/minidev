@@ -4,8 +4,12 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-03
+
 ### Added
-- **Trigger evals** (plugin development only, the skills don't change): 12 `claude plugin eval` cases checking that each skill fires on its own requests and that `brainstorm`, `fix` and the cycle's skills stay quiet where they'd be wrong.
+- **chore skill**: changes that keep the behavior (refactoring, debt, dependency upgrades, migrations, tooling, typos) get their own `chore/<name>` branch, with the suite green before and after and behavior tests left untouched. No critical list or tester; SPEC.md and CHANGELOG.md change only when a technical decision or something users notice did.
+- **Bug and Debt entries** in BACKLOG.md, for bugs and chores left for later; they leave the file when `fix` or `chore` does them.
+- **Trigger evals** (plugin development only, the skills don't change): 16 `claude plugin eval` cases checking that each skill fires on its own requests and that `brainstorm`, `fix`, `chore` and the cycle's skills stay quiet where they'd be wrong.
 
 ## [0.8.0] - 2026-11-03
 

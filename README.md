@@ -29,9 +29,10 @@ To get new versions later: `/plugin marketplace update minidev`.
 | `document` skill | The only writer of `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`. |
 | `build` skill | Builds a backlog feature test-first, then has it checked by the `tester` agent before committing. |
 | `fix` skill | Fixes a bug on its own branch, test-first when it can be reproduced, and records it in the changelog. |
+| `chore` skill | Makes a change that keeps the behavior (refactoring, debt, dependency upgrades, migrations, tooling, typos) on its own branch, with the suite green before and after. |
 | `tester` agent | Independent tester: runs the suite, checks every rule is covered, tries to break the feature. Never fixes code. |
 
-You don't need to call `grilling`, `document`, `build` or `fix` by name. Just talk ("note this idea…", "let's build X", "X has a bug…", "release 1.2.0"): the CLAUDE.md written by `setup` tells Claude which skill each step uses. The steps themselves live in the skills, not in that CLAUDE.md, so updating the plugin updates every project.
+You don't need to call `grilling`, `document`, `build`, `fix` or `chore` by name. Just talk ("note this idea…", "let's build X", "X has a bug…", "release 1.2.0"): the CLAUDE.md written by `setup` tells Claude which skill each step uses. The steps themselves live in the skills, not in that CLAUDE.md, so updating the plugin updates every project.
 
 ## How the cycle works
 
@@ -110,9 +111,11 @@ This repeats until a round has no failures, or stops after 3 rounds to show you 
 
 `document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. While working, Claude commits `wip:` checkpoints on the branch, so the work can be resumed in a new session or paused for a bug fix. Code, tests and the three documents reach main as **one squashed commit**, whose message records the test results, the tester's rounds and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch reaches main in the project's integration mode. **Local merge:** it's squashed into main, the test suite and build run again on the combined code, and only then is main pushed. **Pull requests:** the branch is pushed, a pull request is opened with the verification message as its description, and it's squash-merged once the checks pass (Claude stops if it needs a review). A merge conflict, or a failure after the merge, stops the cycle and is shown to you; a failure is then fixed as a bug. The branch steps live in one place, `skills/build/references/git-flow.md`, shared by `build` and `fix`.
 
-### Bugs and releases
+### Bugs, chores and releases
 
-- **Bug** (`fix` skill): no backlog entry, no tester, on its own `fix/<name>` branch, brought into main like a feature once the fix is confirmed. If it can be reproduced in a test, the test is written and shown failing first, then the fix. The fix is recorded under Fixed in the changelog (and in SPEC.md if a rule changed). If the fix needs a decision about behavior, it's a feature and goes back to the idea step.
+- **Bug** (`fix` skill): no tester, and no backlog entry unless it was left for later (type Bug), on its own `fix/<name>` branch, brought into main like a feature once the fix is confirmed. If it can be reproduced in a test, the test is written and shown failing first, then the fix. The fix is recorded under Fixed in the changelog (and in SPEC.md if a rule changed). If the fix needs a decision about behavior, it's a feature and goes back to the idea step.
+- **Chore** (`chore` skill): for changes that keep the behavior, such as refactoring, technical debt, dependency upgrades, migrations, tooling or a typo. On its own `chore/<name>` branch, with no critical test list and no tester: the existing suite is the proof, run before (a red suite stops it) and after, with the tests that check behavior left untouched. Upgrades are read against the dependency's changelog first. SPEC.md changes only if a technical decision did, CHANGELOG.md only if users will notice.
+- **Later:** a bug or a chore you don't want to do now goes to `BACKLOG.md` with type Bug or Debt, and leaves it when `fix` or `chore` does it.
 - **Release:** "release 1.4.0" moves the `[Unreleased]` changes into a version in `CHANGELOG.md`, after you confirm the version, date and entries, then pushes the commit and the tag (in pull request mode, through a `release/<version>` pull request, then the tag).
 
 ## The three documents
@@ -121,7 +124,7 @@ Each answers one question, so they never repeat each other:
 
 | Document | Answers | Time |
 |---|---|---|
-| `BACKLOG.md` | What may come, and why you want it | future |
+| `BACKLOG.md` | What may come, and why you want it (features, plus bugs and debt left for later) | future |
 | `SPEC.md` | How the product works **today**: rules, data, technical decisions, constraints | present |
 | `CHANGELOG.md` | What changed in each version, for the people who use it | past |
 
@@ -139,7 +142,7 @@ After changing the skills, bump `version` in `plugins/minidev/.claude-plugin/plu
 
 ### Trigger evals
 
-`plugins/minidev/evals/triggers/` holds one case per prompt that checks which skill fires: the right one for features, bugs, ideas, releases, new projects and interviews, and none where a skill would be wrong (`brainstorm` in an existing project, `fix` for new behavior, the cycle in a project that doesn't use it). Eval runs don't load a project's CLAUDE.md, so cases that need a project set up for the cycle pass it in `append_system_prompt`. Run them after changing a skill's description, from `plugins/minidev`:
+`plugins/minidev/evals/triggers/` holds one case per prompt that checks which skill fires: the right one for features, bugs, chores, ideas, debt left for later, releases, new projects and interviews, and none where a skill would be wrong (`brainstorm` in an existing project, `fix` for new behavior or a typo, `chore` when the user only wants to note it, the cycle in a project that doesn't use it). Eval runs don't load a project's CLAUDE.md, so cases that need a project set up for the cycle pass it in `append_system_prompt`. Run them after changing a skill's description, from `plugins/minidev`:
 
 ```
 claude plugin eval . --tag trigger --ablation none --no-publish -j 4

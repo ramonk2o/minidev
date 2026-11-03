@@ -1,6 +1,6 @@
 # BACKLOG.md
 
-`BACKLOG.md`, at the project root, is the single place for feature ideas and for the feature being built. Each entry starts from **why** the user wants it, because a feature that loses its motivation gets built wrong or never gets prioritized. Implemented features leave the file.
+`BACKLOG.md`, at the project root, is the single place for feature ideas, for the feature being built, and for bugs and technical debt left for later. Each entry starts from **why** the user wants it, because a feature that loses its motivation gets built wrong or never gets prioritized. Implemented features leave the file.
 
 Read `BACKLOG.md` before changing it.
 
@@ -32,7 +32,7 @@ Read `BACKLOG.md` before changing it.
 Translated to the file's language:
 
 ```markdown
-Feature ideas and the feature being built, managed with the `document` skill. Implemented features leave this file: what changed goes to CHANGELOG.md and the rules to SPEC.md.
+Feature ideas, the feature being built, and bugs and debt left for later, managed with the `document` skill. Implemented features leave this file: what changed goes to CHANGELOG.md and the rules to SPEC.md.
 
 Status: **Idea** → **In progress** (one at a time) → done (leaves the file in the commit that implements it). Discarded ideas go to the last section.
 ```
@@ -45,13 +45,14 @@ Status: **Idea** → **In progress** (one at a time) → done (leaves the file i
 | **In progress** | Being built. Only one at a time. | **To check by hand** |
 | done | Implemented and verified: the entry leaves the file. | — |
 
-Only the user moves a feature to Discarded. A new entry is always an Idea.
+Only the user moves a feature to Discarded. A new entry is always an Idea. Only features go In progress: a Bug or Debt entry stays an Idea until `fix` or `chore` does it, and then leaves the file.
 
 ## Entry format
 
 ```markdown
 ### <Feature name>
 - **Status:** Idea
+- **Type:** <Bug | Debt> (only when it isn't a feature)
 - **Motivation:** <the problem today, from the user's side>
   - When <situation>, I want <outcome>. (only when there's more than one distinct context)
 - **Description:** <the solution, from the user's point of view>
@@ -67,6 +68,12 @@ Only the user moves a feature to Discarded. A new entry is always an Idea.
 ```
 
 Omit any field with nothing to say; Status, Motivation and Description are always present.
+
+**Type** marks an entry that isn't a feature:
+- **Bug:** broken behavior left for later, fixed with the `fix` skill. Its Description is what's wrong and the steps to reproduce it.
+- **Debt:** a change that keeps the behavior (refactoring, an upgrade, a migration, tooling), done with the `chore` skill. Its Description is what's owed and where.
+
+For both, the Motivation says what it costs to leave it as it is.
 
 How to fill it:
 - **Motivation** comes first because it's what everything else is judged against. Don't copy the user literally: condense what they said into a short statement of the problem, quoting only key phrases or expressions when they help understanding. Add "When…, I want…" sub-items only when the feature serves distinct situations that would shape the solution differently; otherwise they just repeat the motivation. If the motivation was never stated, write "not recorded" rather than inventing one.
@@ -86,6 +93,9 @@ When the project has no `BACKLOG.md`, create it with the title and the legend. I
 Turn what was discussed into an entry. Don't interview the user; synthesize what you already know from the conversation and the codebase. The only exception is the motivation: if it never came up, ask at most 2 or 3 short questions about it (what problem does it solve? in what situation is it missing?). Anything else unresolved becomes an open question.
 
 Show the draft (and the area it will go in) and wait for the user's OK before writing, since a synthesis involves interpretation. When the capture follows an interview whose final summary the user approved, present that summary as the entry and its approval as the OK: don't ask twice.
+
+### Record a bug or debt for later
+When the user wants to leave a bug or a chore for later ("note this bug, I'll fix it later", "we owe a refactor of X"), record it right away with its Type, in the area of the part it affects. No interview: what's unknown is an open question. When `fix` or `chore` does it, the entry leaves the file in that work's commit.
 
 ### Add an idea
 When the user states an idea:
