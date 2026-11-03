@@ -93,12 +93,12 @@ A clear idea is recorded straight into `BACKLOG.md` as an **Idea**. If it leaves
 2. **Critical test list.** In plain language, no code, split in two: what the test suite will check, and what you'll **check by hand** in the real app (visuals, focus, dragging…). You approve the list; the entry becomes **In progress**.
 
 All the work happens on a `feature/<name>` branch created from an up-to-date main branch, so main only receives finished, verified features.
-3. **Tests first.** The automated tests are written and run, and must fail for the right reason: the feature is missing. A test that passes before the code exists isn't testing the feature.
+3. **Tests first.** The automated tests are written and run (against a stub of the public interface, if the module is new), and must fail for the right reason: the feature is missing. A test that passes before the code exists isn't testing the feature.
 4. **Code.** Written until the critical tests, the whole suite and the build pass. A critical test is never changed to make it pass without asking you.
 
 ### 4. Independent tester
 
-The `tester` agent gets only the backlog entry, the diff and the test/build commands: not the conversation or the author's reasoning. Not knowing what was meant is its value. It runs everything, checks that each rule has a test that would fail if the rule broke, and writes extra tests trying to break the feature. It reports:
+The `tester` agent gets only the backlog entry, the diff and the test/build commands: not the conversation or the author's reasoning. Not knowing what was meant is its value. It runs everything, checks that each rule has a test that would fail if the rule broke, and writes extra tests trying to break the feature, in new files whose name contains `tester`. It's told never to touch the feature's code or existing tests, nor git state, and after each round Claude checks that it only added test files. It reports:
 
 - **Failures:** Claude fixes the code, keeps the test that caught it and launches a *new* tester, so nothing carries over from the last round.
 - **Uncovered rules:** missing tests are added.
@@ -108,7 +108,7 @@ This repeats until a round has no failures, or stops after 3 rounds to show you 
 
 ### 5. Finish
 
-`document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. Code, tests and the three documents go in **one commit**, whose message records the test results, the tester's rounds and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch is merged into main, deleted and main is pushed. A merge conflict stops the cycle and is shown to you. Anything that fails after the merge is handled as a bug.
+`document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. Code, tests and the three documents go in **one commit**, whose message records the test results, the tester's rounds and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch is merged into main, the test suite and build run again on the merged code, and only then is the branch deleted and main pushed. A merge conflict, or a failure after the merge, stops the cycle and is shown to you; a failure is then fixed as a bug. The branch steps live in one place, `skills/build/references/git-flow.md`, shared by `build` and `fix`.
 
 ### Bugs and releases
 
@@ -135,7 +135,7 @@ To work on the plugin from a local clone, add it as a marketplace by path instea
 /plugin marketplace add /path/to/minidev
 ```
 
-After changing the skills, bump `version` in `plugins/minidev/.claude-plugin/plugin.json` and run `/plugin marketplace update minidev` so installed copies pick it up.
+After changing the skills, bump `version` in `plugins/minidev/.claude-plugin/plugin.json`, record the change in `CHANGELOG.md`, and run `/plugin marketplace update minidev` so installed copies pick it up.
 
 ## Credits
 

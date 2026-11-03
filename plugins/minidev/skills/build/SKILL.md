@@ -1,6 +1,6 @@
 ---
 name: build
-description: In projects set up for the minidev cycle (a CLAUDE.md that names it), implement a feature from the project's backlog test-first, then have it checked by an independent tester agent before it is committed. Use it whenever the user wants to implement, build, develop or start coding a feature, from BACKLOG.md or as a direct request, e.g. "let's build Tables", "implement the sync idea", "/build X", "start working on X", or when project instructions say to use the build skill.
+description: In projects set up for the minidev cycle (a CLAUDE.md that names it), implement a feature from the project's backlog test-first, then have it checked by an independent tester agent before it is committed. Use it whenever the user wants to implement, build, develop or start coding a feature, from BACKLOG.md or as a direct request, e.g. "let's build Tables", "implement the sync idea", "/minidev:build X", "start working on X", or when project instructions say to use the build skill.
 ---
 
 # Build
@@ -21,7 +21,7 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names 
    - **Enough rules** (usually, when the idea was interviewed): go on. Don't re-ask what the entry already decides.
    - **One to three specific points open:** ask them directly, each with your recommended answer, and record the answers in the entry's Decisions.
    - **Key behavior undecided across several connected decisions** (e.g. the entry is still a bare idea): stop and offer a `grilling` interview, recording the answers in the entry.
-4. Create the feature's branch: from the main branch (`main` or `master`), brought up to date (`git pull --ff-only` if it has a remote) and with a clean working tree, run `git switch -c feature/<short-name>`. All the feature's work and its commit happen there, so the main branch only ever receives finished, verified work. If there are uncommitted changes, ask the user what to do with them first. If the work is already on this feature's branch (e.g. resuming), stay on it.
+4. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch). Read that file now: the staging and merge steps below follow it too.
 5. Do whatever the project instructions require before writing code.
 
 ## 2. Critical test list
@@ -38,7 +38,7 @@ With the `document` skill, set the entry **In progress** with the approved **To 
 
 ## 3. Tests first
 
-Write the automated tests, following the project's test conventions (location, naming, helpers, fakes). Run them and show that they **fail**, and fail for the right reason: the feature is missing, not a typo or a broken import. A test that passes before the code exists isn't testing the feature.
+Write the automated tests, following the project's test conventions (location, naming, helpers, fakes). If the module they call doesn't exist yet, first create its public interface as a stub: the functions or components the tests use, with their signatures, each failing with a "not implemented" error. Run the tests and show that they **fail**, and fail for the right reason: the feature is missing, not a typo or a broken import. A test that passes before the code exists isn't testing the feature.
 
 ## 4. Implement
 
@@ -50,15 +50,17 @@ If the approved list has no automated tests (the feature only shows in the real 
 
 Otherwise, launch the `tester` agent (agent type `minidev:tester`). Give it only:
 - the feature's backlog entry, copied in full
-- the base commit: where the feature's branch left the main branch (`git merge-base HEAD <main branch>`). First stage everything with `git add -A` (the branch started from a clean tree, so it's all the feature's work): `git diff` doesn't show files git doesn't track yet, and the new modules and tests are exactly what the tester needs to see. The tester reads the change itself with `git diff <base>`, instead of a copy pasted in its prompt
+- the base commit: where the feature's branch left the main branch (`git merge-base HEAD <main branch>`). First stage the work as in `references/git-flow.md` (Stage the work): `git diff` doesn't show files git doesn't track yet, and the new modules and tests are exactly what the tester needs to see. The tester reads the change itself with `git diff <base>`, instead of a copy pasted in its prompt
 - the project's test and build commands
 
 Don't pass your explanations, the conversation or your own view of what might be weak. Its value is not knowing what you meant.
 
+When it returns, check that it only added new test files: the work was staged before it ran, so `git diff --name-only` (changes to files git already has) must be empty, and every untracked file in `git status --short` must have `tester` in its name. Undo any other change with `git restore <file>` and tell the user what it had touched.
+
 Then act on its report:
-- **Failures (bugs):** fix the code, keep the tester's test that caught it, and launch a **new** tester with the same inputs (stage the fixes with `git add -A` first). A new one, so it doesn't carry the previous round's context.
+- **Failures (bugs):** fix the code, keep the tester's test that caught it, and launch a **new** tester with the same inputs (stage the fixes first). A new one, so it doesn't carry the previous round's context.
 - **Extra tests that pass** and check a rule from the entry: keep them.
-- **Assumptions** (a test of a rule that was never decided): don't keep that test. Ask the user, record the answer in the entry's Decisions, and test it if the answer makes it a rule.
+- **Assumptions** (a test of a rule that was never decided): remove that test now, before anything is staged again (the report names its file and test). Ask the user, record the answer in the entry's Decisions, and test it if the answer makes it a rule.
 - **Uncovered rules:** add the missing tests.
 
 Repeat until a report comes back with no failures. After 3 rounds with failures still open, stop and show the user what's left instead of looping.
@@ -67,11 +69,11 @@ Repeat until a report comes back with no failures. After 3 rounds with failures 
 
 1. **Optional cleanup:** when the diff is large (many files, or new modules), run the `simplify` skill to make the code more direct and readable, then run the test suite and build again. Skip it for small changes.
 2. With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md.
-3. Commit everything on the feature's branch in a single commit (code, tests, `BACKLOG.md`, `SPEC.md`, `CHANGELOG.md`), unless project instructions say otherwise. The commit message records the verification:
+3. Stage the work as in `references/git-flow.md` and commit everything on the feature's branch in a single commit (code, tests, `BACKLOG.md`, `SPEC.md`, `CHANGELOG.md`), unless project instructions say otherwise. The commit message records the verification:
    - the test suite and build results
    - the tester's last report, summarized: rounds run, what it found and how it was resolved, extra tests kept (or why there was no tester)
    - what is left for the user to check by hand, as a block starting with a line that says exactly `To check by hand:`, one item per line, so it can be found later with `git log --grep`
 4. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one) and commit.
-5. **Merge and push:** once the user confirms everything works (or right after the commit, if there's nothing to check by hand), switch to the main branch, bring it up to date (`git pull --ff-only` if it has a remote), `git merge feature/<short-name>`, delete the branch with `git branch -d`, and push the main branch if the repository has a remote. If the merge has conflicts, stop and show them instead of resolving them on your own. Anything that fails after the merge is fixed as a bug.
+5. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push): the test suite and build run again on the merged main branch before it's pushed.
 
 A feature with automated tests is only finished through step 5: without a tester report it hasn't been independently checked, and the commit message would claim more than was done.
