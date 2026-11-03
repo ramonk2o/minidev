@@ -21,7 +21,7 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names 
    - **Enough rules** (usually, when the idea was interviewed): go on. Don't re-ask what the entry already decides.
    - **One to three specific points open:** ask them directly, each with your recommended answer, and record the answers in the entry's Decisions.
    - **Key behavior undecided across several connected decisions** (e.g. the entry is still a bare idea): stop and offer a `grilling` interview, recording the answers in the entry.
-4. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch). Read that file now: the staging and merge steps below follow it too.
+4. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch). Read that file now: the staging, checkpoint and merge steps below follow it too. Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
 5. Do whatever the project instructions require before writing code.
 
 ## 2. Critical test list
@@ -34,7 +34,7 @@ Show the list to the user in plain language, without code, in two groups:
 
 Wait for the user's OK. This is their chance to check that the right rules are being tested without reading test code.
 
-With the `document` skill, set the entry **In progress** with the approved **To check by hand** list. This status change isn't committed on its own: it goes in the feature's commit.
+With the `document` skill, set the entry **In progress** with the approved **To check by hand** list. This status change isn't committed on its own: it goes in the branch's first checkpoint.
 
 ## 3. Tests first
 
@@ -69,11 +69,11 @@ Repeat until a report comes back with no failures. After 3 rounds with failures 
 
 1. **Optional cleanup:** when the diff is large (many files, or new modules), run the `simplify` skill to make the code more direct and readable, then run the test suite and build again. Skip it for small changes.
 2. With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md.
-3. Stage the work as in `references/git-flow.md` and commit everything on the feature's branch in a single commit (code, tests, `BACKLOG.md`, `SPEC.md`, `CHANGELOG.md`), unless project instructions say otherwise. The commit message records the verification:
+3. Stage the work and make the branch's verification commit, as in `references/git-flow.md`. It's the message the main branch gets, in the one squashed commit that brings it code, tests, `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`, unless project instructions say otherwise. It records the verification:
    - the test suite and build results
    - the tester's last report, summarized: rounds run, what it found and how it was resolved, extra tests kept (or why there was no tester)
    - what is left for the user to check by hand, as a block starting with a line that says exactly `To check by hand:`, one item per line, so it can be found later with `git log --grep`
-4. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one) and commit.
-5. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push): the test suite and build run again on the merged main branch before it's pushed.
+4. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one) and commit it as a checkpoint.
+5. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push), in the project's integration mode: local merge, or a pull request. Either way, the combined code is tested before it reaches the main branch on the remote.
 
 A feature with automated tests is only finished through step 5: without a tester report it hasn't been independently checked, and the commit message would claim more than was done.

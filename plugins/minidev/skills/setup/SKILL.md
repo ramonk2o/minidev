@@ -30,12 +30,13 @@ Read the repository to fill the project-specific sections. Look, don't guess:
 - **Commands:** install, develop/watch, build, tests, lint, run or load the app, package/release. Take them from the real scripts; note side effects worth knowing (e.g. install also enables a hook, build also type-checks).
 - **Tests:** where test files live and how they're named, shared fakes, mocks or helpers, and how rules that change data or state are tested (find one existing test that does it well, to cite as the example). Also what only shows in the real app (visuals, focus, browser or device behavior): that's what goes to "To check by hand".
 - **Conventions:** only rules with clear evidence in the code: a module that centralizes access to something, strict compiler settings, a test that checks consistency between files, a lint rule. Don't invent conventions and don't list what any developer would do anyway.
+- **Integration:** whether branches should reach the main branch by local merge or by pull request. Signs for pull requests: a GitHub remote plus CI workflows (`.github/workflows/`), a protected main branch (`gh api repos/<owner>/<repo>/branches/<main>/protection` answers instead of 404), or commits from more than one author (`git shortlog -sn`). Pull requests need `gh` signed in (`gh auth status`); if it isn't, say so.
 - **Release:** whether the project publishes versions (a store, a registry, deploys) and where the steps are written (e.g. a `STORE.md`, `RELEASING.md`, a CI workflow).
 - **Product documents:** which of `SPEC.md`, `BACKLOG.md`, `CHANGELOG.md` exist, and the language of the project's existing docs.
 
 ## 3. Ask
 
-In one short round with a suggested answer for each, ask only what you couldn't find. Always include one question: "What rule would someone new to this project break without knowing it?" Its answers become Conventions. If there are none, the Conventions section is left out.
+In one short round with a suggested answer for each, ask only what you couldn't find. Always include the integration mode, recommending pull requests when step 2 found signs for them and local merge otherwise, and one question: "What rule would someone new to this project break without knowing it?" Its answers become Conventions. If there are none, the Conventions section is left out.
 
 ## 4. Write the draft
 
@@ -68,11 +69,12 @@ Build the file from the template below. Fill every `<…>`; the final file has n
 ## Development cycle
 This project uses the `minidev` cycle. When a step needs one of its skills and it isn't available, tell the user and stop; don't imitate it from memory.
 - Ideas: `document`. Features: `build`. Bugs: `fix`.
+- Integration: <local merge | pull requests>.
 - Releases: <where the release steps live>.
 ````
 
 Template notes:
-- The **Development cycle** section is copied as is. Only the Release target changes.
+- The **Development cycle** section is copied as is. Only the Integration mode and the Release target change.
 - **Release:** if the project doesn't publish versions, drop the Releases line. If it does but the steps aren't written anywhere, use "cut the version with `document`" and offer to write the steps down later.
 - **Tests:** if no existing test shows how state-changing rules are tested, drop the "as in" part rather than citing a weak example.
 - **Conventions:** drop the section when there's nothing to put in it.
@@ -87,9 +89,10 @@ If the project already has a `CLAUDE.md` (or `AGENTS.md`, `.claude/CLAUDE.md`), 
 The cycle runs the same commands many times (tests before and after the code, the build, the tester's rounds, commits), and a permission prompt on each one breaks the flow. Propose `.claude/settings.json` entries under `permissions.allow` for:
 
 - the test, build, lint and type-check commands from step 2, each as a prefix rule so its arguments are covered (e.g. `Bash(npm test:*)`, `Bash(npm run build:*)`, `Bash(npx vitest:*)`);
-- the git commands the cycle uses locally: `git status`, `git diff`, `git log`, `git add`, `git commit`, `git switch`, `git merge`.
+- the git commands the cycle uses locally: `git status`, `git diff`, `git log`, `git add`, `git commit`, `git switch`, `git merge`, `git fetch`;
+- in pull request mode, the read-only `gh` commands: `gh pr view`, `gh pr checks`, `gh auth status`.
 
-Never add install, publish, deploy or `git push` commands, or anything that deletes files or branches: those keep asking. If the file exists, merge: keep every existing entry and setting, add only what's missing. Show the resulting list.
+Never add install, publish, deploy, `git push`, `git reset`, `gh pr create` or `gh pr merge` commands, or anything that deletes files or branches: those keep asking. If the file exists, merge: keep every existing entry and setting, add only what's missing. Show the resulting list.
 
 ## 7. Orphans and redundancies
 

@@ -65,4 +65,4 @@ Each document starts with a short legend, so it's readable without this skill. T
 
 ## Commits
 
-In a git repository, commit after writing, with a short message saying what changed (e.g. "Tables: recorded in BACKLOG (Idea)", "Sync discarded", "Release 1.4.0"). Commit only these documents, never other pending changes. When the change is part of a larger piece of work being committed, such as finishing a feature, it goes in that commit instead. Don't push these commits on their own: they go out with the next merge into the main branch or release.
+In a git repository, commit after writing, with a short message saying what changed (e.g. "Tables: recorded in BACKLOG (Idea)", "Sync discarded", "Release 1.4.0"). Commit only these documents, never other pending changes. When the change is part of a larger piece of work being committed, such as finishing a feature, it goes in that commit instead. Don't push these commits on their own: they go out with the next merge into the main branch or release (in pull request mode, inside the next pull request). On a feature or fix branch they're squashed into that branch's commit, whose message gets a line for each.

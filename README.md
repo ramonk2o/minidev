@@ -51,13 +51,13 @@ You don't need to call `grilling`, `document`, `build` or `fix` by name. Just ta
                                    tester agent ◄──► fixes (new tester each round)
                                                   │
                                                   ▼
-                       one commit: code + tests + SPEC + CHANGELOG, entry leaves BACKLOG
+             verification commit: code + tests + SPEC + CHANGELOG, entry leaves BACKLOG
                                                   │
                                                   ▼
                                    you check by hand what tests can't
                                                   │
                                                   ▼
-                                   merge into main, delete branch, push
+              squash into main (local merge or pull request), test, push
 ```
 
 ### 0. Brainstorm (new projects only)
@@ -75,8 +75,8 @@ After you approve the plan, it scaffolds the project (git, the framework's gener
 `/minidev:setup` reads the repository and proposes, all in one message for a single approval:
 
 - `git init` and a `.gitignore`, if the project isn't a repository yet;
-- a `CLAUDE.md` with the project's real commands, test conventions and which skill handles each step of the cycle (an existing CLAUDE.md is updated, not overwritten; a long cycle section written by older versions is slimmed down);
-- `.claude/settings.json` permissions for the test, build and local git commands (including `switch` and `merge`), so the cycle doesn't stop on a prompt for each run (install, publish, push and deletes keep asking);
+- a `CLAUDE.md` with the project's real commands, test conventions, which skill handles each step of the cycle and the integration mode, local merge or pull requests (for repositories with CI, a protected main or several people); an existing CLAUDE.md is updated, not overwritten; a long cycle section written by older versions is slimmed down;
+- `.claude/settings.json` permissions for the test, build and local git commands (including `switch` and `merge`) and, in pull request mode, the read-only `gh` commands, so the cycle doesn't stop on a prompt for each run (install, publish, push, resets, opening or merging pull requests, and deletes keep asking);
 - what the cycle leaves orphaned: old `TODO.md`/`FEATURES.md`, local skills that overlap the plugin, broken references.
 
 It then creates the missing product documents through `document`. The cycle needs automated tests; if the project has none, setup says so before going on.
@@ -108,12 +108,12 @@ This repeats until a round has no failures, or stops after 3 rounds to show you 
 
 ### 5. Finish
 
-`document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. Code, tests and the three documents go in **one commit**, whose message records the test results, the tester's rounds and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch is merged into main, the test suite and build run again on the merged code, and only then is the branch deleted and main pushed. A merge conflict, or a failure after the merge, stops the cycle and is shown to you; a failure is then fixed as a bug. The branch steps live in one place, `skills/build/references/git-flow.md`, shared by `build` and `fix`.
+`document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. While working, Claude commits `wip:` checkpoints on the branch, so the work can be resumed in a new session or paused for a bug fix. Code, tests and the three documents reach main as **one squashed commit**, whose message records the test results, the tester's rounds and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch reaches main in the project's integration mode. **Local merge:** it's squashed into main, the test suite and build run again on the combined code, and only then is main pushed. **Pull requests:** the branch is pushed, a pull request is opened with the verification message as its description, and it's squash-merged once the checks pass (Claude stops if it needs a review). A merge conflict, or a failure after the merge, stops the cycle and is shown to you; a failure is then fixed as a bug. The branch steps live in one place, `skills/build/references/git-flow.md`, shared by `build` and `fix`.
 
 ### Bugs and releases
 
-- **Bug** (`fix` skill): no backlog entry, no tester, on its own `fix/<name>` branch, merged into main and pushed once the fix is confirmed. If it can be reproduced in a test, the test is written and shown failing first, then the fix. The fix is recorded under Fixed in the changelog (and in SPEC.md if a rule changed). If the fix needs a decision about behavior, it's a feature and goes back to the idea step.
-- **Release:** "release 1.4.0" moves the `[Unreleased]` changes into a version in `CHANGELOG.md`, after you confirm the version, date and entries, then pushes the commit and the tag.
+- **Bug** (`fix` skill): no backlog entry, no tester, on its own `fix/<name>` branch, brought into main like a feature once the fix is confirmed. If it can be reproduced in a test, the test is written and shown failing first, then the fix. The fix is recorded under Fixed in the changelog (and in SPEC.md if a rule changed). If the fix needs a decision about behavior, it's a feature and goes back to the idea step.
+- **Release:** "release 1.4.0" moves the `[Unreleased]` changes into a version in `CHANGELOG.md`, after you confirm the version, date and entries, then pushes the commit and the tag (in pull request mode, through a `release/<version>` pull request, then the tag).
 
 ## The three documents
 

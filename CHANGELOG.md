@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-11-03
+
+### Added
+- **Pull request mode**: `setup` asks how branches reach main and records it in CLAUDE.md. In pull request mode the branch is pushed, a pull request is opened with the verification message, and it's squash-merged once the checks pass; releases go through a `release/<version>` pull request.
+- **Checkpoints**: `wip:` commits on the branch whenever a step is done, so work can be resumed in a new session or paused for a bug fix.
+
+### Changed
+- Branches reach main as one squashed commit carrying the verification message, in both modes. Document changes made on a branch get a line in that message.
+
 ## [0.6.0] - 2026-11-03
 
 ### Changed
