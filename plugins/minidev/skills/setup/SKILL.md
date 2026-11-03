@@ -1,12 +1,12 @@
 ---
 name: setup
-description: Set up a software project for the minidev development cycle (grilling, document, build, fix and chore skills, tester agent) by making it a git repository if needed, writing or updating its CLAUDE.md, allowing its test and build commands in the project's permissions, creating the product documents, and pointing out what adopting the cycle left orphaned or redundant. Run only when the user invokes it.
+description: Set up a software project for the minidev development cycle (grilling, document, build, fix and chore skills, tester and reviewer agents) by making it a git repository if needed, writing or updating its CLAUDE.md, allowing its test and build commands in the project's permissions, creating the product documents, and pointing out what adopting the cycle left orphaned or redundant. Run only when the user invokes it.
 disable-model-invocation: true
 ---
 
 # Setup
 
-Prepares a project so it works with the development cycle of the `minidev` plugin: the `grilling`, `document`, `build`, `fix` and `chore` skills and the `tester` agent, which come with this plugin. The cycle's steps live in those skills; the CLAUDE.md only holds the project's facts and says which skill handles each step, so updating the plugin updates every project. The cycle is the same in every project; what changes is the project's own facts (commands, conventions, how tests are written), so the CLAUDE.md has a fixed part, copied from the template below, and a discovered part, found in the repository or asked.
+Prepares a project so it works with the development cycle of the `minidev` plugin: the `grilling`, `document`, `build`, `fix` and `chore` skills and the `tester` and `reviewer` agents, which come with this plugin. The cycle's steps live in those skills; the CLAUDE.md only holds the project's facts and says which skill handles each step, so updating the plugin updates every project. The cycle is the same in every project; what changes is the project's own facts (commands, conventions, how tests are written), so the CLAUDE.md has a fixed part, copied from the template below, and a discovered part, found in the repository or asked.
 
 Talk to the user in the language of the conversation. Write the CLAUDE.md in English.
 

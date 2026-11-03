@@ -1,6 +1,6 @@
 # minidev
 
-A Claude Code plugin with a fixed development cycle, the same in every project: ideas are interviewed until nothing is left open, features are built test-first and checked by an independent tester, and three product documents keep track of what may come, what exists and what changed.
+A Claude Code plugin with a fixed development cycle, the same in every project: ideas are interviewed until nothing is left open, features are built test-first, checked by an independent tester and reviewed by an independent reviewer, and three product documents keep track of what may come, what exists and what changed.
 
 ## Install
 
@@ -31,6 +31,7 @@ To get new versions later: `/plugin marketplace update minidev`.
 | `fix` skill | Fixes a bug on its own branch, test-first when it can be reproduced, and records it in the changelog. |
 | `chore` skill | Makes a change that keeps the behavior (refactoring, debt, dependency upgrades, migrations, tooling, typos) on its own branch, with the suite green before and after. |
 | `tester` agent | Independent tester: runs the suite, checks every rule is covered, tries to break the feature. Never fixes code. |
+| `reviewer` agent | Independent code reviewer: reads the diff for what tests don't catch (risky logic, errors, security, design, leftovers) and reports blocking findings and suggestions. Read-only. |
 
 You don't need to call `grilling`, `document`, `build`, `fix` or `chore` by name. Just talk ("note this idea…", "let's build X", "X has a bug…", "release 1.2.0"): the CLAUDE.md written by `setup` tells Claude which skill each step uses. The steps themselves live in the skills, not in that CLAUDE.md, so updating the plugin updates every project.
 
@@ -50,6 +51,9 @@ You don't need to call `grilling`, `document`, `build`, `fix` or `chore` by name
                                                   │
                                                   ▼
                                    tester agent ◄──► fixes (new tester each round)
+                                                  │
+                                                  ▼
+                                   refactor ──► reviewer agent ──► fixes
                                                   │
                                                   ▼
              verification commit: code + tests + SPEC + CHANGELOG, entry leaves BACKLOG
@@ -107,9 +111,13 @@ The `tester` agent gets only the backlog entry, the diff and the test/build comm
 
 This repeats until a round has no failures, or stops after 3 rounds to show you what's left.
 
-### 5. Finish
+### 5. Refactor and review
 
-`document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. While working, Claude commits `wip:` checkpoints on the branch, so the work can be resumed in a new session or paused for a bug fix. Code, tests and the three documents reach main as **one squashed commit**, whose message records the test results, the tester's rounds and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch reaches main in the project's integration mode. **Local merge:** it's squashed into main, the test suite and build run again on the combined code, and only then is main pushed. **Pull requests:** the branch is pushed, a pull request is opened with the verification message as its description, and it's squash-merged once the checks pass (Claude stops if it needs a review). A merge conflict, or a failure after the merge, stops the cycle and is shown to you; a failure is then fixed as a bug. The branch steps live in one place, `skills/build/references/git-flow.md`, shared by `build` and `fix`.
+With the suite green, Claude cleans up its own code (leftover stubs, dead code, names, duplication) without changing behavior, using the `simplify` skill when the diff is large. Then the `reviewer` agent, again with only the entry and the diff, reads the code for what tests don't catch: risky logic, error handling, security, design that doesn't fit the codebase, leftovers, and the project's conventions. It can't edit anything. **Blocking** findings are fixed (one that changes behavior gets a test first and a new tester round) or, if Claude disagrees, brought to you; **suggestions** are applied when clearly better and cheap, and the rest are explained in a line. `fix` and `chore` run the same review whenever they change code.
+
+### 6. Finish
+
+`document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. While working, Claude commits `wip:` checkpoints on the branch, so the work can be resumed in a new session or paused for a bug fix. Code, tests and the three documents reach main as **one squashed commit**, whose message records the test results, the tester's rounds, the review and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch reaches main in the project's integration mode. **Local merge:** it's squashed into main, the test suite and build run again on the combined code, and only then is main pushed. **Pull requests:** the branch is pushed, a pull request is opened with the verification message as its description, and it's squash-merged once the checks pass (Claude stops if it needs a review). A merge conflict, or a failure after the merge, stops the cycle and is shown to you; a failure is then fixed as a bug. The branch steps live in one place, `skills/build/references/git-flow.md`, shared by `build` and `fix`.
 
 ### Bugs, chores and releases
 

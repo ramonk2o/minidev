@@ -1,11 +1,11 @@
 ---
 name: build
-description: In projects set up for the minidev cycle (a CLAUDE.md that names it), implement a feature from the project's backlog test-first, then have it checked by an independent tester agent before it is committed. Use it whenever the user wants to implement, build, develop or start coding a feature, from BACKLOG.md or as a direct request, e.g. "let's build Tables", "implement the sync idea", "/minidev:build X", "start working on X", or when project instructions say to use the build skill.
+description: In projects set up for the minidev cycle (a CLAUDE.md that names it), implement a feature from the project's backlog test-first, then have it checked by an independent tester agent and reviewed by an independent reviewer agent before it is committed. Use it whenever the user wants to implement, build, develop or start coding a feature, from BACKLOG.md or as a direct request, e.g. "let's build Tables", "implement the sync idea", "/minidev:build X", "start working on X", or when project instructions say to use the build skill.
 ---
 
 # Build
 
-Builds one feature in a fixed order: critical tests first, then the code, then an independent check by the `tester` agent. The order exists for two reasons. Tests written before the code pin down what the feature must do, instead of describing whatever the code happened to do. A tester with a clean context, which sees the code but not the reasoning behind it, catches the blind spots of whoever wrote both.
+Builds one feature in a fixed order: critical tests first, then the code, then an independent check by the `tester` agent and a review by the `reviewer` agent. The order exists for two reasons. Tests written before the code pin down what the feature must do, instead of describing whatever the code happened to do. A tester with a clean context, which sees the code but not the reasoning behind it, catches the blind spots of whoever wrote both.
 
 Statuses, backlog entries and every change to BACKLOG.md, SPEC.md and CHANGELOG.md go through the `document` skill. Project instructions (CLAUDE.md, AGENTS.md…) define the project's specifics: test and build commands, what to check by hand, steps required before writing code, commit rules. Follow them at the matching steps below; when they conflict with this skill, they win.
 
@@ -65,15 +65,27 @@ Then act on its report:
 
 Repeat until a report comes back with no failures. After 3 rounds with failures still open, stop and show the user what's left instead of looping.
 
-## 6. Finish
+## 6. Refactor and review
 
-1. **Optional cleanup:** when the diff is large (many files, or new modules), run the `simplify` skill to make the code more direct and readable, then run the test suite and build again. Skip it for small changes.
-2. With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md.
-3. Stage the work and make the branch's verification commit, as in `references/git-flow.md`. It's the message the main branch gets, in the one squashed commit that brings it code, tests, `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`, unless project instructions say otherwise. It records the verification:
+Green tests say the feature works, not that the code is ready to live with. Two steps take care of that, in this order.
+
+**Refactor.** With the whole suite green, clean up the code you wrote: remove stubs that are left, dead code and debug output; give things names that say what they do; remove duplication, using what the codebase already has. Don't change behavior or the tests that check it. When the diff is large (many files, or new modules), run the `simplify` skill for this. Run the test suite and the build again.
+
+**Review.** Launch the `reviewer` agent (agent type `minidev:reviewer`), even when there was no tester. Give it only the feature's backlog entry, the base commit (stage the work first, as for the tester), and the project's lint and type-check commands, if any. As with the tester, don't pass your explanations. It has no tools to edit files; still, check that `git status --short` is the same when it returns. Then act on its report:
+- **Blocking:** fix each one, or, if you disagree, tell the user why and let them decide. A fix that changes behavior is done test first, and then a new `tester` round checks the change.
+- **Suggestions:** apply the ones that are clearly better and cheap; for the rest, tell the user in a line each why not.
+
+One review is enough. Launch a second, new reviewer only when the blocking fixes changed a lot of code, and never more than two.
+
+## 7. Finish
+
+1. With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md.
+2. Stage the work and make the branch's verification commit, as in `references/git-flow.md`. It's the message the main branch gets, in the one squashed commit that brings it code, tests, `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`, unless project instructions say otherwise. It records the verification:
    - the test suite and build results
    - the tester's last report, summarized: rounds run, what it found and how it was resolved, extra tests kept (or why there was no tester)
+   - the review, summarized: blocking findings and how each was resolved, suggestions applied and declined
    - what is left for the user to check by hand, as a block starting with a line that says exactly `To check by hand:`, one item per line, so it can be found later with `git log --grep`
-4. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one) and commit it as a checkpoint.
-5. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push), in the project's integration mode: local merge, or a pull request. Either way, the combined code is tested before it reaches the main branch on the remote.
+3. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one) and commit it as a checkpoint.
+4. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push), in the project's integration mode: local merge, or a pull request. Either way, the combined code is tested before it reaches the main branch on the remote.
 
-A feature with automated tests is only finished through step 5: without a tester report it hasn't been independently checked, and the commit message would claim more than was done.
+A feature is only finished through step 4, after the review (and, with automated tests, the tester): without their reports it hasn't been independently checked, and the commit message would claim more than was done.

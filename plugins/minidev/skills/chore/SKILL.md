@@ -5,7 +5,7 @@ description: In projects set up for the minidev cycle (a CLAUDE.md that names it
 
 # Chore
 
-Makes a change the user doesn't see in the product's behavior: the code, its dependencies or its tooling change, the rules don't. A chore has no critical test list and no independent tester; its proof is the existing test suite, green before and after, with the tests that check behavior left as they were.
+Makes a change the user doesn't see in the product's behavior: the code, its dependencies or its tooling change, the rules don't. A chore has no critical test list and no independent tester (only a review of the code); its proof is the existing test suite, green before and after, with the tests that check behavior left as they were.
 
 Talk to the user in the language of the conversation. Project instructions (CLAUDE.md, AGENTS.md…) define the test and build commands; when they conflict with this skill, they win.
 
@@ -26,6 +26,7 @@ If BACKLOG.md has an entry for it (type Debt), use it as the description of the 
    - **Dependency upgrades:** read the dependency's changelog or migration guide between the two versions for breaking changes before upgrading, and upgrade one dependency (or one group that must move together) at a time.
    - **Text, comments, docs:** no tests to add; the suite and build still run, since docs can be part of the build.
 4. Run the test suite and the build again: everything that passed before must pass now.
+5. If the change touches code (not only text, docs or a version number), launch the `reviewer` agent and act on its report as in the `build` skill's Refactor and review section (Review), passing the chore's description (or its Debt entry) instead of a feature entry. For a refactoring it's the only independent look at the new structure.
 
 ## 3. Finish
 
@@ -33,6 +34,6 @@ If BACKLOG.md has an entry for it (type Debt), use it as the description of the 
    - **SPEC.md** when a technical decision changed (a dependency added, replaced or removed, storage, structure the spec names), with its reason.
    - **CHANGELOG.md** only when the people who use the product will notice: a new minimum version, faster loading, a security upgrade (under Security). Otherwise nothing: an internal refactoring isn't news.
    - **BACKLOG.md**: remove the Debt entry, if there was one.
-2. Stage the work and make the branch's verification commit, as in `git-flow.md`: its message is what the main branch gets. It records what changed and why, the suite and build results before and after, and for an upgrade the versions and any breaking change handled. If something should be checked in the real app (an upgraded UI library, a build tool), end the message with a block starting with a line that says exactly `To check by hand:`, one item per line.
+2. Stage the work and make the branch's verification commit, as in `git-flow.md`: its message is what the main branch gets. It records what changed and why, the suite and build results before and after, for an upgrade the versions and any breaking change handled, and the review, if there was one. If something should be checked in the real app (an upgraded UI library, a build tool), end the message with a block starting with a line that says exactly `To check by hand:`, one item per line.
 3. Show the user what to check, if anything, and wait for their confirmation.
 4. Merge, test and push as in `git-flow.md` (Merge and push), in the project's integration mode.

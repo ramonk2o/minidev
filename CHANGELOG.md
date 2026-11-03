@@ -4,6 +4,14 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-11-03
+
+### Added
+- **Reviewer agent**: a read-only, independent code review of every change, after the tester, looking for what tests don't catch (risky logic, error handling, security, design, leftovers, the project's conventions). Blocking findings are fixed or brought to the user; suggestions are applied when clearly better and cheap. `fix` and `chore` run it whenever they change code.
+
+### Changed
+- `build` gets a mandatory refactor step with the suite green before the review, replacing the optional cleanup; the verification message records the review.
+
 ## [0.9.0] - 2026-11-03
 
 ### Added
