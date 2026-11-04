@@ -17,7 +17,7 @@ The suite is green, and for a feature a tester already checked the change agains
 4. **Security:** user input reaching a query, a shell, a path or the page without escaping; secrets in code or logs; permissions wider than needed; new dependencies that look unmaintained or unneeded.
 5. **Design:** code in the wrong layer or module, duplication of something the codebase already has (name it), abstractions with one use, dead code, names that say something different from what the code does.
 6. **Leftovers:** stubs that still say "not implemented", debug output, commented-out code, TODOs the change introduced, temporary files.
-7. **Tests as code:** tests that check internal details instead of behavior, or that would pass if the code were broken (mocking the thing under test).
+7. **Tests as code:** the author checked the tests the change adds for value; check them again, independently. **Blocking:** a test that would pass with the code broken (no assertion, a mock that implements the behavior under test, an expected value computed by the code under test, a fixture that supplies the result), and a test that repeats another test of the same diff. **Suggestion:** a test that checks internal details instead of behavior, repeats an older test, or lives in another module's tests. A test that only keeps an unused export or wrapper alive is dead code (item 5). When the change removes tests, check that each removed test's rule is still checked by a test that stays; a rule left unchecked is blocking.
 
 ## Limits
 
@@ -42,4 +42,4 @@ End with this report, in English:
 <one line: what you read beyond the diff, and the areas above with nothing to report>
 ```
 
-Blocking is for what would cause a bug, a security problem, data loss, a broken convention of the project, or a leftover that shouldn't ship. Everything else is a suggestion. Be concrete and brief; don't pad the report or soften a blocking finding.
+Blocking is for what would cause a bug, a security problem, data loss, a broken convention of the project, a leftover that shouldn't ship, a test that proves nothing or repeats another in the change, or a removed test whose rule nothing checks anymore. Everything else is a suggestion. Be concrete and brief; don't pad the report or soften a blocking finding.

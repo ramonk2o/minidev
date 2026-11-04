@@ -68,11 +68,13 @@ The tester's report is the check of your work, so you don't get to filter it: re
 
 Repeat until a report comes back with no failures. After 3 rounds with failures still open, stop and show the user what's left instead of looping.
 
-## 6. Refactor and review
+## 6. Refactor, check the tests and review
 
-Green tests say the feature works, not that the code is ready to live with. Two steps take care of that, in this order.
+Green tests say the feature works, not that the code and its tests are ready to live with. Three steps take care of that, in this order.
 
 **Refactor.** With the whole suite green, clean up the code you wrote: remove stubs that are left, dead code and debug output; give things names that say what they do; remove duplication, using what the codebase already has. Don't change behavior or the tests that check it. When the diff is large (many files, or new modules), run the `simplify` skill for this, if it's available. Run the test suite and the build again.
+
+**Check the tests.** Read `references/test-value.md`. First move the tester's kept tests out of their `tester` files into the tests of the module they exercise, following the project's conventions (the `tester` name only served the check after each round). Note which tests came from the tester; they stay protected, so merging or removing one still goes to the user. Then check the tests this feature added as that file says (Check the change's tests). If a later tester round adds tests (after a blocking review fix), move and check those too.
 
 **Review.** Even when there was no tester, have the change reviewed by the `reviewer` agent as in `references/review.md`, giving it the feature's backlog entry, and act on its report as that file says.
 
@@ -82,6 +84,8 @@ Green tests say the feature works, not that the code is ready to live with. Two 
 2. Stage the work and make the branch's verification commit, as in `references/git-flow.md`. It's the message the main branch gets, in the one squashed commit that brings it code, tests, `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`, unless project instructions say otherwise. It records the verification:
    - the test suite and build results
    - the tester's last report, verbatim, so the record is the tester's words and not your summary; before it, one line per earlier round: what it found and how it was resolved, and any tester test removed with the user's OK (or why there was no tester)
+   - the check of the tests, as `references/test-value.md` says, and each tester test as `<old tester file> → <new file> — <test name>`, since the tester's report names the old files
+   - the critical tests, as a block starting with a line that says exactly `Critical tests:`, one test per line as `<file> — <test name>`, so a later prune knows they're protected
    - the review, as `references/review.md` says
    - what is left for the user to check by hand, as a block starting with a line that says exactly `To check by hand:`, one item per line, so it can be found later with `git log --grep`
 3. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one) and commit it as a checkpoint.

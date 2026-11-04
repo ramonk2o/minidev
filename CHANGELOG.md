@@ -4,6 +4,21 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-11-04
+
+### Added
+- **Test value**: `test-value.md`, next to `review.md`, holds what makes a test worth keeping, the patterns of useless tests, which tests are protected and the **sabotage** check (break a rule on purpose to show the test that stays fails). `build`, `fix` and `chore` read it; the `tester` and `reviewer` judge tests by the same rules.
+- **Check the tests** in every change that adds them: after the refactor, the change's new tests are tied to rules and compared with each other and with the existing tests; the author merges or removes only their own extras, protected tests go to the user, and redundant older tests are noted for a later prune.
+- **Missing tests** are a chore: new tests for rules that have none, each shown failing by sabotage.
+- **Test pruning** in `chore`, on request ("clean up the useless tests"): the whole suite mapped to SPEC.md rules, regressions and outside contracts, a list of candidates for the user's approval with the test that keeps each rule, removal by module with the production code only those tests kept alive, a sabotage per rule, and rules with no test recorded as Debt. No target number unless the user gives one.
+- Verification commits list critical and regression tests in `Critical tests:` (`build`) and `Regression tests:` (`fix`) blocks, and older tests a change made redundant in `Redundant older tests:`, so a prune can find them with `git log --grep`.
+- Trigger evals: a prune request and a request for missing tests fire `chore`.
+
+### Changed
+- The tester's kept tests move out of their `tester` files into the module's tests before the review, instead of staying in separate files on main.
+- The `tester` writes an extra test only when no existing test would already fail in that case, and reports the failure only it catches.
+- The `reviewer` blocks tests that would pass with the code broken, repeats inside the same diff and removed tests whose rule nothing checks; other test issues are suggestions. A blocking fix that touches a protected test goes to the user first.
+
 ## [0.11.0] - 2026-11-04
 
 ### Added
