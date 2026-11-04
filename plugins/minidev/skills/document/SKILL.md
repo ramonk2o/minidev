@@ -46,7 +46,7 @@ A project may already have these documents (or older ones like `FEATURES.md`, `T
 
 ## Language
 
-- Write the documents in the language the project's CLAUDE.md names (`Documents: <language>`), or else in that of its existing docs. If neither says, ask once and add that line to CLAUDE.md's Development cycle section, so it isn't asked again.
+- Write the documents in the language the project's CLAUDE.md names (`Documents: <language>`), or the one the calling skill passes (`brainstorm` settles it in its plan), or else in that of its existing docs. If none says, ask once; if CLAUDE.md has a Development cycle section, add that line there so it isn't asked again. Don't create a CLAUDE.md or that section for it.
 - Talk to the user in the language of the conversation.
 
 ## Legends
@@ -60,7 +60,7 @@ Each document starts with a short legend, so it's readable without this skill. T
 | Capture a feature from the conversation | Show the draft, wait for OK (an interview summary the user already approved counts as that OK) |
 | Clear idea, bug or debt left for later, status change asked by the user | Write directly, then tell them |
 | Clean up, reorganize, new area, aligning a document's format | Show the plan, wait for OK |
-| Create SPEC.md | Show the proposed outline, wait for OK |
+| Create SPEC.md | Show the proposed outline, wait for OK (an outline the user approved in a `brainstorm` plan counts as that OK) |
 | Update SPEC.md when a feature is finished, changelog entry | Write directly as part of finishing, then tell them |
 | Bug fix: changelog entry under Fixed, SPEC.md if a rule changed, Bug entry removed | Write directly as part of the fix, then tell them |
 | Chore: SPEC.md if a technical decision changed, changelog if users will notice (or a notable docs/tooling change, `references/changelog.md`), Debt entry removed | Write directly as part of the chore, then tell them |
@@ -69,4 +69,4 @@ Each document starts with a short legend, so it's readable without this skill. T
 
 ## Commits
 
-In a git repository, commit after writing, on the branch you're on (a feature set In progress is the exception: on the main branch, before its branch), with a short message saying what changed (e.g. "Tables: recorded in BACKLOG (Idea)", "Sync discarded", "Release 1.4.0"). Commit only these documents, never other pending changes. When the change is part of a larger piece of work being committed, it goes in that commit instead: finishing a feature, a fix or a chore, or the documents `brainstorm` or `setup` create, which go in the commit those skills offer (don't commit them here). Don't push these commits on their own: they go out with the next merge into the main branch or release (in pull request mode, inside the next pull request). On a work branch (feature, fix, chore, release) they're squashed into that branch's commit, whose message gets a line for each change that isn't part of the work.
+In a git repository, commit after writing, on the branch you're on (a feature set In progress is the exception: on the main branch, before its branch, unless the work reuses the session's worktree branch, `../build/references/git-flow.md`, Worktrees), with a short message saying what changed (e.g. "Tables: recorded in BACKLOG (Idea)", "Sync discarded", "Release 1.4.0"). Commit only these documents, never other pending changes. When the change is part of a larger piece of work being committed, it goes in that commit instead: finishing a feature, a fix or a chore, or the documents `brainstorm` or `setup` create, which go in the commit those skills offer (don't commit them here). Don't push these commits on their own: they go out with the next merge into the main branch or release (in pull request mode, inside the next pull request). On a work branch (feature, fix, chore, release) they're squashed into that branch's commit, whose message gets a line for each change that isn't part of the work.

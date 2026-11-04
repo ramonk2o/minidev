@@ -50,6 +50,6 @@ When the user releases a version:
 5. **Tag** the release commit with an annotated tag named like the existing tags (e.g. `1.4.0`), locally.
 6. Push the commit and the tag, if the repository has a remote.
 
-In pull request mode (the project's CLAUDE.md says so), the main branch can't take a direct push, so steps 5 and 6 change: make the release commit on a `release/<version>` branch instead and bring it in as in the `build` skill's `references/git-flow.md` (`../../build/references/git-flow.md` from this file), with "Release <version>" as the message. Then tag the squashed commit on the updated main branch and push only the tag (`git push origin <version>`).
+In pull request mode (the project's CLAUDE.md says so), the main branch can't take a direct push, so steps 5 and 6 change: make the release commit on a `release/<version>` branch instead and bring it in as in the `build` skill's `references/git-flow.md` (`../../build/references/git-flow.md` from this file), with "Release <version>" as the message. Then tag the squashed commit on the updated main branch and push only the tag (`git push <remote> <version>`, the remote as in that file's The main branch).
 
 Other release steps (bumping the version in package or manifest files, building a package, submitting to a store) belong to the project: follow its instructions.

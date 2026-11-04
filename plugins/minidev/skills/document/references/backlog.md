@@ -116,7 +116,7 @@ Summarize by area: each feature's name and status. Apply the filter the user ask
 ### Start a feature
 1. If another feature is In progress, say so, with its branch if one exists (`git branch --list 'feature/*'`), and ask what to do: resume it, pause it back to Idea, or stop.
 2. Create the entry if it doesn't exist (a direct request).
-3. Set it **In progress**, on the main branch, before its branch is created, and commit that there: the main branch is where anyone looks to see what is being built.
+3. Set it **In progress**, on the main branch, before its branch is created, and commit that there: the main branch is where anyone looks to see what is being built. When the work reuses the session's worktree branch instead, it goes in that branch's first commit (`../build/references/git-flow.md`, Worktrees).
 4. Once the critical test list is approved (on the feature's branch), add **To check by hand**: the rules that only show in the real app, for the user to try once it's built. The automated checks live in the tests, not here.
 
 ### Finish a feature
@@ -125,6 +125,8 @@ Verifying the feature is the job of whoever built it (e.g. the `build` skill); t
 2. Add the change to CHANGELOG.md (`references/changelog.md`).
 3. Remove the entry and, if its area is left empty, the area.
 4. The verification message, with the "To check by hand" list, is written by the skill that built the feature (`../build/references/git-flow.md`, The verification commit), not here.
+
+When the user says a feature is done that didn't go through `build` (built by hand or elsewhere), tell them it wasn't checked independently (no tester, no review) and offer to run it through `build` from its review step. If they just want it recorded, check that the code does what the entry says, write steps 1 to 3 from the code as it is, and commit them on their own, with a message that says it wasn't verified.
 
 If the user later finds a problem in use, it's handled as a bug fix, not by reopening the entry. A revert is the exception: it restores the entry as it was, and this skill adds what went wrong to its Open questions (`../build/references/git-flow.md`, When a merged change breaks).
 

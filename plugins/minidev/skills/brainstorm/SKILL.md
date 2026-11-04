@@ -9,7 +9,7 @@ Takes a project from an idea to an empty but working codebase: the product is un
 
 The order matters. The product comes before the stack, because the stack is chosen to serve the product (where it runs, what it stores, who uses it), not the other way around. The stack comes before the scaffold, because changing a decision costs a sentence now and a rewrite later.
 
-Talk to the user in the language of the conversation. Write code, config and commit messages in English; the product documents follow the `document` skill's language rule.
+Talk to the user in the language of the conversation. Write code, config and commit messages in English; the product documents are written in the language the plan approves (step 5), which is passed to `document`.
 
 Nothing is created before the user's OK on the plan (step 5).
 

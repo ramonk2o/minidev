@@ -11,7 +11,7 @@ Talk to the user in the language of the conversation. Project instructions (CLAU
 
 ## 1. Check it's a bug
 
-First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says it uses the `minidev` cycle (the line `/minidev:setup` writes: "This project uses the `minidev` cycle"). A CLAUDE.md that only mentions a build command or a fix isn't that. If it doesn't, offer `/minidev:setup` or simply fix the bug without this skill.
+First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says it uses the `minidev` cycle (the line `/minidev:setup` writes: "This project uses the `minidev` cycle"). A CLAUDE.md that only mentions a build command or a fix isn't that. If not, don't create a backlog, branches or documents in it: offer `/minidev:setup` and stop, or simply fix the bug without this skill if the user prefers.
 
 If BACKLOG.md has an entry for it (type Bug), use it as the bug's description.
 

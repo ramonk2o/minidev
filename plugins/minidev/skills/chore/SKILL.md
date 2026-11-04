@@ -11,7 +11,7 @@ Talk to the user in the language of the conversation. Project instructions (CLAU
 
 ## 1. Check it's a chore
 
-First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says it uses the `minidev` cycle (the line `/minidev:setup` writes: "This project uses the `minidev` cycle"). A CLAUDE.md that only mentions a build command or a fix isn't that. If it doesn't, offer `/minidev:setup` or simply make the change without this skill.
+First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says it uses the `minidev` cycle (the line `/minidev:setup` writes: "This project uses the `minidev` cycle"). A CLAUDE.md that only mentions a build command or a fix isn't that. If not, don't create a backlog, branches or documents in it: offer `/minidev:setup` and stop, or simply make the change without this skill if the user prefers.
 
 If the change alters what the user sees or a rule in SPEC.md, it isn't a chore: broken behavior is a bug (`fix`), new or different behavior is a feature (`document`, then `build`). Say so and switch. A dependency upgrade that forces a visible change (a removed option, a new minimum version) is still a chore, but tell the user what will change before starting.
 

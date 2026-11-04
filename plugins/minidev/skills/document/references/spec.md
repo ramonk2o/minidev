@@ -60,7 +60,7 @@ Adapt it to the project:
 - Keep Goal first and Known limitations last: the first orients the reader, the last warns them.
 
 ### 3. Propose before writing
-Show the user the adapted outline: the sections, the Behavior areas, and a sentence on what each one will hold, with why the outline differs from the default where it does. Wait for the OK.
+Show the user the adapted outline: the sections, the Behavior areas, and a sentence on what each one will hold, with why the outline differs from the default where it does. Wait for the OK. An outline the user already approved in a `brainstorm` plan counts as that OK: don't ask again.
 
 ### 4. Write it from what exists
 Fill it with the current behavior, taken from the code, tests and docs. Don't describe intended behavior as if it existed. When the code is ambiguous about a rule (behavior that looks accidental, or code and docs that disagree), don't decide it: list those points to the user at the end and ask which is the rule.

@@ -76,7 +76,7 @@ This project uses the `minidev` cycle. When a step needs one of its skills and i
 ````
 
 Template notes:
-- The **Development cycle** section is copied as is. Only the Integration mode and the Release target change.
+- The **Development cycle** section is copied as is. Only the Integration, Documents and Releases lines change.
 - **Release:** if the project doesn't publish versions, drop the Releases line. If it does but the steps aren't written anywhere, use "cut the version with `document`" and offer to write the steps down later.
 - **Commands:** drop a line the project has no command for (e.g. Type-check when the build already type-checks: say so in the Build line).
 - **Tests:** if no existing test shows how state-changing rules are tested, drop the "as in" part rather than citing a weak example.
@@ -111,10 +111,10 @@ For each item, say what it is, why it's orphaned or redundant, and what you sugg
 
 ## 8. Review
 
-Show everything in one message: git setup (step 1), the CLAUDE.md draft or its changes (steps 4–5), the permissions (step 6) and the orphans (step 7). Wait for the OK; the user may approve parts.
+Show everything in one message: git setup and, if there were no tests, the test setup (step 1), the CLAUDE.md draft or its changes (steps 4–5), the permissions (step 6) and the orphans (step 7). Wait for the OK; the user may approve parts.
 
 ## 9. Finish
 
-1. Apply what was approved: `git init` and `.gitignore`, the CLAUDE.md, `.claude/settings.json`, the removals.
+1. Apply what was approved, in this order: `git init` and `.gitignore`; the test setup, run and shown passing (if it fails, fix it or stop before the CLAUDE.md); the CLAUDE.md; `.claude/settings.json`; the removals.
 2. If any of `SPEC.md`, `BACKLOG.md`, `CHANGELOG.md` is missing, or an old document was pointed out in step 7, load the `document` skill and create or align them with it. Don't write them yourself: their formats belong to that skill.
 3. Offer a commit with the changes (the first commit, in a new repository). Don't commit without the OK.

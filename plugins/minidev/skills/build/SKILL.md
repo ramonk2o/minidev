@@ -15,6 +15,8 @@ Talk to the user in the language of the conversation.
 
 First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says it uses the `minidev` cycle (the line `/minidev:setup` writes: "This project uses the `minidev` cycle"). A CLAUDE.md that only mentions a build command or a fix isn't that. If not, don't create a backlog, branches or documents in it: offer `/minidev:setup` and stop, or simply implement the request without this skill if the user prefers.
 
+Read `references/git-flow.md` now: the resume, branch, staging, checkpoint and merge steps below follow it.
+
 1. Find the feature's entry in `BACKLOG.md`. If it's already **In progress**, or a `feature/` branch matches it, the work was started: resume it as in `references/git-flow.md` (Resume) instead of starting again. For a direct request with no entry, create one with the `document` skill.
 2. If another feature is In progress, the `document` skill asks what to do; resolve it before going on.
 3. Check that the entry has enough rules to derive tests from: what the user sees, plus the edge cases that matter, plus the Constraints the feature must respect: its own, and those in SPEC.md's Constraints (whole-product limits, like "works offline") that apply to what it touches. When the feature has an obvious risk the entry doesn't address (data that can grow without limit, user input reaching a query or the page, a public surface), count it as an open point, with a recommended limit. Guessing missing rules would make the tests, and then the code, encode assumptions nobody approved, so settle them first, with the smallest step that does it:
@@ -23,7 +25,7 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says i
    - **Key behavior undecided across several connected decisions** (e.g. the entry is still a bare idea): stop and offer a `minidev:grilling` interview, recording the answers in the entry.
 4. With the `document` skill, set the entry **In progress** on the main branch. It's committed there, so the main branch's BACKLOG.md shows what is being built, from any branch or session; it reaches the remote with the next merge into the main branch.
 5. If the modules the feature will change have no tests of their current behavior, say so and offer to add them first as a chore (`chore`, Missing tests): without them, the refactor step and the rest of the suite can't show that what existed still works. The user may go on without them; note it in the verification message.
-6. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch). Read that file now: the staging, checkpoint, resume and merge steps below follow it too. Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
+6. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch). Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
 7. Do whatever the project instructions require before writing code.
 
 ## 2. Critical test list
