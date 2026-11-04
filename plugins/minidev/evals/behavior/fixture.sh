@@ -105,6 +105,7 @@ A tiny in-memory notes library for scripts.
 
 ## Commands
 - Tests: `npm test` (node:test)
+- Git: run it as `./.tools/git` from the project folder (the eval sandbox blocks the system git).
 
 ## Tests
 - Tests live in `test/`, named `<module>.test.js`; each starts from `reset()`.
