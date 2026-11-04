@@ -1,6 +1,6 @@
 # Review
 
-How a finished change gets its independent code review by the `reviewer` agent. Used by the `build` skill (always, even without a tester), and by the `fix` and `chore` skills whenever they change code.
+How a finished change gets its independent code review by the `reviewer` agent. Used by the `build` skill (always, even without a tester), and by the `fix` and `chore` skills whenever they change code (except a trivial fix, which `fix` defines).
 
 ## Launch
 
@@ -18,7 +18,7 @@ How a finished change gets its independent code review by the `reviewer` agent. 
 
    Base commit: <git merge-base HEAD <main branch>>
    Lint and type-check commands: <commands, or "none">
-   Tester: <"ran" or "didn't run: <bug fix | chore | no automated tests>">
+   Tester: <"ran" or "didn't run: <bug fix | chore | no automated tests | small feature>">
    ```
 
    Don't pass your explanations, the conversation or your own view of what might be weak: its value is not knowing what you meant.

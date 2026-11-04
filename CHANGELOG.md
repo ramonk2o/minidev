@@ -4,6 +4,16 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-11-04
+
+### Added
+- **Size tiers.** A small feature (about 50 production lines, no new module or dependency, no security, data, volume or input constraint, at most 5 automated rules) skips the tester; the size is approved with the critical test list, recounted once built, and the reviewer checks coverage instead. A trivial fix (about 10 lines, with a regression test shown failing first) skips the review.
+- `chore` has a product text short path for wording fixes to strings users see: the tests that check the old text are found first, and the suite runs once, after the change.
+- Behavior evals `build-tester-flow` and `chore-text-flow`; `build-flow` and `fix-flow` now expect the small and trivial paths.
+
+### Changed
+- `build` runs only the affected tests after the refactor; the whole suite runs once, after the check of the tests.
+
 ## [0.17.0] - 2026-11-04
 
 ### Added

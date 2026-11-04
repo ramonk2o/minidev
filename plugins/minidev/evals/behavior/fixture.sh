@@ -1,7 +1,8 @@
 #!/bin/bash
 # Builds the "Notes" fixture project in the current directory: a tiny Node
 # library set up for the minidev cycle, with one Idea in the backlog and one
-# known bug (notes are listed oldest first; SPEC.md says newest first).
+# known bug (notes are listed oldest first; SPEC.md says newest first), plus
+# a typo in the empty-note error ("spcaes").
 set -euo pipefail
 mkdir -p src test
 cat > package.json <<'EOF'
@@ -15,7 +16,7 @@ let clock = 0;
 export function reset() { notes = []; clock = 0; }
 
 export function addNote(text) {
-  if (typeof text !== 'string' || text.trim() === '') throw new Error('A note needs text');
+  if (typeof text !== 'string' || text.trim() === '') throw new Error('A note needs text, not only spcaes');
   const note = { id: notes.length + 1, text, createdAt: ++clock };
   notes.push(note);
   return note;

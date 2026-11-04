@@ -1,6 +1,6 @@
 ---
 name: chore
-description: In projects set up for the minidev cycle (a CLAUDE.md that says it uses the `minidev` cycle), make a change that keeps the product's behavior as it is, on its own branch, with the test suite green before and after (prose-only changes take a short path): refactoring, technical debt, dependency upgrades, migrations, tooling, build or CI config, small fixes to text, comments or docs, adding missing tests and pruning useless ones. Use it whenever the user wants to clean up, refactor, reorganize or simplify code, add tests to code that has none, remove useless or duplicated tests, upgrade or replace a dependency, migrate a tool, or fix a typo, e.g. "refactor the storage module", "update React to 19", "atualiza as dependências", "fix the typo in the README", "limpa os testes inúteis", "/minidev:chore X". Not for broken behavior, flaky tests or something that got slower (fix), or new behavior (document, then build). Making something faster that nobody reported as slow is a chore.
+description: In projects set up for the minidev cycle (a CLAUDE.md that says it uses the `minidev` cycle), make a change that keeps the product's behavior as it is, on its own branch, with the test suite green before and after (prose and wording fixes to product text take short paths): refactoring, technical debt, dependency upgrades, migrations, tooling, build or CI config, small fixes to text, comments or docs, adding missing tests and pruning useless ones. Use it whenever the user wants to clean up, refactor, reorganize or simplify code, add tests to code that has none, remove useless or duplicated tests, upgrade or replace a dependency, migrate a tool, or fix a typo, e.g. "refactor the storage module", "update React to 19", "atualiza as dependências", "fix the typo in the README", "limpa os testes inúteis", "/minidev:chore X". Not for broken behavior, flaky tests or something that got slower (fix), or new behavior (document, then build). Making something faster that nobody reported as slow is a chore.
 ---
 
 # Chore
@@ -17,7 +17,7 @@ If the change alters what the user sees or a rule in SPEC.md, it isn't a chore: 
 
 If BACKLOG.md has an entry for it (type Debt), use it as the description of the work.
 
-If the change only touches prose (Markdown or other docs files, and comments in code), follow the short path below instead of sections 2 and 3. Anything else takes the full path, including a text the product shows to users, a string a test may check, and comments that tools read: doctests, lint or compiler directives (`eslint-disable`, `noqa`, `//go:build`, `@ts-expect-error`), type annotations in comments (JSDoc in a type-checked project).
+If the change only touches prose (Markdown or other docs files, and comments in code), follow the prose short path below instead of sections 2 and 3. If it only fixes the wording of text the product shows (a typo, punctuation, the same message said better, in code strings or translation files), follow the product text short path. Anything else takes the full path, including comments that tools read: doctests, lint or compiler directives (`eslint-disable`, `noqa`, `//go:build`, `@ts-expect-error`), type annotations in comments (JSDoc in a type-checked project). A new text, or one that changes what a message means, isn't a wording fix: it's a feature (or a bug, if the text was wrong).
 
 ### Short path: prose only
 
@@ -30,6 +30,19 @@ Prose can't break the code, so a branch, a suite run before and a review would o
 5. Local merge: push the main branch if it has a remote. Pull requests: bring it in as in `git-flow.md` (Merge and push).
 
 If, while working, the change turns out to touch anything but prose, stop and switch to the full path from section 2 (in local merge mode, move the work to a branch first: `git switch -c chore/<short-name>`).
+
+### Short path: product text
+
+A wording fix can't change behavior, but a test may check that string, so the suite runs once, after the change; there's still no branch in local merge mode, no suite run before and no review.
+
+1. Start as in the prose short path, step 1.
+2. Search the tests for the old text (e.g. `grep -rn "<old text>" <test folders>`). A test that checks it checks a text users may depend on: changing that test goes to the user first, and with their OK it changes in the same commit.
+3. Make the change, only in the strings.
+4. Run the test suite and the build once. If something fails that the step 2 search didn't predict, the change did more than wording: undo it and take the full path.
+5. Show the diff, then commit with a one-line message (e.g. `chore: fix typo in the empty-note error`) and a line with the test and build results; no verification blocks. CHANGELOG.md gets a line only if users will notice (rarely, for a wording fix), through the `document` skill.
+6. Finish as in the prose short path, step 5.
+
+If the change turns out to touch anything but the wording, switch to the full path as above.
 
 ## 2. Work
 

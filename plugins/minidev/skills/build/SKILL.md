@@ -38,7 +38,9 @@ Show the list to the user in plain language, without code, in two groups:
 
 When the entry's Decisions change a rule SPEC.md states, also list, in a third group, the **existing tests this feature changes**: each test of the old rule, with how it will change. Tests that a fix or an earlier feature approved are protected (`references/test-value.md`), so this list is where the user approves changing them.
 
-Wait for the user's OK. This is their chance to check that the right rules are being tested without reading test code. Put the approved list in the body of the next checkpoint (`references/git-flow.md`, Checkpoints), so a resumed session has it.
+Also say the feature's **size**. It's **small** when all of these hold: about 50 lines of production code or fewer (tests not counted), no new module or dependency, no Constraint about security, stored data, volume or user input (in the entry, or in the SPEC.md Constraints that apply), and at most 5 rules in the Automated tests group. A small feature skips the tester (step 5); the review still runs. Anything else is **full**, and so is a feature the user wants a tester for, or one you're unsure about. Propose it with the list, e.g. "Size: small, so no tester; say if you want one".
+
+Wait for the user's OK on the list and the size. This is their chance to check that the right rules are being tested without reading test code. Put the approved list and size in the body of the next checkpoint (`references/git-flow.md`, Checkpoints), so a resumed session has it.
 
 With the `document` skill, add the approved **To check by hand** list to the entry. This change isn't committed on its own: it goes in the branch's next checkpoint.
 
@@ -52,7 +54,9 @@ Write the code until the critical tests, the whole test suite and the build pass
 
 ## 5. Independent tester
 
-If the approved list has no automated tests (the feature only shows in the real app), skip this step: the tester can't check anything there. Say so, and record "no tester: no automated tests" in the commit message.
+Skip this step in two cases, saying so to the user and recording why in the verification message's Tester section:
+- **No automated tests** in the approved list (the feature only shows in the real app): the tester can't check anything there. Record "no tester: no automated tests".
+- **Small**, as approved in step 2, and still small once built: count the production lines the feature changed (`git diff --numstat <base>`, test files left out) and check it added no module or dependency. Record "no tester: small feature (<N> lines)"; the reviewer checks the coverage instead. If it grew past that, it's full now: tell the user and run the tester. The estimate made before the code is a guess; this count is the check.
 
 Otherwise, stage the work as in `references/git-flow.md` (Stage the work): `git diff` doesn't show files git doesn't track yet, and the new modules and tests are exactly what the tester needs to see. Then launch the `tester` agent (agent type `minidev:tester`) with this prompt, filled in and nothing added:
 
@@ -90,9 +94,9 @@ Repeat until a report comes back with no failures. After 3 rounds with failures 
 
 Green tests say the feature works, not that the code, its tests and its documents are ready to live with. Four steps take care of that, in this order.
 
-**Refactor.** With the whole suite green, clean up the code you wrote: remove stubs that are left, dead code and debug output; give things names that say what they do; remove duplication, using what the codebase already has. Don't change behavior or the tests that check it. When the diff is large (many files, or new modules), run the `simplify` skill for this, if it's available. Run the test suite and the build again.
+**Refactor.** With the whole suite green, clean up the code you wrote: remove stubs that are left, dead code and debug output; give things names that say what they do; remove duplication, using what the codebase already has. Don't change behavior or the tests that check it. When the diff is large (many files, or new modules), run the `simplify` skill for this, if it's available. Then run the tests of the modules the refactor touched (selected by file or name, when the test runner can; otherwise the whole suite). The whole suite and the build run at the end of the next step.
 
-**Check the tests.** Read `references/test-value.md`. First move the tester's kept tests out of their `tester` files into the tests of the module they exercise, following the project's conventions (the `tester` name only served the check after each round). Note which tests came from the tester, in the checkpoint's body; they stay protected, so merging or removing one still goes to the user. Then check the tests this feature added as that file says (Check the change's tests). If a later tester round adds tests (after a blocking review fix), move and check those too.
+**Check the tests.** Read `references/test-value.md`. First move the tester's kept tests out of their `tester` files into the tests of the module they exercise, following the project's conventions (the `tester` name only served the check after each round). Note which tests came from the tester, in the checkpoint's body; they stay protected, so merging or removing one still goes to the user. Then check the tests this feature added as that file says (Check the change's tests). If a later tester round adds tests (after a blocking review fix), move and check those too. End with the whole suite and the build, even when no test changed: it's the full run after the refactor.
 
 **Documents.** With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md. This comes before the review, so the rules written in SPEC.md from what was built are read against the code by someone who didn't write them.
 
@@ -105,4 +109,4 @@ Green tests say the feature works, not that the code, its tests and its document
 3. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one), update SPEC.md if the fix changes a rule it states, and commit it as a checkpoint.
 4. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push), in the project's integration mode: local merge, or a pull request. Either way, the combined code is tested on the branch before it reaches the main branch. If it breaks after it's on the remote, follow `references/git-flow.md` (When a merged change breaks).
 
-A feature is only finished through step 4, after the review (and, with automated tests, the tester): without their reports it hasn't been independently checked, and the commit message would claim more than was done.
+A feature is only finished through step 4, after the review (and the tester, unless step 5 skipped it): without their reports it hasn't been independently checked, and the commit message would claim more than was done.
