@@ -12,9 +12,16 @@ The project's CLAUDE.md says how branches reach the main branch, in its Developm
 
 ## The main branch
 
-If the repository has a remote, it's the remote's default branch: `git symbolic-ref --short refs/remotes/origin/HEAD`, without the `origin/` prefix. Otherwise it's `main` or `master`, whichever exists. Project instructions that name another branch win.
+The remote is the one `git remote` lists (`origin` if there are several, unless project instructions name another); below it's `<remote>`. If the repository has a remote, the main branch is the remote's default branch: `git symbolic-ref --short refs/remotes/<remote>/HEAD`, without the `<remote>/` prefix. That ref is often missing (a repository created locally and pushed later); then ask the remote: `git ls-remote --symref <remote> HEAD`, and set it for next time with `git remote set-head <remote> --auto`. With no remote, it's `main` or `master`, whichever exists. Project instructions that name another branch win.
 
 To bring it up to date, `git pull --ff-only`. If that refuses because the main branch has local commits the remote doesn't (document changes waiting for the next merge, like a feature set In progress), use `git pull --rebase`: it only replays those commits, which never left this machine.
+
+## Worktrees
+
+Check `git worktree list` once at the start. Git won't switch to a branch that's checked out in another worktree, so:
+
+- **The session started on a branch that isn't the main branch** (e.g. a worktree the app made for it, with no commits of its own beyond the main branch): ask the user whether to use it as this work's branch. If yes, rename it to the work's name (`git branch -m <branch>`) and work there; the entry's In progress status, which would go on the main branch, goes in its first commit instead.
+- **The main branch is checked out in another worktree:** don't switch to it. Start a branch from it with `git switch -c <branch> <main branch>`, and run the steps that act on the main branch (bringing it up to date, the squash, its tests, the push) in its worktree, with `git -C <its path>` and the commands run from that folder. If that worktree has uncommitted changes, stop and ask the user: they're someone's work in progress.
 
 ## Start the branch
 
@@ -44,6 +51,8 @@ Before staging, run `git status --short` and read the list: only this work's fil
 
 Commit on the branch whenever a step is done and before stopping, staged as above, with a message starting `wip:` that names the step done and the state (e.g. `wip: tests first — empty cart, failing`, `wip: tester round 2 — no failures`). Checkpoints let the work be resumed in a new session and keep a working state to go back to. They're never pushed to the main branch: the squash replaces them.
 
+If a pre-commit hook rejects a checkpoint (it runs tests or lint, and the work is meant to be failing at that step), don't bypass it on your own. Ask the user once whether `wip:` checkpoints may skip hooks with `--no-verify`, and record the answer in the project's CLAUDE.md, Development cycle section, so it isn't asked again. If not, skip that checkpoint and commit at the next step that passes the hook. The verification commit and every commit on the main branch always run the hooks.
+
 ## The verification commit
 
 When the work is verified, the skill makes the branch's last commit with the verification message (the skill says what goes in it). If fixes come after it (e.g. from checking by hand), commit them as checkpoints.
@@ -57,19 +66,20 @@ Once the user confirms everything works (or right after the verification commit,
 **Local merge:** the main branch only ever receives code that was already tested combined with it, so a failure is fixed on the branch, never on the main branch.
 1. If the repository has a remote, bring the main branch up to date: `git switch <main branch>`, update it as in The main branch, `git switch <branch>`.
 2. On the branch, `git merge <main branch>` (the squash flattens this merge). If it has conflicts, stop and show them instead of resolving them on your own.
-3. Run the test suite and the build on the branch, unless step 2 brought nothing (`Already up to date`) and they already passed on the branch's last commit. If the main branch moved since the branch started, this is the first time the combined code runs. If anything fails, fix it on the branch (test first when it can be reproduced in one), commit it as a checkpoint and run them again. Tell the user what broke and how it was fixed, and add a line for it to the final message.
+3. Run the test suite and the build on the branch, unless step 2 brought nothing (`Already up to date`) and they already passed on the branch's last commit. If the main branch moved since the branch started, this is the first time the combined code runs. If anything fails, fix it on the branch (test first when it can be reproduced in one), commit it as a checkpoint and run them again; after 3 rounds still failing, stop and show the user what's left. Tell the user what broke and how it was fixed, and add a line for it to the final message.
 4. Switch to the main branch, `git merge --squash <branch>` and commit with the final message.
 5. Check that the main branch now holds exactly what was tested: `git diff --quiet <branch> HEAD`. It should, since step 2 merged the main branch into the branch; then the suite and build don't need to run again. Only if it shows a difference, run the test suite and the build. If anything fails, the commit hasn't left this machine: undo only that commit with `git reset --hard HEAD~1` (the working tree is clean, so nothing else is lost), switch back to the branch and show the user; continue from step 3.
-6. Delete the branch with `git branch -D <branch>` (git doesn't see a squashed branch as merged, so `-d` refuses), and push the main branch if the repository has a remote.
+6. Push the main branch, if the repository has a remote. If the push is rejected because the remote moved meanwhile, never force it: the squashed commit hasn't left this machine, so undo only it with `git reset --hard HEAD~1`, switch back to the branch and continue from step 1.
+7. Delete the branch with `git branch -D <branch>` (git doesn't see a squashed branch as merged, so `-d` refuses).
 
 **Pull requests:**
-1. Push the branch: `git push -u origin <branch>`.
+1. Push the branch: `git push -u <remote> <branch>`.
 2. Open the pull request with `gh pr create --base <main branch> --head <branch>`, its title the final message's first line and its body the rest. If one is already open for the branch, update it instead (`gh pr edit`). Give the user its link.
-3. Wait for the checks: `gh pr checks --watch`. A failing check is fixed on the branch, committed, pushed, and waited for again. If the repository has no checks, bring the main branch into the branch (`git fetch origin`, `git merge origin/<main branch>`; the squash flattens this merge too), run the test suite and the build, and push.
+3. Wait for the checks: `gh pr checks --watch`. A failing check is fixed on the branch, committed, pushed, and waited for again. If the repository has no checks, bring the main branch into the branch (`git fetch <remote>`, `git merge <remote>/<main branch>`; the squash flattens this merge too), run the test suite and the build, and push.
 4. If the main branch requires a review, stop: tell the user the pull request is waiting for one.
 5. Before merging, check that every commit the local main branch has is in the branch (`git merge-base --is-ancestor <main branch> <branch>`); if not, stop and show the user which commits are missing. Then merge with `gh pr merge --squash --subject "<first line>" --body "<rest>"`, from the final message as it stands now.
-6. Update the local main branch: `git switch <main branch>`, `git fetch origin`. If the local main branch had commits not on the remote (document changes made on it before the branch started), they're now inside the squashed commit, as step 5 checked: `git reset --hard origin/<main branch>`. Otherwise `git pull --ff-only`.
-7. Delete the local branch with `git branch -D <branch>`, and the remote one with `git push origin --delete <branch>` if GitHub didn't.
+6. Update the local main branch: `git switch <main branch>`, `git fetch <remote>`. If the local main branch had commits not on the remote (document changes made on it before the branch started), they're now inside the squashed commit, as step 5 checked: `git reset --hard <remote>/<main branch>`. Otherwise `git pull --ff-only`.
+7. Delete the local branch with `git branch -D <branch>`, and the remote one with `git push <remote> --delete <branch>` if GitHub didn't.
 
 ## When a merged change breaks
 

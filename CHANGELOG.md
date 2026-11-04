@@ -4,6 +4,9 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+### Fixed
+- **Git flow is sturdier**: the main branch is found even when `<remote>/HEAD` isn't set (`git ls-remote --symref`), with any remote name; worktrees are handled (an app-made session branch can become the work's branch, and the main branch checked out elsewhere is worked on with `git -C`); a rejected push in local merge undoes the local squash and starts over instead of forcing; a pre-commit hook that rejects a `wip:` checkpoint leads to one question about `--no-verify`, recorded in CLAUDE.md; fixing a merge with the main branch stops after 3 failing rounds.
+
 ## [0.15.0] - 2026-11-04
 
 ### Added
