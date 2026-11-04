@@ -46,7 +46,7 @@ When the user releases a version:
    [Unreleased]: <repo>/compare/<version>...HEAD
    [<version>]: <repo>/compare/<previous>...<version>
    ```
-   The first version links to `<repo>/tree/<version>`.
+   The first version links to `<repo>/tree/<version>`. `<repo>` is the remote's web address; with no remote, or a host without compare pages, leave the links out.
 5. **Tag** the release commit with an annotated tag named like the existing tags (e.g. `1.4.0`), locally.
 6. Push the commit and the tag, if the repository has a remote.
 

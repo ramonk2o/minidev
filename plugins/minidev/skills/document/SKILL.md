@@ -1,6 +1,6 @@
 ---
 name: document
-description: In projects set up for the minidev cycle, or that already have these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the feature being built, and bugs or debt left for later), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done"), update or create the spec, write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
+description: In projects set up for the minidev cycle, or elsewhere when the user explicitly asks to change one of these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the feature being built, and bugs or debt left for later), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done"), update or create the spec, write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
 ---
 
 # Document
@@ -46,7 +46,7 @@ A project may already have these documents (or older ones like `FEATURES.md`, `T
 
 ## Language
 
-- Write the documents in the language of the project's existing docs. If there are none, ask once.
+- Write the documents in the language the project's CLAUDE.md names (`Documents: <language>`), or else in that of its existing docs. If neither says, ask once and add that line to CLAUDE.md's Development cycle section, so it isn't asked again.
 - Talk to the user in the language of the conversation.
 
 ## Legends

@@ -101,7 +101,7 @@ When the user wants to leave a bug or a chore for later ("note this bug, I'll fi
 When the user states an idea:
 - **Clear:** record it right away and tell them what was written.
 - **Vague:** ask 2 or 3 short questions first (what problem does it solve? how do they picture it working?).
-- **Leaves behavior open** (several connected decisions that would change what gets built): load the `grilling` skill and interview the user with it. Write its final summary in this entry format, so approving the summary approves the text that will be recorded (see Capture).
+- **Leaves behavior open** (several connected decisions that would change what gets built): load the `minidev:grilling` skill and interview the user with it. Write its final summary in this entry format, so approving the summary approves the text that will be recorded (see Capture).
 
 "Just note it" (or the same in the user's language) always skips the questions and the interview: record what was said, with anything undecided as Open questions.
 
@@ -132,7 +132,7 @@ If the user later finds a problem in use, it's handled as a bug fix, not by reop
 Update the field when the user asks, e.g. pause a feature (In progress → Idea). Write it directly and tell them. Pausing is written on the main branch; the feature's branch, if any, stays as it is, to be resumed later (`../build/references/git-flow.md`, Resume).
 
 ### Discard
-Move the entry to "Discarded", keeping only its **Description** and a **Why discarded** line with the reason and the date. If its area is left empty, remove the area. If the feature was In progress and has a branch, ask whether to delete it (`git branch -D`, the work is lost) or keep it.
+Move the entry to "Discarded", keeping only its **Description** and a **Why discarded** line with the reason and the date. If its area is left empty, remove the area. If the feature was In progress and has a branch, ask whether to delete it (`git branch -D`, the work is lost) or keep it. Before deleting it, look in `git log <main branch>..<branch> -- BACKLOG.md SPEC.md CHANGELOG.md` for document changes made on it that aren't part of the feature (an idea recorded meanwhile) and carry them to the main branch first, or they're lost with it.
 
 ### Clean up
 Look for:

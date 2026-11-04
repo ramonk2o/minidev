@@ -5,11 +5,19 @@ All notable changes to this project are documented here. The format is based on 
 ## [Unreleased]
 
 ### Changed
+- **The cycle check is literal**: `build`, `fix` and `chore` run only where CLAUDE.md says the project uses the `minidev` cycle, not where it merely mentions a build or a fix; `document` works outside the cycle only when the user explicitly asks to change one of its files.
+- **The documents' language is recorded** in CLAUDE.md (`Documents: <language>`): `setup` writes it, `brainstorm` asks it in the plan, and `document` asks once and records it when nothing says.
+- `brainstorm`'s plan approval covers the SPEC.md outline, so `document` doesn't ask for it again.
+- `setup` leaves Build out for projects without one and lists commands per package in a monorepo.
+- Skills load `minidev:grilling` by its full name, so another installed `grilling` isn't picked.
 - **Test pruning has its own reference**, `chore/references/prune.md`: one linear procedure from branch to merge, instead of a section of `chore` that replaced and extended numbered steps elsewhere. It's loaded only for a prune.
 - **One verification message format**, in `git-flow.md` (The verification commit), with every section and the exact block names `git log --grep` searches; `build`, `fix`, `chore` and the review and test-value references say only which sections they use, instead of describing the blocks in four places.
 - **Fixed prompts for the tester and the reviewer**: `build` and `review.md` give the exact prompt to fill in (entry, SPEC constraints, base commit, commands, whether a tester ran), so nothing else reaches the agents.
 
 ### Fixed
+- `fix` runs the suite before writing the reproducing test, so older failures aren't mistaken for the bug, and stops with an offer to record a Bug entry when the bug can't be reproduced at all.
+- Discarding an In progress feature carries document changes made on its branch (an idea recorded meanwhile) to the main branch before the branch is deleted.
+- Changelog compare links are left out when there's no remote to link to.
 - **Checking the repository after the tester and the reviewer** is one procedure in `git-flow.md` (Check after an agent): it compares `HEAD` and the staged tree (`git write-tree`) too, restores tracked files from the staged version, sends tool output (coverage, caches) to `.gitignore` instead of flagging it, and asks before deleting any other new file, which `git restore` can't remove.
 - **Git flow is sturdier**: the main branch is found even when `<remote>/HEAD` isn't set (`git ls-remote --symref`), with any remote name; worktrees are handled (an app-made session branch can become the work's branch, and the main branch checked out elsewhere is worked on with `git -C`); a rejected push in local merge undoes the local squash and starts over instead of forcing; a pre-commit hook that rejects a `wip:` checkpoint leads to one question about `--no-verify`, recorded in CLAUDE.md; fixing a merge with the main branch stops after 3 failing rounds.
 

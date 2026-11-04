@@ -27,7 +27,7 @@ If the folder isn't a software project, say that this skill is for software proj
 Read the repository to fill the project-specific sections. Look, don't guess:
 
 - **Project line:** what the project is, in one sentence (README, package description, manifest).
-- **Commands:** install, develop/watch, build, tests, lint, type-check, run or load the app, package/release. Take them from the real scripts; note side effects worth knowing (e.g. install also enables a hook, build also type-checks).
+- **Commands:** install, develop/watch, build, tests, lint, type-check, run or load the app, package/release. A project with no build step leaves Build out, and the skills then run only the tests. In a monorepo, list the commands per package, and say which run for a change in each. Take them from the real scripts; note side effects worth knowing (e.g. install also enables a hook, build also type-checks).
 - **Tests:** where test files live and how they're named, shared fakes, mocks or helpers, and how rules that change data or state are tested (find one existing test that does it well, to cite as the example). Also what only shows in the real app (visuals, focus, browser or device behavior): that's what goes to "To check by hand".
 - **Conventions:** only rules with clear evidence in the code: a module that centralizes access to something, strict compiler settings, a test that checks consistency between files, a lint rule. Don't invent conventions and don't list what any developer would do anyway.
 - **Integration:** whether branches should reach the main branch by local merge or by pull request. Signs for pull requests: a GitHub remote plus CI workflows (`.github/workflows/`), a protected main branch (`gh api repos/<owner>/<repo>/branches/<main>/protection` answers instead of 404), or commits from more than one author (`git shortlog -sn`). Pull requests need `gh` signed in (`gh auth status`); if it isn't, say so.
@@ -71,6 +71,7 @@ Build the file from the template below. Fill every `<…>`; the final file has n
 This project uses the `minidev` cycle. When a step needs one of its skills and it isn't available, tell the user and stop; don't imitate it from memory.
 - Ideas: `document`. Features: `build`. Bugs: `fix`. Refactoring, upgrades and other changes that keep the behavior: `chore`.
 - Integration: <local merge | pull requests>.
+- Documents: <language of BACKLOG.md, SPEC.md and CHANGELOG.md>.
 - Releases: <where the release steps live>.
 ````
 

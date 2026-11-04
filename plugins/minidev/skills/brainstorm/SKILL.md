@@ -23,7 +23,7 @@ This skill is for a project that doesn't exist yet. Look at the working folder:
 
 ## 2. Product
 
-Load the `grilling` skill and interview with its method: rounds of numbered questions, each with your recommended answer, asking only what can be decided now. The design tree for a new product usually covers:
+Load the `minidev:grilling` skill and interview with its method: rounds of numbered questions, each with your recommended answer, asking only what can be decided now. The design tree for a new product usually covers:
 
 - **Problem and people:** what's painful today, for whom, and how they cope without the product.
 - **First version:** the smallest thing that's already useful to someone. Push for small: everything else is a later idea, not part of the start.
@@ -70,8 +70,9 @@ Show everything in one message:
 - **Technical decisions**, each with its reason.
 - **Scaffold:** what will be created (generator command, folders, test setup, a first smoke test) and the commands that will be run.
 - **Features in order**, with one line each, and the later ideas.
+- **Documents' language:** the language BACKLOG.md and SPEC.md will be written in, recommending the conversation's (code, config and the README stay in English unless the user says otherwise).
 
-Wait for the user's OK; they may change any part. This is the summary that ends the interview, so its approval is also the OK for the backlog entries in step 7.
+Wait for the user's OK; they may change any part. This is the summary that ends the interview, so its approval is also the OK for the backlog entries and the SPEC.md outline in step 7; `document` doesn't ask for them again.
 
 ## 6. Scaffold
 
@@ -94,4 +95,4 @@ Load the `document` skill and create the product documents with it; their format
 ## 8. Finish
 
 1. Offer the first commit with the scaffold and the documents. Don't commit without the OK.
-2. Tell the user the next steps: run `/minidev:setup` to write the CLAUDE.md and permissions for the cycle, then build the first feature by name (e.g. "let's build <first feature>").
+2. Tell the user the next steps: run `/minidev:setup` (pass on the documents' language, for its CLAUDE.md) to write the CLAUDE.md and permissions for the cycle, then build the first feature by name (e.g. "let's build <first feature>").

@@ -1,6 +1,6 @@
 ---
 name: fix
-description: In projects set up for the minidev cycle (a CLAUDE.md that names it), fix a bug on its own branch, test-first when it can be reproduced in a test, record it in the changelog and merge it once confirmed. Use it whenever the user reports something broken or wrong in existing behavior, e.g. "X has a bug", "saving fails when…", "isso quebrou", "/minidev:fix X". Not for new behavior: that's a feature (document, then build). Not for typos, refactoring or upgrades that keep the behavior (chore).
+description: In projects set up for the minidev cycle (a CLAUDE.md that says it uses the `minidev` cycle), fix a bug on its own branch, test-first when it can be reproduced in a test, record it in the changelog and merge it once confirmed. Use it whenever the user reports something broken or wrong in existing behavior, e.g. "X has a bug", "saving fails when…", "isso quebrou", "/minidev:fix X". Not for new behavior: that's a feature (document, then build). Not for typos, refactoring or upgrades that keep the behavior (chore).
 ---
 
 # Fix
@@ -11,7 +11,7 @@ Talk to the user in the language of the conversation. Project instructions (CLAU
 
 ## 1. Check it's a bug
 
-First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names the `minidev` cycle or the `fix` skill. If it doesn't, offer `/minidev:setup` or simply fix the bug without this skill.
+First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says it uses the `minidev` cycle (the line `/minidev:setup` writes: "This project uses the `minidev` cycle"). A CLAUDE.md that only mentions a build command or a fix isn't that. If it doesn't, offer `/minidev:setup` or simply fix the bug without this skill.
 
 If BACKLOG.md has an entry for it (type Bug), use it as the bug's description.
 
@@ -22,11 +22,12 @@ If fixing it means deciding how the product should behave (two reasonable answer
 ## 2. Fix
 
 1. Read the `build` skill's `references/git-flow.md` (`../build/references/git-flow.md` from this skill's folder) and create the `fix/<short-name>` branch as it says (Start the branch), or resume it if this work was started before (Resume).
-2. If the bug can be reproduced in a test, write the test and show that it fails for the reason reported. Then fix the code until it, the whole suite and the build pass.
-3. If it only shows in the real app, fix it and keep the steps to reproduce it for the commit message.
-4. If you added or changed tests beyond the one that reproduces the bug, check them as in the `build` skill's `references/test-value.md` (`../build/references/test-value.md` from this skill's folder), Check the change's tests. The reproducing test is protected.
-5. With the `document` skill, record the fix in CHANGELOG.md under Fixed, and in SPEC.md if the fix corrects a rule written wrong there or makes explicit a rule it left implicit (deciding a new rule makes it a feature, as in section 1). If BACKLOG.md had a Bug entry for it, remove it. This comes before the review, so the reviewer reads the documents with the code.
-6. If the fix changes code, have it reviewed by the `reviewer` agent as in the `build` skill's `references/review.md` (`../build/references/review.md` from this skill's folder), passing the bug as reported (or its Bug entry), and act on its report as that file says for `fix`.
+2. Run the test suite and the build first and note what already fails, so the reproducing test's failure is told apart from older ones (and those are shown to the user, not fixed here unless they're this bug).
+3. If the bug can be reproduced in a test, write the test and show that it fails for the reason reported. Then fix the code until it, the whole suite and the build pass.
+4. If it only shows in the real app, fix it and keep the steps to reproduce it for the commit message. If it can't be reproduced at all, in a test or in the app, stop: show the user what was tried and offer to record it as a Bug entry with those notes, instead of changing code on a guess.
+5. If you added or changed tests beyond the one that reproduces the bug, check them as in the `build` skill's `references/test-value.md` (`../build/references/test-value.md` from this skill's folder), Check the change's tests. The reproducing test is protected.
+6. With the `document` skill, record the fix in CHANGELOG.md under Fixed, and in SPEC.md if the fix corrects a rule written wrong there or makes explicit a rule it left implicit (deciding a new rule makes it a feature, as in section 1). If BACKLOG.md had a Bug entry for it, remove it. This comes before the review, so the reviewer reads the documents with the code.
+7. If the fix changes code, have it reviewed by the `reviewer` agent as in the `build` skill's `references/review.md` (`../build/references/review.md` from this skill's folder), passing the bug as reported (or its Bug entry), and act on its report as that file says for `fix`.
 
 ## 3. Finish
 
