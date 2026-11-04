@@ -1,6 +1,6 @@
 ---
 name: build
-description: In projects set up for the minidev cycle (a CLAUDE.md that names it), implement a feature from the project's backlog test-first, then have it checked by an independent tester agent and reviewed by an independent reviewer agent before it is committed. Use it whenever the user wants to implement, build, develop or start coding a feature, from BACKLOG.md or as a direct request, e.g. "let's build Tables", "implement the sync idea", "/minidev:build X", "start working on X", or when project instructions say to use the build skill. Not for broken behavior (fix) or changes that keep the behavior, like refactoring or upgrades (chore).
+description: In projects set up for the minidev cycle (a CLAUDE.md that names it), implement a feature from the project's backlog test-first, then have it checked by an independent tester agent and reviewed by an independent reviewer agent before it is committed. Use it whenever the user wants to implement, build, develop or start coding a feature, from BACKLOG.md or as a direct request, e.g. "let's build Tables", "implement the sync idea", "/minidev:build X", "start working on X", "continue X where we left off", or when project instructions say to use the build skill. Not for broken behavior (fix) or changes that keep the behavior, like refactoring or upgrades (chore).
 ---
 
 # Build
@@ -15,14 +15,15 @@ Talk to the user in the language of the conversation.
 
 First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names the `minidev` cycle or the `build` skill. If not, don't create a backlog, branches or documents in it: offer `/minidev:setup` and stop, or simply implement the request without this skill if the user prefers.
 
-1. Find the feature's entry in `BACKLOG.md`. For a direct request with no entry, create one with the `document` skill.
+1. Find the feature's entry in `BACKLOG.md`. If it's already **In progress**, or a `feature/` branch matches it, the work was started: resume it as in `references/git-flow.md` (Resume) instead of starting again. For a direct request with no entry, create one with the `document` skill.
 2. If another feature is In progress, the `document` skill asks what to do; resolve it before going on.
 3. Check that the entry has enough rules to derive tests from: what the user sees, plus the edge cases that matter, plus the Constraints the feature must respect. When the feature has an obvious risk the entry doesn't address (data that can grow without limit, user input reaching a query or the page, a public surface), count it as an open point, with a recommended limit. Guessing missing rules would make the tests, and then the code, encode assumptions nobody approved, so settle them first, with the smallest step that does it:
    - **Enough rules** (usually, when the idea was interviewed): go on. Don't re-ask what the entry already decides.
    - **One to three specific points open:** ask them directly, each with your recommended answer, and record the answers in the entry's Decisions.
    - **Key behavior undecided across several connected decisions** (e.g. the entry is still a bare idea): stop and offer a `grilling` interview, recording the answers in the entry.
-4. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch). Read that file now: the staging, checkpoint and merge steps below follow it too. Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
-5. Do whatever the project instructions require before writing code.
+4. With the `document` skill, set the entry **In progress** on the main branch. It's committed there, so the main branch's BACKLOG.md shows what is being built, from any branch or session; it reaches the remote with the next merge into the main branch.
+5. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch). Read that file now: the staging, checkpoint, resume and merge steps below follow it too. Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
+6. Do whatever the project instructions require before writing code.
 
 ## 2. Critical test list
 
@@ -34,7 +35,7 @@ Show the list to the user in plain language, without code, in two groups:
 
 Wait for the user's OK. This is their chance to check that the right rules are being tested without reading test code.
 
-With the `document` skill, set the entry **In progress** with the approved **To check by hand** list. This status change isn't committed on its own: it goes in the branch's first checkpoint.
+With the `document` skill, add the approved **To check by hand** list to the entry. This change isn't committed on its own: it goes in the branch's next checkpoint.
 
 ## 3. Tests first
 

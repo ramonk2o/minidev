@@ -21,7 +21,7 @@ If fixing it means deciding how the product should behave (two reasonable answer
 
 ## 2. Fix
 
-1. Read the `build` skill's `references/git-flow.md` (`../build/references/git-flow.md` from this skill's folder) and create the `fix/<short-name>` branch as it says (Start the branch).
+1. Read the `build` skill's `references/git-flow.md` (`../build/references/git-flow.md` from this skill's folder) and create the `fix/<short-name>` branch as it says (Start the branch), or resume it if this work was started before (Resume).
 2. If the bug can be reproduced in a test, write the test and show that it fails for the reason reported. Then fix the code until it, the whole suite and the build pass.
 3. If it only shows in the real app, fix it and keep the steps to reproduce it for the commit message.
 4. If you added or changed tests beyond the one that reproduces the bug, check them as in the `build` skill's `references/test-value.md` (`../build/references/test-value.md` from this skill's folder), Check the change's tests. The reproducing test is protected.

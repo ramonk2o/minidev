@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-11-04
+
+### Added
+- **Resume**: `git-flow.md` says how to continue work from an earlier session: find its branch (and worktree or pull request), read its `wip:` checkpoints, which now name the step done, run the suite and go on from the next step. `build`, `fix` and `chore` resume instead of starting again when the work already has a branch; `build` also when its entry is In progress. Trigger eval: "continue feature X" fires `build`.
+
+### Changed
+- **In progress is set on the main branch**, committed there right before the feature's branch is created, so the main branch's BACKLOG.md shows what is being built and "another feature is In progress" is seen from any branch or session. The **To check by hand** list is added on the branch once the critical test list is approved. Pausing is written on the main branch and keeps the branch; discarding an In progress feature asks whether to delete its branch.
+- Bringing the main branch up to date falls back to `git pull --rebase` when it holds local document commits not yet pushed.
+
 ## [0.12.1] - 2026-11-04
 
 ### Fixed

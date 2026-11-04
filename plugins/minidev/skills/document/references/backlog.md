@@ -42,7 +42,7 @@ Status: **Idea** → **In progress** (one at a time) → done (leaves the file i
 | Status | Meaning | Extra fields |
 |---|---|---|
 | **Idea** | Recorded, not decided. | — |
-| **In progress** | Being built. Only one at a time. | **To check by hand** |
+| **In progress** | Being built. Only one at a time. Set on the main branch when the work starts. | **To check by hand** (once the critical test list is approved) |
 | done | Implemented and verified: the entry leaves the file. | — |
 
 Only the user moves a feature to Discarded. A new entry is always an Idea. Only features go In progress: a Bug or Debt entry stays an Idea until `fix` or `chore` does it, and then leaves the file.
@@ -114,9 +114,10 @@ Before adding or capturing, look for an identical or similar entry (including in
 Summarize by area: each feature's name and status. Apply the filter the user asks for (area, status). Give a feature's details only when asked.
 
 ### Start a feature
-1. If another feature is In progress, say so and ask what to do: finish it, pause it back to Idea, or stop.
+1. If another feature is In progress, say so, with its branch if one exists (`git branch --list 'feature/*'`), and ask what to do: resume it, pause it back to Idea, or stop.
 2. Create the entry if it doesn't exist (a direct request).
-3. Set it **In progress** and add **To check by hand**: the rules that only show in the real app, for the user to try once it's built. The automated checks live in the tests, not here.
+3. Set it **In progress**, on the main branch, before its branch is created, and commit that there: the main branch is where anyone looks to see what is being built.
+4. Once the critical test list is approved (on the feature's branch), add **To check by hand**: the rules that only show in the real app, for the user to try once it's built. The automated checks live in the tests, not here.
 
 ### Finish a feature
 Verifying the feature is the job of whoever built it (e.g. the `build` skill); this step only records it, in the same commit as the code.
@@ -128,10 +129,10 @@ Verifying the feature is the job of whoever built it (e.g. the `build` skill); t
 If the user later finds a problem in use, it's handled as a bug fix, not by reopening the entry. A revert is the exception: it restores the entry as it was, and this skill adds what went wrong to its Open questions (`../build/references/git-flow.md`, When a merged change breaks).
 
 ### Change status
-Update the field when the user asks, e.g. pause a feature (In progress → Idea). Write it directly and tell them.
+Update the field when the user asks, e.g. pause a feature (In progress → Idea). Write it directly and tell them. Pausing is written on the main branch; the feature's branch, if any, stays as it is, to be resumed later (`../build/references/git-flow.md`, Resume).
 
 ### Discard
-Move the entry to "Discarded", keeping only its **Description** and a **Why discarded** line with the reason and the date. If its area is left empty, remove the area.
+Move the entry to "Discarded", keeping only its **Description** and a **Why discarded** line with the reason and the date. If its area is left empty, remove the area. If the feature was In progress and has a branch, ask whether to delete it (`git branch -D`, the work is lost) or keep it.
 
 ### Clean up
 Look for:

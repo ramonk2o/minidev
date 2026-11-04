@@ -14,13 +14,27 @@ The project's CLAUDE.md says how branches reach the main branch, in its Developm
 
 If the repository has a remote, it's the remote's default branch: `git symbolic-ref --short refs/remotes/origin/HEAD`, without the `origin/` prefix. Otherwise it's `main` or `master`, whichever exists. Project instructions that name another branch win.
 
+To bring it up to date, `git pull --ff-only`. If that refuses because the main branch has local commits the remote doesn't (document changes waiting for the next merge, like a feature set In progress), use `git pull --rebase`: it only replays those commits, which never left this machine.
+
 ## Start the branch
 
-From the main branch, brought up to date (`git pull --ff-only` if it has a remote) and with a clean working tree, run `git switch -c <branch>`. All the work happens there, so the main branch only ever receives finished, verified work.
+First check whether this work already has a branch (Resume, below). Otherwise, from the main branch, brought up to date (The main branch, above, if it has a remote) and with a clean working tree, run `git switch -c <branch>`. All the work happens there, so the main branch only ever receives finished, verified work.
 
 - If there are uncommitted changes on the main branch, ask the user what to do with them first.
-- If the work is already on this branch (e.g. resuming), stay on it.
+- If the work is already on this branch, stay on it.
 - If another branch's work is under way (e.g. a bug fix in the middle of a feature), commit it there as a checkpoint, switch to the main branch and start from it. Go back later with `git switch <branch>`.
+
+## Resume
+
+Work stopped in an earlier session lives on its branch; the main branch doesn't show how far it got. When the user asks to continue something, or before starting a branch for work that may have been started already:
+
+1. List the work branches: `git branch --list 'feature/*' 'fix/*' 'chore/*' 'release/*'`, and `git worktree list` (a branch checked out in another worktree is worked on there; tell the user and don't switch to it). In pull request mode, also `gh pr list --author @me`.
+2. If one matches the work by name (or the user isn't sure which), show it and confirm. Ask before resuming work on a branch the user didn't name.
+3. With a clean working tree (otherwise ask the user first), `git switch <branch>`. Read `git log --format='%h %s' <main branch>..<branch>`: the `wip:` messages say which steps are done. Read the last checkpoint's diff and run the test suite to see where the work stands.
+4. Tell the user where it stopped and continue from the next step of the skill. A step half done since the last checkpoint is redone from its start.
+5. In pull request mode, if the branch has an open pull request, read its state (`gh pr view <branch>`): it may be waiting for checks or a review (Merge and push, steps 3 and 4).
+
+A branch with no checkpoints beyond the main branch is resumed from the skill's first step on the branch. If no branch matches (it was deleted, or the work never got that far), start it as usual.
 
 ## Stage the work
 
@@ -28,7 +42,7 @@ Before staging, run `git status --short` and read the list: only this work's fil
 
 ## Checkpoints
 
-Commit on the branch whenever a step is done and before stopping, staged as above, with a message starting `wip:` (e.g. `wip: tests for empty cart, failing`). Checkpoints let the work be resumed in a new session and keep a working state to go back to. They're never pushed to the main branch: the squash replaces them.
+Commit on the branch whenever a step is done and before stopping, staged as above, with a message starting `wip:` that names the step done and the state (e.g. `wip: tests first — empty cart, failing`, `wip: tester round 2 — no failures`). Checkpoints let the work be resumed in a new session and keep a working state to go back to. They're never pushed to the main branch: the squash replaces them.
 
 ## The verification commit
 
@@ -41,7 +55,7 @@ The main branch gets the **final message**: the verification message (`git log -
 Once the user confirms everything works (or right after the verification commit, if there's nothing to check by hand), follow the project's integration mode.
 
 **Local merge:** the main branch only ever receives code that was already tested combined with it, so a failure is fixed on the branch, never on the main branch.
-1. If the repository has a remote, bring the main branch up to date: `git switch <main branch>`, `git pull --ff-only`, `git switch <branch>`.
+1. If the repository has a remote, bring the main branch up to date: `git switch <main branch>`, update it as in The main branch, `git switch <branch>`.
 2. On the branch, `git merge <main branch>` (the squash flattens this merge). If it has conflicts, stop and show them instead of resolving them on your own.
 3. Run the test suite and the build on the branch. If the main branch moved since the branch started, this is the first time the combined code runs. If anything fails, fix it on the branch (test first when it can be reproduced in one), commit it as a checkpoint and run them again. Tell the user what broke and how it was fixed, and add a line for it to the final message.
 4. Switch to the main branch, `git merge --squash <branch>` and commit with the final message.

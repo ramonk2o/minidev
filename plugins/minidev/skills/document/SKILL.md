@@ -34,7 +34,7 @@ Read the reference for the document you're about to change, before changing it:
 ## The feature lifecycle at a glance
 
 1. **Recorded** in BACKLOG.md as an Idea.
-2. **Started:** In progress, with what to check by hand.
+2. **Started:** In progress, committed on the main branch; what to check by hand is added on the feature's branch.
 3. **Finished:** verified; the entry leaves BACKLOG.md, the change goes to CHANGELOG.md and the rules to SPEC.md, all in the same commit as the code. The verification results go in that commit's message. If it fails later in use, it's a bug, not a reopened entry, unless its change is reverted, which restores the entry (`../build/references/git-flow.md`, When a merged change breaks).
 4. **Released:** the version's changes leave `[Unreleased]` in CHANGELOG.md.
 
@@ -69,4 +69,4 @@ Each document starts with a short legend, so it's readable without this skill. T
 
 ## Commits
 
-In a git repository, commit after writing, with a short message saying what changed (e.g. "Tables: recorded in BACKLOG (Idea)", "Sync discarded", "Release 1.4.0"). Commit only these documents, never other pending changes. When the change is part of a larger piece of work being committed, it goes in that commit instead: finishing a feature, a fix or a chore, or the documents `brainstorm` or `setup` create, which go in the commit those skills offer (don't commit them here). Don't push these commits on their own: they go out with the next merge into the main branch or release (in pull request mode, inside the next pull request). On a work branch (feature, fix, chore, release) they're squashed into that branch's commit, whose message gets a line for each change that isn't part of the work.
+In a git repository, commit after writing, on the branch you're on (a feature set In progress is the exception: on the main branch, before its branch), with a short message saying what changed (e.g. "Tables: recorded in BACKLOG (Idea)", "Sync discarded", "Release 1.4.0"). Commit only these documents, never other pending changes. When the change is part of a larger piece of work being committed, it goes in that commit instead: finishing a feature, a fix or a chore, or the documents `brainstorm` or `setup` create, which go in the commit those skills offer (don't commit them here). Don't push these commits on their own: they go out with the next merge into the main branch or release (in pull request mode, inside the next pull request). On a work branch (feature, fix, chore, release) they're squashed into that branch's commit, whose message gets a line for each change that isn't part of the work.

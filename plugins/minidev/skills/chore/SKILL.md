@@ -19,7 +19,7 @@ If BACKLOG.md has an entry for it (type Debt), use it as the description of the 
 
 ## 2. Work
 
-1. Read the `build` skill's `references/git-flow.md` (`../build/references/git-flow.md` from this skill's folder) and create the `chore/<short-name>` branch as it says (Start the branch).
+1. Read the `build` skill's `references/git-flow.md` (`../build/references/git-flow.md` from this skill's folder) and create the `chore/<short-name>` branch as it says (Start the branch), or resume it if this work was started before (Resume).
 2. Run the test suite and the build **before** changing anything, and record the result. If they already fail, stop and show the user: a chore on a red suite can't prove it changed nothing. They decide whether to fix that first (with `fix`) or go on knowing which failures were there before.
 3. Make the change. Commit `wip:` checkpoints as in `git-flow.md`.
    - **Refactoring, debt, migrations:** don't change the tests that check behavior; if one fails, the change broke something, not the test. A test that checks an internal detail the refactoring removes may be changed: say which and why, and ask before changing it.
