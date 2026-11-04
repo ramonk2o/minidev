@@ -157,6 +157,16 @@ claude plugin eval . --tag trigger --ablation none --no-publish -j 4
 
 Each case runs 3 times by default (about $0.10 per run); add `--runs 1` for a quick check. Results go to `evals/results/`, which git ignores.
 
+### Behavior evals
+
+`plugins/minidev/evals/behavior/` runs the cycle for real on a small fixture project (`fixture.sh`: a Node library set up for the cycle, with one backlog Idea and one known bug) and checks what Claude did, not only which skill fired: `build-flow` (In progress committed on main, feature branch, a `wip:` checkpoint, the `tester` and `reviewer` agents, a `Critical tests:` block, the squash into main), `fix-flow` (fix branch, `Regression tests:`, a review and no tester) and `chore-prose-flow` (a typo fixed with one commit on main: no branch, suite or review). The prompt tells Claude the user approved every list in advance. The scaffold runs bash on your machine, and the eval sandbox blocks the system git, so the fixture gets its own copy in `.tools/`:
+
+```
+claude plugin eval . --tag behavior --ablation none --no-publish --scaffold --allow-tools Bash Write Edit --runs 1 -j 3
+```
+
+They're slow and cost a few dollars per run (a whole feature with its tester and reviewer); run them after changing a skill's steps.
+
 ## Credits
 
 `grilling` is from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, see `plugins/minidev/skills/grilling/LICENSE`). The patterns of useless tests in `test-value.md` are adapted from the `test-audit` skill in [mblode/agent-skills](https://github.com/mblode/agent-skills) (MIT), itself from OpenClaw's.

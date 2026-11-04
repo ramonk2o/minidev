@@ -1,0 +1,9 @@
+---
+tags: [behavior]
+runs: 1
+max_turns: 40
+timeout_seconds: 600
+append_system_prompt: "This is an unattended evaluation run: the user is away and has approved in advance every list, draft and plan you would show them for an OK (critical test lists, backlog drafts), and confirms that anything to check by hand works. When a step says to wait for the user, say what you would ask and go on. The repository has no remote, so nothing is pushed. This sandbox blocks the system git: run git as `./.tools/git` (from the project folder) wherever a step says `git`."
+---
+
+Fix the typo in the README title: it says 'Nots' instead of 'Notes'.

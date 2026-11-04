@@ -4,7 +4,10 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-11-04
+
 ### Added
+- **Behavior evals** in `evals/behavior/`: the cycle runs for real on a small fixture project and the graders check what Claude did: `build-flow` (In progress on main, feature branch, `wip:` checkpoints, tester and reviewer, `Critical tests:`, squash), `fix-flow` (fix branch, `Regression tests:`, review, no tester) and `chore-prose-flow` (one commit on main, no branch, suite or review).
 - **Projects without tests**: `setup` proposes a minimal test setup (the stack's standard framework, a command, a passing smoke test) in the same approval, instead of stopping; `build` offers tests of the current behavior, as a chore, before changing modules that have none.
 - Trigger evals: a bug left for later fires `document` (not `fix`), a flaky test and a slowdown fire `fix` (not `chore`), "X is done" fires `document` (not `build`), reading CHANGELOG.md fires no skill, and new behavior asked as a wish fires `document` or `grilling`.
 
