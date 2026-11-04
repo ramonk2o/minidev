@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-11-04
+
+### Changed
+- **Product constraints reach the checks**: SPEC.md's Constraints (whole-product limits like "works offline", which entries don't repeat) count in `build`'s rules check and critical test list, and are passed, copied in full, to the `tester` and the `reviewer`. The tester lists them among the rules to cover; the reviewer blocks a change that breaks one.
+- **Documents before the review**: `build`, `fix` and `chore` update SPEC.md, CHANGELOG.md and BACKLOG.md before the `reviewer` runs, so the rules written from what was built are read against the code by someone who didn't write them. The reviewer blocks a SPEC rule the code doesn't follow, new behavior SPEC.md doesn't state, a rule left false, or a changelog line that claims more than was done. Fixes after the review update the documents again.
+
 ## [0.13.0] - 2026-11-04
 
 ### Added

@@ -4,10 +4,11 @@ How a finished change gets its independent code review by the `reviewer` agent. 
 
 ## Launch
 
-1. Stage the work as in `git-flow.md` (Stage the work): `git diff` doesn't show files git doesn't track yet, and the reviewer needs to see them.
+1. Have the documents updated first (each skill says when), then stage the work as in `git-flow.md` (Stage the work): `git diff` doesn't show files git doesn't track yet, and the reviewer needs to see them, documents included.
 2. Note `git status --short` and `git rev-parse HEAD`.
 3. Launch the `reviewer` agent (agent type `minidev:reviewer`). Give it only:
    - what the change is for: the feature's backlog entry (`build`), the bug as reported or its Bug entry (`fix`), the chore's description or its Debt entry (`chore`; for a test prune, also the list of removals the user approved), copied in full
+   - the Constraints section of SPEC.md, copied in full, if it has one
    - the base commit: where the branch left the main branch (`git merge-base HEAD <main branch>`)
    - the project's lint and type-check commands, if any
    - whether a `tester` checked the change: yes, or no and why ("bug fix", "chore", "no automated tests"), as a fact, without your view of the change
@@ -21,6 +22,7 @@ How a finished change gets its independent code review by the `reviewer` agent. 
   - `build`: test first, then a new `tester` round checks the change.
   - `fix`: test first; there's no tester round.
   - `chore`: the work is no longer only a chore. Stop and tell the user, and handle that part as a bug (`fix`) or a feature.
+  A finding about the documents (a SPEC rule the code doesn't follow, a changelog line that says more than was done) is fixed with the `document` skill, or in the code if the document is right.
   If the fix would merge or remove a protected test (`test-value.md`, Protected tests), ask the user first.
 - **Suggestions:** apply the ones that are clearly better and cheap; for the rest, tell the user in a line each why not.
 

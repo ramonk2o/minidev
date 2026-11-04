@@ -17,7 +17,7 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names 
 
 1. Find the feature's entry in `BACKLOG.md`. If it's already **In progress**, or a `feature/` branch matches it, the work was started: resume it as in `references/git-flow.md` (Resume) instead of starting again. For a direct request with no entry, create one with the `document` skill.
 2. If another feature is In progress, the `document` skill asks what to do; resolve it before going on.
-3. Check that the entry has enough rules to derive tests from: what the user sees, plus the edge cases that matter, plus the Constraints the feature must respect. When the feature has an obvious risk the entry doesn't address (data that can grow without limit, user input reaching a query or the page, a public surface), count it as an open point, with a recommended limit. Guessing missing rules would make the tests, and then the code, encode assumptions nobody approved, so settle them first, with the smallest step that does it:
+3. Check that the entry has enough rules to derive tests from: what the user sees, plus the edge cases that matter, plus the Constraints the feature must respect: its own, and those in SPEC.md's Constraints (whole-product limits, like "works offline") that apply to what it touches. When the feature has an obvious risk the entry doesn't address (data that can grow without limit, user input reaching a query or the page, a public surface), count it as an open point, with a recommended limit. Guessing missing rules would make the tests, and then the code, encode assumptions nobody approved, so settle them first, with the smallest step that does it:
    - **Enough rules** (usually, when the idea was interviewed): go on. Don't re-ask what the entry already decides.
    - **One to three specific points open:** ask them directly, each with your recommended answer, and record the answers in the entry's Decisions.
    - **Key behavior undecided across several connected decisions** (e.g. the entry is still a bare idea): stop and offer a `grilling` interview, recording the answers in the entry.
@@ -27,7 +27,7 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names 
 
 ## 2. Critical test list
 
-A critical test checks a rule the user can see and that, if broken, means the feature fails. Take the rules from the entry's Description and Decisions, including the edge cases that were decided, and its Constraints. A measurable constraint becomes an automated test (e.g. a search over 10,000 generated notes, with a time limit loose enough not to fail on a slow machine) or a check the project already runs (an accessibility or security linter); one that only shows in the real app goes to **To check by hand**. Each one tests behavior from the outside, through the public function or module, never internal details. Internal details change during implementation; the user-visible rules don't.
+A critical test checks a rule the user can see and that, if broken, means the feature fails. Take the rules from the entry's Description and Decisions, including the edge cases that were decided, its Constraints, and the SPEC.md Constraints that apply to it. A measurable constraint becomes an automated test (e.g. a search over 10,000 generated notes, with a time limit loose enough not to fail on a slow machine) or a check the project already runs (an accessibility or security linter); one that only shows in the real app goes to **To check by hand**. Each one tests behavior from the outside, through the public function or module, never internal details. Internal details change during implementation; the user-visible rules don't.
 
 Show the list to the user in plain language, without code, in two groups:
 - **Automated tests:** the rules the test suite can check.
@@ -51,6 +51,7 @@ If the approved list has no automated tests (the feature only shows in the real 
 
 Otherwise, launch the `tester` agent (agent type `minidev:tester`). Give it only:
 - the feature's backlog entry, copied in full
+- the Constraints section of SPEC.md, copied in full, if it has one: limits the whole product respects, which the entry doesn't repeat
 - the base commit: where the feature's branch left the main branch (`git merge-base HEAD <main branch>`). First stage the work as in `references/git-flow.md` (Stage the work): `git diff` doesn't show files git doesn't track yet, and the new modules and tests are exactly what the tester needs to see. The tester reads the change itself with `git diff <base>`, instead of a copy pasted in its prompt
 - the project's test and build commands
 
@@ -69,19 +70,21 @@ The tester's report is the check of your work, so you don't get to filter it: re
 
 Repeat until a report comes back with no failures. After 3 rounds with failures still open, stop and show the user what's left instead of looping.
 
-## 6. Refactor, check the tests and review
+## 6. Refactor, check the tests, documents and review
 
-Green tests say the feature works, not that the code and its tests are ready to live with. Three steps take care of that, in this order.
+Green tests say the feature works, not that the code, its tests and its documents are ready to live with. Four steps take care of that, in this order.
 
 **Refactor.** With the whole suite green, clean up the code you wrote: remove stubs that are left, dead code and debug output; give things names that say what they do; remove duplication, using what the codebase already has. Don't change behavior or the tests that check it. When the diff is large (many files, or new modules), run the `simplify` skill for this, if it's available. Run the test suite and the build again.
 
 **Check the tests.** Read `references/test-value.md`. First move the tester's kept tests out of their `tester` files into the tests of the module they exercise, following the project's conventions (the `tester` name only served the check after each round). Note which tests came from the tester; they stay protected, so merging or removing one still goes to the user. Then check the tests this feature added as that file says (Check the change's tests). If a later tester round adds tests (after a blocking review fix), move and check those too.
 
-**Review.** Even when there was no tester, have the change reviewed by the `reviewer` agent as in `references/review.md`, giving it the feature's backlog entry, and act on its report as that file says.
+**Documents.** With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md. This comes before the review, so the rules written in SPEC.md from what was built are read against the code by someone who didn't write them.
+
+**Review.** Even when there was no tester, have the change reviewed by the `reviewer` agent as in `references/review.md`, giving it the feature's backlog entry (as it was before the documents step removed it), and act on its report as that file says.
 
 ## 7. Finish
 
-1. With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md.
+1. If anything after the review changed behavior, update SPEC.md and CHANGELOG.md to match, with the `document` skill.
 2. Stage the work and make the branch's verification commit, as in `references/git-flow.md`. It's the message the main branch gets, in the one squashed commit that brings it code, tests, `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`, unless project instructions say otherwise. It records the verification:
    - the test suite and build results
    - the tester's last report, verbatim, so the record is the tester's words and not your summary; before it, one line per earlier round: what it found and how it was resolved, and any tester test removed with the user's OK (or why there was no tester)
@@ -89,7 +92,7 @@ Green tests say the feature works, not that the code and its tests are ready to 
    - the critical tests, as a block starting with a line that says exactly `Critical tests:`, one test per line as `<file> — <test name>`, so a later prune knows they're protected
    - the review, as `references/review.md` says
    - what is left for the user to check by hand, as a block starting with a line that says exactly `To check by hand:`, one item per line, so it can be found later with `git log --grep`
-3. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one) and commit it as a checkpoint.
+3. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one), update SPEC.md if the fix changes a rule it states, and commit it as a checkpoint.
 4. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push), in the project's integration mode: local merge, or a pull request. Either way, the combined code is tested on the branch before it reaches the main branch. If it breaks after it's on the remote, follow `references/git-flow.md` (When a merged change breaks).
 
 A feature is only finished through step 4, after the review (and, with automated tests, the tester): without their reports it hasn't been independently checked, and the commit message would claim more than was done.

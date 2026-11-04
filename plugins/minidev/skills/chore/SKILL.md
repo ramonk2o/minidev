@@ -29,21 +29,24 @@ If BACKLOG.md has an entry for it (type Debt), use it as the description of the 
    - **Pruning tests:** follow section 4 instead of this step.
 4. Run the test suite and the build again: everything that passed before must pass now.
 5. If the change added or edited tests (outside a prune), check them as in `test-value.md` (Check the change's tests).
-6. If the change touches code (not only text, docs or a version number), have it reviewed by the `reviewer` agent as in the `build` skill's `references/review.md` (`../build/references/review.md` from this skill's folder), passing the chore's description (or its Debt entry), and act on its report as that file says for `chore`. For a refactoring it's the only independent look at the new structure.
-
-## 3. Finish
-
-1. Update the documents, with the `document` skill, only where the chore touched what they describe:
+6. Update the documents, with the `document` skill, only where the chore touched what they describe:
    - **SPEC.md** when a technical decision changed (a dependency added, replaced or removed, storage, structure the spec names), with its reason.
    - **CHANGELOG.md** only when the people who use the product will notice: a new minimum version, faster loading, a security upgrade (under Security). Otherwise nothing: an internal refactoring isn't news (a notable change to project docs or tooling may still get a line, as the changelog reference allows).
    - **BACKLOG.md**: remove the Debt entry, if there was one.
+
+   This comes before the review, so the reviewer reads the documents with the code.
+7. If the change touches code (not only text, docs or a version number), have it reviewed by the `reviewer` agent as in the `build` skill's `references/review.md` (`../build/references/review.md` from this skill's folder), passing the chore's description (or its Debt entry), and act on its report as that file says for `chore`. For a refactoring it's the only independent look at the new structure.
+
+## 3. Finish
+
+1. If the review's fixes changed what the documents say, update them with the `document` skill.
 2. Stage the work and make the branch's verification commit, as in `git-flow.md`: its message is what the main branch gets. It records what changed and why, the suite and build results before and after, for an upgrade the versions and any breaking change handled, the check of the tests and the review, if there were any. If something should be checked in the real app (an upgraded UI library, a build tool), end the message with a block starting with a line that says exactly `To check by hand:`, one item per line.
 3. Show the user what to check, if anything, and wait for their confirmation.
 4. Merge, test and push as in `git-flow.md` (Merge and push), in the project's integration mode.
 
 ## 4. Pruning tests
 
-Removes the tests that don't earn their place, across the whole project unless the user names a part of it. Read `../build/references/test-value.md` first: it holds the rules, the patterns, the protected tests and the sabotage this section uses. Sections 2 and 3 still apply: steps 1 to 4 below replace step 3 of section 2, step 5 adds to its review (step 6) and step 6 to the verification message (section 3, step 2).
+Removes the tests that don't earn their place, across the whole project unless the user names a part of it. Read `../build/references/test-value.md` first: it holds the rules, the patterns, the protected tests and the sabotage this section uses. Sections 2 and 3 still apply: steps 1 to 4 below replace step 3 of section 2, step 5 adds to its review (step 7) and step 6 to the verification message (section 3, step 2).
 
 1. **Map.** Handle skipped tests as that file says. Tie each test to what it keeps: a rule of SPEC.md (or its Constraints), a regression, an outside contract. Find the protected tests (`Critical tests:` and `Regression tests:` blocks, or the fallback for older projects) and the `Redundant older tests:` blocks earlier changes left (`git log --grep "Redundant older tests:"`). There's no target number unless the user gives one, and even then a test that stays by the rules stays.
 2. **List.** Show the user, in plain language and grouped by module, each candidate: the test, the pattern it fits, and the test that keeps its rule (or why it keeps nothing). Protected and "maybe protected" ones go in a separate group, named one by one. Also list the moves (misplaced tests) and, apart, the rules of SPEC.md no test checks. Wait for the user's OK; remove only what they approved.
