@@ -64,7 +64,7 @@ Each document starts with a short legend, so it's readable without this skill. T
 | Update SPEC.md when a feature is finished, changelog entry | Write directly as part of finishing, then tell them |
 | Bug fix: changelog entry under Fixed, SPEC.md if a rule changed, Bug entry removed | Write directly as part of the fix, then tell them |
 | Chore: SPEC.md if a technical decision changed, changelog if users will notice (or a notable docs/tooling change, `references/changelog.md`), Debt entry removed | Write directly as part of the chore, then tell them |
-| Revert: restored entry's Open questions, changelog line if the change was released | Write directly as part of the revert, then tell them |
+| Revert: restored entry back to Idea with what went wrong in its Open questions, document changes that rode along reapplied, changelog line if the change was released | Write directly as part of the revert, then tell them |
 | Release | Show the version, date and entries, wait for OK |
 
 ## Commits
