@@ -4,7 +4,12 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+### Added
+- **Projects without tests**: `setup` proposes a minimal test setup (the stack's standard framework, a command, a passing smoke test) in the same approval, instead of stopping; `build` offers tests of the current behavior, as a chore, before changing modules that have none.
+- Trigger evals: a bug left for later fires `document` (not `fix`), a flaky test and a slowdown fire `fix` (not `chore`), "X is done" fires `document` (not `build`), reading CHANGELOG.md fires no skill, and new behavior asked as a wish fires `document` or `grilling`.
+
 ### Changed
+- `fix` and `chore` say where flaky tests, failing CI and slowdowns go: a regression or a broken limit is a bug; making something faster that nobody reported as slow is a chore.
 - **The cycle check is literal**: `build`, `fix` and `chore` run only where CLAUDE.md says the project uses the `minidev` cycle, not where it merely mentions a build or a fix; `document` works outside the cycle only when the user explicitly asks to change one of its files.
 - **The documents' language is recorded** in CLAUDE.md (`Documents: <language>`): `setup` writes it, `brainstorm` asks it in the plan, and `document` asks once and records it when nothing says.
 - `brainstorm`'s plan approval covers the SPEC.md outline, so `document` doesn't ask for it again.

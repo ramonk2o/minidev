@@ -22,8 +22,9 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says i
    - **One to three specific points open:** ask them directly, each with your recommended answer, and record the answers in the entry's Decisions.
    - **Key behavior undecided across several connected decisions** (e.g. the entry is still a bare idea): stop and offer a `minidev:grilling` interview, recording the answers in the entry.
 4. With the `document` skill, set the entry **In progress** on the main branch. It's committed there, so the main branch's BACKLOG.md shows what is being built, from any branch or session; it reaches the remote with the next merge into the main branch.
-5. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch). Read that file now: the staging, checkpoint, resume and merge steps below follow it too. Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
-6. Do whatever the project instructions require before writing code.
+5. If the modules the feature will change have no tests of their current behavior, say so and offer to add them first as a chore (`chore`, Missing tests): without them, the refactor step and the rest of the suite can't show that what existed still works. The user may go on without them; note it in the verification message.
+6. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch). Read that file now: the staging, checkpoint, resume and merge steps below follow it too. Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
+7. Do whatever the project instructions require before writing code.
 
 ## 2. Critical test list
 

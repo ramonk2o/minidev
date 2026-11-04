@@ -20,7 +20,7 @@ If the folder isn't a software project, say that this skill is for software proj
 
 **Git.** The cycle commits after each feature, bug fix, chore and document change, and builds features, fixes and chores on their own branches, so the project must be a git repository. If it isn't one, propose `git init` and, when there's no `.gitignore`, a short one for the project's stack (dependencies, build output, test reports, `.env`, OS files like `.DS_Store`, and `.claude/settings.local.json`). If it's a repository with no commits yet, note that the first commit will come at the end (step 9).
 
-**Tests.** The cycle needs automated tests: `build` writes them first and `tester` runs them. Find the test framework and command (package.json scripts, Makefile, pyproject, Cargo.toml, go.mod, CI config…). If there's none, say so and ask whether the user wants to set one up first. Don't generate a cycle that can't run.
+**Tests.** The cycle needs automated tests: `build` writes them first and `tester` runs them. Find the test framework and command (package.json scripts, Makefile, pyproject, Cargo.toml, go.mod, CI config…). If there's none, propose a minimal one in the same approval as the rest: the standard test framework for the stack (checked against its current docs), its config, a test command and one smoke test that passes. Set it up and show the test passing before writing the CLAUDE.md. If the user declines, stop: don't generate a cycle that can't run. Tests for the existing code come later, as chores ("add tests to <module>"), before the features that change it.
 
 ## 2. Discover
 

@@ -85,7 +85,7 @@ After you approve the plan, it scaffolds the project (git, the framework's gener
 - `.claude/settings.json` permissions for the test, build and local git commands (including `switch` and `merge`) and, in pull request mode, the read-only `gh` commands, so the cycle doesn't stop on a prompt for each run (install, publish, push, resets, opening or merging pull requests, and deletes keep asking);
 - what the cycle leaves orphaned: old `TODO.md`/`FEATURES.md`, local skills that overlap the plugin, broken references.
 
-It then creates the missing product documents through `document`. The cycle needs automated tests; if the project has none, setup says so before going on.
+It then creates the missing product documents through `document`. The cycle needs automated tests; if the project has none, setup proposes a minimal test setup with a passing smoke test, and tests for the existing code come later as chores, before the features that change it.
 
 ### 2. Idea
 
@@ -149,7 +149,7 @@ After changing the skills, bump `version` in `plugins/minidev/.claude-plugin/plu
 
 ### Trigger evals
 
-`plugins/minidev/evals/triggers/` holds one case per prompt that checks which skill fires: the right one for features (new or resumed), bugs, chores, ideas, debt left for later, releases, new projects and interviews, and none where a skill would be wrong (`brainstorm` in an existing project, `fix` for new behavior or a typo, `chore` when the user only wants to note it, the cycle in a project that doesn't use it). Eval runs don't load a project's CLAUDE.md, so cases that need a project set up for the cycle pass it in `append_system_prompt`, a copy of the CLAUDE.md template in `skills/setup/SKILL.md`: when the template changes, update the copies too. Run them after changing a skill's description, from `plugins/minidev`:
+`plugins/minidev/evals/triggers/` holds one case per prompt that checks which skill fires: the right one for features (new or resumed), bugs (flaky tests and slowdowns included), chores, ideas, bugs and debt left for later, finished features, releases, new projects and interviews, and none where a skill would be wrong (`brainstorm` in an existing project, `fix` for new behavior or a typo, `chore` when the user only wants to note it, `document` for only reading a document, the cycle in a project that doesn't use it). Eval runs don't load a project's CLAUDE.md, so cases that need a project set up for the cycle pass it in `append_system_prompt`, a copy of the CLAUDE.md template in `skills/setup/SKILL.md`: when the template changes, update the copies too. Run them after changing a skill's description, from `plugins/minidev`:
 
 ```
 claude plugin eval . --tag trigger --ablation none --no-publish -j 4

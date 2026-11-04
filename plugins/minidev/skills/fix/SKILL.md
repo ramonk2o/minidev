@@ -1,6 +1,6 @@
 ---
 name: fix
-description: In projects set up for the minidev cycle (a CLAUDE.md that says it uses the `minidev` cycle), fix a bug on its own branch, test-first when it can be reproduced in a test, record it in the changelog and merge it once confirmed. Use it whenever the user reports something broken or wrong in existing behavior, e.g. "X has a bug", "saving fails when…", "isso quebrou", "/minidev:fix X". Not for new behavior: that's a feature (document, then build). Not for typos, refactoring or upgrades that keep the behavior (chore).
+description: In projects set up for the minidev cycle (a CLAUDE.md that says it uses the `minidev` cycle), fix a bug on its own branch, test-first when it can be reproduced in a test, record it in the changelog and merge it once confirmed. Use it whenever the user reports something broken or wrong in existing behavior, e.g. "X has a bug", "saving fails when…", "isso quebrou", a flaky test or a CI run that fails on correct code, something that got slower than before or than a limit SPEC.md sets, "/minidev:fix X". Not for new behavior: that's a feature (document, then build). Not for typos, refactoring or upgrades that keep the behavior (chore).
 ---
 
 # Fix
