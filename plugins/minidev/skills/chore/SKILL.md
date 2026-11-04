@@ -17,7 +17,7 @@ If the change alters what the user sees or a rule in SPEC.md, it isn't a chore: 
 
 If BACKLOG.md has an entry for it (type Debt), use it as the description of the work.
 
-If the change only touches prose (Markdown or other docs files, and comments in code), follow the short path below instead of sections 2 and 3. Anything else, including a text the product shows to users or a string a test may check, takes the full path.
+If the change only touches prose (Markdown or other docs files, and comments in code), follow the short path below instead of sections 2 and 3. Anything else takes the full path, including a text the product shows to users, a string a test may check, and comments that tools read: doctests, lint or compiler directives (`eslint-disable`, `noqa`, `//go:build`, `@ts-expect-error`), type annotations in comments (JSDoc in a type-checked project).
 
 ### Short path: prose only
 
@@ -39,7 +39,7 @@ If, while working, the change turns out to touch anything but prose, stop and sw
    - **Refactoring, debt, migrations:** don't change the tests that check behavior; if one fails, the change broke something, not the test. A test that checks an internal detail the refactoring removes may be changed: say which and why, and ask before changing it.
    - **Dependency upgrades:** read the dependency's changelog or migration guide between the two versions for breaking changes before upgrading, and upgrade one dependency (or one group that must move together) at a time.
    - **Text mixed with other changes** (prose only takes the short path in section 1): no tests to add for the text; the suite and build still run.
-   - **Missing tests:** test the rules of SPEC.md (or of the Debt entry) from the outside, and show each new test fails when its rule is sabotaged, as in the `build` skill's `references/test-value.md` (`../build/references/test-value.md` from this skill's folder): a test written after the code can't be shown failing first.
+   - **Missing tests:** test the rules of SPEC.md (or of the Debt entry) from the outside, and show each new test fails when its rule is sabotaged, as in the `build` skill's `references/test-value.md` (`../build/references/test-value.md` from this skill's folder): a test written after the code can't be shown failing first. If a test of a SPEC.md rule fails on the code as it is, the code has a bug: don't write the test to match it, and don't fix the code in the chore. Stop and tell the user, and offer `fix` (or recording it as a Bug entry); if it's unclear whether the code or SPEC.md is right, ask.
 4. Run the test suite and the build again: everything that passed before must pass now.
 5. If the change added or edited tests, check them as in `test-value.md` (Check the change's tests).
 6. Update the documents, with the `document` skill, only where the chore touched what they describe:

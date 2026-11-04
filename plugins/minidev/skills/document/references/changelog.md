@@ -10,6 +10,7 @@
 - New entries go under `## [Unreleased]`.
 - Changes that don't affect the product (project docs, tooling) are recorded only if notable, and say so, e.g. "(project docs only, the product doesn't change)".
 - Follow the existing file's wording style where it has one.
+- If a tool generates the changelog (release-please, changesets, semantic-release, git-cliff; the project's CLAUDE.md says so), don't edit the file by hand: record the change the way that tool reads it (a changeset file, a conventional commit message) and leave releases to it.
 
 Example:
 
@@ -36,6 +37,8 @@ All notable changes to this project are documented here. The format is based on 
 If the project already has released versions (git tags, a version in its manifest or package file), ask whether to reconstruct past versions from the git history or start from now.
 
 ## Releases
+
+A release is made on the main branch, brought up to date (`../../build/references/git-flow.md`, The main branch): from a work branch, commit its work as a checkpoint and switch first, so the version holds only what reached the main branch.
 
 When the user releases a version:
 1. **Pick the number** with Semantic Versioning: major for breaking changes, minor for new features, patch for fixes only. Propose it from the `[Unreleased]` entries; the user decides.

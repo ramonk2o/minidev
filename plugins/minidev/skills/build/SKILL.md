@@ -25,7 +25,7 @@ Read `references/git-flow.md` now: the resume, branch, staging, checkpoint and m
    - **Key behavior undecided across several connected decisions** (e.g. the entry is still a bare idea): stop and offer a `minidev:grilling` interview, recording the answers in the entry.
 4. With the `document` skill, set the entry **In progress** on the main branch. It's committed there, so the main branch's BACKLOG.md shows what is being built, from any branch or session; it reaches the remote with the next merge into the main branch.
 5. If the modules the feature will change have no tests of their current behavior, say so and offer to add them first as a chore (`chore`, Missing tests): without them, the refactor step and the rest of the suite can't show that what existed still works. The user may go on without them; note it in the verification message.
-6. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch). Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
+6. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch), then run the test suite and the build there before writing anything. If something already fails, stop and show the user: a red suite would never let step 4 pass, and the tester would report failures that aren't the feature's. They decide whether to fix it first (with `fix`) or go on with those failures named, so the tester gets them as known. Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
 7. Do whatever the project instructions require before writing code.
 
 ## 2. Critical test list
@@ -36,7 +36,9 @@ Show the list to the user in plain language, without code, in two groups:
 - **Automated tests:** the rules the test suite can check.
 - **To check by hand:** the rules that only show in the real app (focus, dragging, browser shortcuts, visuals). They're checked by the user in the real app, not with fake tests.
 
-Wait for the user's OK. This is their chance to check that the right rules are being tested without reading test code.
+When the entry's Decisions change a rule SPEC.md states, also list, in a third group, the **existing tests this feature changes**: each test of the old rule, with how it will change. Tests that a fix or an earlier feature approved are protected (`references/test-value.md`), so this list is where the user approves changing them.
+
+Wait for the user's OK. This is their chance to check that the right rules are being tested without reading test code. Put the approved list in the body of the next checkpoint (`references/git-flow.md`, Checkpoints), so a resumed session has it.
 
 With the `document` skill, add the approved **To check by hand** list to the entry. This change isn't committed on its own: it goes in the branch's next checkpoint.
 
@@ -46,7 +48,7 @@ Write the automated tests, following the project's test conventions (location, n
 
 ## 4. Implement
 
-Write the code until the critical tests, the whole test suite and the build pass. Don't change a critical test to make it pass. If a test turns out to be wrong, say why and ask before changing it, since the user approved that list.
+Write the code until the critical tests, the whole test suite and the build pass. Change the existing tests the user approved in step 2, as approved, and no others. Don't change a critical test to make it pass. If a test turns out to be wrong, say why and ask before changing it, since the user approved that list.
 
 ## 5. Independent tester
 
@@ -64,6 +66,7 @@ Product constraints (SPEC.md, Constraints):
 Base commit: <git merge-base HEAD <main branch>>
 Test command: <command>
 Build command: <command, or "none">
+Failing before the feature: <tests or build errors that already failed in step 1, or "none">
 ```
 
 Don't pass your explanations, the conversation or your own view of what might be weak. Its value is not knowing what you meant.
@@ -79,6 +82,8 @@ Then act on its report:
 
 The tester's report is the check of your work, so you don't get to filter it: removing one of its tests, or calling a failure an assumption, always goes to the user first, with the test's name and a line on why. Only the tester's own Assumptions section can be acted on as above.
 
+Put each report in the body of the checkpoint that follows it, verbatim, with its round.
+
 Repeat until a report comes back with no failures. After 3 rounds with failures still open, stop and show the user what's left instead of looping.
 
 ## 6. Refactor, check the tests, documents and review
@@ -87,11 +92,11 @@ Green tests say the feature works, not that the code, its tests and its document
 
 **Refactor.** With the whole suite green, clean up the code you wrote: remove stubs that are left, dead code and debug output; give things names that say what they do; remove duplication, using what the codebase already has. Don't change behavior or the tests that check it. When the diff is large (many files, or new modules), run the `simplify` skill for this, if it's available. Run the test suite and the build again.
 
-**Check the tests.** Read `references/test-value.md`. First move the tester's kept tests out of their `tester` files into the tests of the module they exercise, following the project's conventions (the `tester` name only served the check after each round). Note which tests came from the tester; they stay protected, so merging or removing one still goes to the user. Then check the tests this feature added as that file says (Check the change's tests). If a later tester round adds tests (after a blocking review fix), move and check those too.
+**Check the tests.** Read `references/test-value.md`. First move the tester's kept tests out of their `tester` files into the tests of the module they exercise, following the project's conventions (the `tester` name only served the check after each round). Note which tests came from the tester, in the checkpoint's body; they stay protected, so merging or removing one still goes to the user. Then check the tests this feature added as that file says (Check the change's tests). If a later tester round adds tests (after a blocking review fix), move and check those too.
 
 **Documents.** With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md. This comes before the review, so the rules written in SPEC.md from what was built are read against the code by someone who didn't write them.
 
-**Review.** Even when there was no tester, have the change reviewed by the `reviewer` agent as in `references/review.md`, giving it the feature's backlog entry (as it was before the documents step removed it), and act on its report as that file says.
+**Review.** Even when there was no tester, have the change reviewed by the `reviewer` agent as in `references/review.md`, giving it the feature's backlog entry as it was before the documents step removed it (in a resumed session, `git show <the checkpoint before that step>:BACKLOG.md`), and act on its report as that file says.
 
 ## 7. Finish
 

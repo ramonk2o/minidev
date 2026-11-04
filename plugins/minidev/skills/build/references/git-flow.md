@@ -86,6 +86,7 @@ Tester:
 Check of the tests:
 - merged or removed: <file> — <test name> — <why>
 - moved: <old tester file> → <new file> — <test name>
+- changed with the user's OK: <file> — <test name> — <the rule that changed>
 - sabotage: <rule> — <what was broken> — <the test that failed>
 
 Review:
