@@ -27,11 +27,11 @@ To get new versions later: `/plugin marketplace update minidev`.
 | `setup` skill | Prepares a project for the cycle: git, CLAUDE.md, permissions, product documents. Runs only when you call `/minidev:setup`. |
 | `grilling` skill | Interviews you about an idea, a round of questions at a time, until nothing is left open. |
 | `document` skill | The only writer of `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`. |
-| `build` skill | Builds a backlog feature test-first, then has it checked by the `tester` agent before committing. |
+| `build` skill | Builds a backlog feature test-first, then has it checked by the `tester` agent and reviewed by the `reviewer` agent before committing. |
 | `fix` skill | Fixes a bug on its own branch, test-first when it can be reproduced, and records it in the changelog. |
 | `chore` skill | Makes a change that keeps the behavior (refactoring, debt, dependency upgrades, migrations, tooling, typos) on its own branch, with the suite green before and after. |
 | `tester` agent | Independent tester: runs the suite, checks every rule is covered, tries to break the feature. Never fixes code. |
-| `reviewer` agent | Independent code reviewer: reads the diff for what tests don't catch (risky logic, errors, security, design, leftovers) and reports blocking findings and suggestions. Read-only. |
+| `reviewer` agent | Independent code reviewer: reads the diff for what tests don't catch (risky logic, errors, security, design, leftovers) and reports blocking findings and suggestions. Told never to edit. |
 
 You don't need to call `grilling`, `document`, `build`, `fix` or `chore` by name. Just talk ("note this idea…", "let's build X", "X has a bug…", "release 1.2.0"): the CLAUDE.md written by `setup` tells Claude which skill each step uses. The steps themselves live in the skills, not in that CLAUDE.md, so updating the plugin updates every project.
 
@@ -41,10 +41,10 @@ You don't need to call `grilling`, `document`, `build`, `fix` or `chore` by name
  idea ──► grilling (if behavior is open) ──► BACKLOG.md: Idea
                                                   │
                                                   ▼
-                                   build: critical test list ──► your OK
+                                   build: new branch feature/<name>
                                                   │
                                                   ▼
-                                   new branch: feature/<name>
+                                   critical test list ──► your OK
                                                   │
                                                   ▼
                                    tests first (shown failing) ──► code
@@ -92,18 +92,16 @@ A clear idea is recorded straight into `BACKLOG.md` as an **Idea**. If it leaves
 
 ### 3. Build
 
-`build` works on one feature at a time, in a fixed order:
+`build` works on one feature at a time, in a fixed order. All the work happens on a `feature/<name>` branch, created from an up-to-date main branch right after the rules check, so main only receives finished, verified features.
 
 1. **Rules check.** The entry needs its rules and its **Constraints**: what it must respect besides behavior (speed, security, accessibility, compatibility, how much data), written so they can be checked. If a few are missing, or the feature has an obvious risk nobody addressed, Claude asks them directly; if it's still a bare idea, it offers a `grilling` interview first. Tests built on guessed rules would encode assumptions nobody approved.
 2. **Critical test list.** In plain language, no code, split in two: what the test suite will check (measurable constraints included), and what you'll **check by hand** in the real app (visuals, focus, dragging…). You approve the list; the entry becomes **In progress**.
-
-All the work happens on a `feature/<name>` branch created from an up-to-date main branch, so main only receives finished, verified features.
 3. **Tests first.** The automated tests are written and run (against a stub of the public interface, if the module is new), and must fail for the right reason: the feature is missing. A test that passes before the code exists isn't testing the feature.
 4. **Code.** Written until the critical tests, the whole suite and the build pass. A critical test is never changed to make it pass without asking you.
 
 ### 4. Independent tester
 
-The `tester` agent gets only the backlog entry, the diff and the test/build commands: not the conversation or the author's reasoning. Not knowing what was meant is its value. It runs everything, checks that each rule has a test that would fail if the rule broke, and writes extra tests trying to break the feature, in new files whose name contains `tester`. It's told never to touch the feature's code or existing tests, nor git state, and after each round Claude checks that it only added test files. It reports:
+The `tester` agent gets only the backlog entry, the base commit to read the diff from and the test/build commands: not the conversation or the author's reasoning. Not knowing what was meant is its value. It runs everything, checks that each rule has a test that would fail if the rule broke, and writes extra tests trying to break the feature, in new files whose name contains `tester`. It's told never to touch the feature's code or existing tests, nor git state, and after each round Claude checks that it only added test files. It reports:
 
 - **Failures:** Claude fixes the code, keeps the test that caught it and launches a *new* tester, so nothing carries over from the last round.
 - **Uncovered rules:** missing tests are added.
@@ -113,11 +111,11 @@ This repeats until a round has no failures, or stops after 3 rounds to show you 
 
 ### 5. Refactor and review
 
-With the suite green, Claude cleans up its own code (leftover stubs, dead code, names, duplication) without changing behavior, using the `simplify` skill when the diff is large. Then the `reviewer` agent, again with only the entry and the diff, reads the code for what tests don't catch: risky logic, error handling, security, design that doesn't fit the codebase, leftovers, and the project's conventions. It can't edit anything. **Blocking** findings are fixed (one that changes behavior gets a test first and a new tester round) or, if Claude disagrees, brought to you; **suggestions** are applied when clearly better and cheap, and the rest are explained in a line. `fix` and `chore` run the same review whenever they change code.
+With the suite green, Claude cleans up its own code (leftover stubs, dead code, names, duplication) without changing behavior, using the `simplify` skill when the diff is large and it's available. Then the `reviewer` agent, again with only the entry and the diff, reads the code for what tests don't catch: risky logic, error handling, security, design that doesn't fit the codebase, leftovers, and the project's conventions. It's told never to edit anything, and Claude checks afterwards that the working tree and `HEAD` didn't change. **Blocking** findings are fixed (one that changes behavior gets a test first and a new tester round) or, if Claude disagrees, brought to you; **suggestions** are applied when clearly better and cheap, and the rest are explained in a line. `fix` and `chore` run the same review whenever they change code; with no tester there, the reviewer also checks that the change keeps the behavior it should.
 
 ### 6. Finish
 
-`document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. While working, Claude commits `wip:` checkpoints on the branch, so the work can be resumed in a new session or paused for a bug fix. Code, tests and the three documents reach main as **one squashed commit**, whose message records the test results, the tester's rounds, the review and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch reaches main in the project's integration mode. **Local merge:** it's squashed into main, the test suite and build run again on the combined code, and only then is main pushed. **Pull requests:** the branch is pushed, a pull request is opened with the verification message as its description, and it's squash-merged once the checks pass (Claude stops if it needs a review). A merge conflict, or a failure after the merge, stops the cycle and is shown to you; a failure is then fixed as a bug. The branch steps live in one place, `skills/build/references/git-flow.md`, shared by `build` and `fix`.
+`document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. While working, Claude commits `wip:` checkpoints on the branch, so the work can be resumed in a new session or paused for a bug fix. Code, tests and the three documents reach main as **one squashed commit**, whose message records the test results, the tester's rounds, the review and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch reaches main in the project's integration mode. **Local merge:** it's squashed into main, the test suite and build run again on the combined code, and only then is main pushed. **Pull requests:** the branch is pushed, a pull request is opened with the verification message as its description, and it's squash-merged once the checks pass (Claude stops if it needs a review). A merge conflict, or a failure after the merge, stops the cycle and is shown to you; a failure is then fixed as a bug. The branch steps live in one place, `skills/build/references/git-flow.md`, shared by `build`, `fix`, `chore` and releases.
 
 ### Bugs, chores and releases
 

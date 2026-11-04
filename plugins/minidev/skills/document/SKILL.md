@@ -3,7 +3,7 @@ name: document
 description: In projects set up for the minidev cycle, or that already have these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the feature being built, and bugs or debt left for later), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done"), update or create the spec, write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
 ---
 
-# Product
+# Document
 
 Three documents describe the product, each answering one question in time:
 
@@ -20,7 +20,7 @@ Project instructions (CLAUDE.md, AGENTS.md…) may add project-specific details,
 ## Where to look
 
 Read the reference for the document you're about to change, before changing it:
-- `references/backlog.md`: statuses, the entry format and every backlog operation (add, capture, start, finish, done, discard, clean up, reorganize).
+- `references/backlog.md`: statuses, the entry format and every backlog operation (create, capture, record a bug or debt, add, check for duplicates, present, start, finish, change status, discard, clean up, reorganize).
 - `references/spec.md`: the spec's role, how to create one adapted to the project, and when and how to update it.
 - `references/changelog.md`: entry format, creating the file, and releases.
 
@@ -37,6 +37,8 @@ Read the reference for the document you're about to change, before changing it:
 2. **Started:** In progress, with what to check by hand.
 3. **Finished:** verified; the entry leaves BACKLOG.md, the change goes to CHANGELOG.md and the rules to SPEC.md, all in the same commit as the code. The verification results go in that commit's message. If it fails later in use, it's a bug, not a reopened entry.
 4. **Released:** the version's changes leave `[Unreleased]` in CHANGELOG.md.
+
+Bug and Debt entries skip In progress: they stay in BACKLOG.md until `fix` or `chore` does them, and leave it in that work's commit.
 
 ## Documents not in this format
 
@@ -56,13 +58,14 @@ Each document starts with a short legend, so it's readable without this skill. T
 | Operation | Before writing |
 |---|---|
 | Capture a feature from the conversation | Show the draft, wait for OK (an interview summary the user already approved counts as that OK) |
-| Clear idea, status change asked by the user | Write directly, then tell them |
+| Clear idea, bug or debt left for later, status change asked by the user | Write directly, then tell them |
 | Clean up, reorganize, new area, aligning a document's format | Show the plan, wait for OK |
 | Create SPEC.md | Show the proposed outline, wait for OK |
 | Update SPEC.md when a feature is finished, changelog entry | Write directly as part of finishing, then tell them |
-| Bug fix: changelog entry under Fixed, SPEC.md if a rule changed | Write directly as part of the fix, then tell them |
+| Bug fix: changelog entry under Fixed, SPEC.md if a rule changed, Bug entry removed | Write directly as part of the fix, then tell them |
+| Chore: SPEC.md if a technical decision changed, changelog if users will notice, Debt entry removed | Write directly as part of the chore, then tell them |
 | Release | Show the version, date and entries, wait for OK |
 
 ## Commits
 
-In a git repository, commit after writing, with a short message saying what changed (e.g. "Tables: recorded in BACKLOG (Idea)", "Sync discarded", "Release 1.4.0"). Commit only these documents, never other pending changes. When the change is part of a larger piece of work being committed, such as finishing a feature, it goes in that commit instead. Don't push these commits on their own: they go out with the next merge into the main branch or release (in pull request mode, inside the next pull request). On a feature or fix branch they're squashed into that branch's commit, whose message gets a line for each.
+In a git repository, commit after writing, with a short message saying what changed (e.g. "Tables: recorded in BACKLOG (Idea)", "Sync discarded", "Release 1.4.0"). Commit only these documents, never other pending changes. When the change is part of a larger piece of work being committed, it goes in that commit instead: finishing a feature, a fix or a chore, or the documents `brainstorm` or `setup` create, which go in the commit those skills offer (don't commit them here). Don't push these commits on their own: they go out with the next merge into the main branch or release (in pull request mode, inside the next pull request). On a work branch (feature, fix, chore, release) they're squashed into that branch's commit, whose message gets a line for each change that isn't part of the work.

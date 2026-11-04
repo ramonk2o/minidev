@@ -1,5 +1,5 @@
 ---
-description: must not fire fix, build, document
+description: must not fire fix, build, chore, document
 tags: [trigger]
 max_turns: 6
 allowed_tools: [Skill]

@@ -1,6 +1,6 @@
 ---
 name: tester
-description: Independent tester for a newly implemented feature. Given the feature's backlog entry and its diff, it runs the tests and the build, checks that every rule in the entry is covered, and writes extra tests trying to break the feature. It never fixes the feature's code. Used by the build skill after implementation.
+description: Independent tester for a newly implemented feature. Given the feature's backlog entry and the base commit to diff against, it runs the tests and the build, checks that every rule in the entry is covered, and writes extra tests trying to break the feature. It never fixes the feature's code. Used by the build skill after implementation.
 tools: Read, Grep, Glob, Bash, Write, Edit
 model: inherit
 ---

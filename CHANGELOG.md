@@ -4,6 +4,19 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.10.1] - 2026-11-04
+
+### Fixed
+- The `reviewer` no longer assumes a tester ran: in `fix` and `chore` it also checks that the change keeps the behavior it should. `build` checks that `HEAD` didn't move while it ran, instead of claiming it can't edit files.
+- `fix` and `chore` name the file and section they take from `build` (cycle check inline, Review in `../build/SKILL.md`), and say how a blocking finding that changes behavior is handled without a tester.
+- `brainstorm` puts whole-product constraints in SPEC.md's Constraints instead of copying them into each backlog entry, as the backlog format says.
+- `document` doesn't commit the documents `brainstorm` and `setup` create (those skills offer the commit); its operation index, lifecycle and confirmation table cover Bug and Debt entries and chores.
+- Skill descriptions mark the boundaries between `build`, `fix` and `chore` (typos and refactors are chores).
+- `setup` discovers a type-check command, allows the read-only git commands the cycle runs (and `git pull --ff-only`), and lists the `reviewer` and `brainstorm` among old global copies.
+- Changelog version headings use a hyphen, as in Keep a Changelog.
+- README: branch order in the cycle, the reviewer in the `build` row, `git-flow.md` shared by `chore` and releases too, and a numbered list that rendered broken.
+- Trigger evals (plugin development only): the simulated CLAUDE.md now includes the `chore` line from the setup template.
+
 ## [0.10.0] - 2026-11-03
 
 ### Added

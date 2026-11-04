@@ -12,13 +12,13 @@ Talk to the user in the language of the conversation. Write the CLAUDE.md in Eng
 
 Personal working rules (reply language, how the user likes code, when to use the browser…) are not this skill's business: don't add them, and leave any that an existing CLAUDE.md already has untouched.
 
-Nothing is written before the user's OK. Collect the proposals of steps 1, 5, 6 and 7 and show them together in step 8, so the user approves once.
+Nothing is written before the user's OK. Collect the proposals of steps 1 and 4–7 and show them together in step 8, so the user approves once.
 
 ## 1. Check the project
 
 If the folder isn't a software project, say that this skill is for software projects and stop. If it's empty or holds only notes for a project that doesn't exist yet, point to the `brainstorm` skill, which plans and scaffolds a new project, and stop.
 
-**Git.** The cycle commits after each feature, bug fix and document change, and builds features and fixes on their own branches, so the project must be a git repository. If it isn't one, propose `git init` and, when there's no `.gitignore`, a short one for the project's stack (dependencies, build output, test reports, `.env`, OS files like `.DS_Store`, and `.claude/settings.local.json`). If it's a repository with no commits yet, note that the first commit will come at the end (step 9).
+**Git.** The cycle commits after each feature, bug fix, chore and document change, and builds features, fixes and chores on their own branches, so the project must be a git repository. If it isn't one, propose `git init` and, when there's no `.gitignore`, a short one for the project's stack (dependencies, build output, test reports, `.env`, OS files like `.DS_Store`, and `.claude/settings.local.json`). If it's a repository with no commits yet, note that the first commit will come at the end (step 9).
 
 **Tests.** The cycle needs automated tests: `build` writes them first and `tester` runs them. Find the test framework and command (package.json scripts, Makefile, pyproject, Cargo.toml, go.mod, CI config…). If there's none, say so and ask whether the user wants to set one up first. Don't generate a cycle that can't run.
 
@@ -27,7 +27,7 @@ If the folder isn't a software project, say that this skill is for software proj
 Read the repository to fill the project-specific sections. Look, don't guess:
 
 - **Project line:** what the project is, in one sentence (README, package description, manifest).
-- **Commands:** install, develop/watch, build, tests, lint, run or load the app, package/release. Take them from the real scripts; note side effects worth knowing (e.g. install also enables a hook, build also type-checks).
+- **Commands:** install, develop/watch, build, tests, lint, type-check, run or load the app, package/release. Take them from the real scripts; note side effects worth knowing (e.g. install also enables a hook, build also type-checks).
 - **Tests:** where test files live and how they're named, shared fakes, mocks or helpers, and how rules that change data or state are tested (find one existing test that does it well, to cite as the example). Also what only shows in the real app (visuals, focus, browser or device behavior): that's what goes to "To check by hand".
 - **Conventions:** only rules with clear evidence in the code: a module that centralizes access to something, strict compiler settings, a test that checks consistency between files, a lint rule. Don't invent conventions and don't list what any developer would do anyway.
 - **Integration:** whether branches should reach the main branch by local merge or by pull request. Signs for pull requests: a GitHub remote plus CI workflows (`.github/workflows/`), a protected main branch (`gh api repos/<owner>/<repo>/branches/<main>/protection` answers instead of 404), or commits from more than one author (`git shortlog -sn`). Pull requests need `gh` signed in (`gh auth status`); if it isn't, say so.
@@ -56,6 +56,7 @@ Build the file from the template below. Fill every `<…>`; the final file has n
 - Build: `<command>` <(what it also checks, where the output goes)>
 - Tests: `<command>` (<framework>)
 - Lint: `<command>`
+- Type-check: `<command>`
 - <Run / Load / Package>: <how>
 
 ## Conventions
@@ -76,6 +77,7 @@ This project uses the `minidev` cycle. When a step needs one of its skills and i
 Template notes:
 - The **Development cycle** section is copied as is. Only the Integration mode and the Release target change.
 - **Release:** if the project doesn't publish versions, drop the Releases line. If it does but the steps aren't written anywhere, use "cut the version with `document`" and offer to write the steps down later.
+- **Commands:** drop a line the project has no command for (e.g. Type-check when the build already type-checks: say so in the Build line).
 - **Tests:** if no existing test shows how state-changing rules are tested, drop the "as in" part rather than citing a weak example.
 - **Conventions:** drop the section when there's nothing to put in it.
 - Keep the project's existing specifics that still hold (an extra section, a rule about permissions, a doc pointer): they belong to the project, not to this template.
@@ -89,7 +91,7 @@ If the project already has a `CLAUDE.md` (or `AGENTS.md`, `.claude/CLAUDE.md`), 
 The cycle runs the same commands many times (tests before and after the code, the build, the tester's rounds, commits), and a permission prompt on each one breaks the flow. Propose `.claude/settings.json` entries under `permissions.allow` for:
 
 - the test, build, lint and type-check commands from step 2, each as a prefix rule so its arguments are covered (e.g. `Bash(npm test:*)`, `Bash(npm run build:*)`, `Bash(npx vitest:*)`);
-- the git commands the cycle uses locally: `git status`, `git diff`, `git log`, `git add`, `git commit`, `git switch`, `git merge`, `git fetch`;
+- the git commands the cycle uses locally: `git status`, `git diff`, `git log`, `git show`, `git blame`, `git rev-parse`, `git merge-base`, `git symbolic-ref`, `git add`, `git commit`, `git switch`, `git merge`, `git fetch`, `git pull --ff-only`;
 - in pull request mode, the read-only `gh` commands: `gh pr view`, `gh pr checks`, `gh auth status`.
 
 Never add install, publish, deploy, `git push`, `git reset`, `gh pr create` or `gh pr merge` commands, or anything that deletes files or branches: those keep asking. If the file exists, merge: keep every existing entry and setting, add only what's missing. Show the resulting list.
@@ -101,7 +103,7 @@ Check only what adopting the cycle leaves behind. This is not a general cleanup:
 - **Old documents** that now overlap BACKLOG, SPEC or CHANGELOG (`TODO.md`, `FEATURES.md`, `ROADMAP.md`, `HISTORY.md`…). Don't convert them: point them out; aligning them is the `document` skill's job (step 9).
 - **Sections of the old CLAUDE.md** that the new text replaces: an older workflow, backlog or test rules that the skills now own, the longer Development cycle section written by earlier versions of this skill (idea, build, bug and release steps spelled out), or a line saying the cycle is installed globally in `~/.claude/`.
 - **Local skills, agents and commands** (`.claude/skills/`, `.claude/agents/`, `.claude/commands/`) that overlap the cycle: a local build, backlog or tester, or an old copy of one of this plugin's skills. If one has something project-specific the plugin's doesn't cover, propose moving that part into the CLAUDE.md before removing it. Other local skills are just listed.
-- **Global copies of the cycle** in `~/.claude/skills/` (`grilling`, `document`, `build`, `fix`, `chore`, `bootstrap`) or `~/.claude/agents/tester.md`: they duplicate this plugin and may be older versions. Point them out and suggest removing them; they're outside the project, so this always needs its own explicit OK.
+- **Global copies of the cycle** in `~/.claude/skills/` (`grilling`, `document`, `build`, `fix`, `chore`, `brainstorm`, `bootstrap`) or `~/.claude/agents/` (`tester.md`, `reviewer.md`): they duplicate this plugin and may be older versions. Point them out and suggest removing them; they're outside the project, so this always needs its own explicit OK.
 - **Broken references:** the CLAUDE.md (old or new) pointing to a file, script or command that doesn't exist.
 
 For each item, say what it is, why it's orphaned or redundant, and what you suggest (remove, move a part to the CLAUDE.md, leave).

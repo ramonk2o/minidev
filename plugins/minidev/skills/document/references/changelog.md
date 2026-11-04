@@ -40,7 +40,7 @@ If the project already has released versions (git tags, a version in its manifes
 When the user releases a version:
 1. **Pick the number** with Semantic Versioning: major for breaking changes, minor for new features, patch for fixes only. Propose it from the `[Unreleased]` entries; the user decides.
 2. **Show** the version, the date and the entries that go into it, and wait for the OK.
-3. **Move** the `[Unreleased]` entries under `## [<version>] — <YYYY-MM-DD>`, leaving `## [Unreleased]` empty above it. A short line under the heading can say where it went (e.g. "Submitted to the store as an update").
+3. **Move** the `[Unreleased]` entries under `## [<version>] - <YYYY-MM-DD>`, leaving `## [Unreleased]` empty above it. A short line under the heading can say where it went (e.g. "Submitted to the store as an update").
 4. **Update the links** at the end of the file:
    ```markdown
    [Unreleased]: <repo>/compare/<version>...HEAD

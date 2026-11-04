@@ -1,6 +1,6 @@
 ---
 name: build
-description: In projects set up for the minidev cycle (a CLAUDE.md that names it), implement a feature from the project's backlog test-first, then have it checked by an independent tester agent and reviewed by an independent reviewer agent before it is committed. Use it whenever the user wants to implement, build, develop or start coding a feature, from BACKLOG.md or as a direct request, e.g. "let's build Tables", "implement the sync idea", "/minidev:build X", "start working on X", or when project instructions say to use the build skill.
+description: In projects set up for the minidev cycle (a CLAUDE.md that names it), implement a feature from the project's backlog test-first, then have it checked by an independent tester agent and reviewed by an independent reviewer agent before it is committed. Use it whenever the user wants to implement, build, develop or start coding a feature, from BACKLOG.md or as a direct request, e.g. "let's build Tables", "implement the sync idea", "/minidev:build X", "start working on X", or when project instructions say to use the build skill. Not for broken behavior (fix) or changes that keep the behavior, like refactoring or upgrades (chore).
 ---
 
 # Build
@@ -69,9 +69,9 @@ Repeat until a report comes back with no failures. After 3 rounds with failures 
 
 Green tests say the feature works, not that the code is ready to live with. Two steps take care of that, in this order.
 
-**Refactor.** With the whole suite green, clean up the code you wrote: remove stubs that are left, dead code and debug output; give things names that say what they do; remove duplication, using what the codebase already has. Don't change behavior or the tests that check it. When the diff is large (many files, or new modules), run the `simplify` skill for this. Run the test suite and the build again.
+**Refactor.** With the whole suite green, clean up the code you wrote: remove stubs that are left, dead code and debug output; give things names that say what they do; remove duplication, using what the codebase already has. Don't change behavior or the tests that check it. When the diff is large (many files, or new modules), run the `simplify` skill for this, if it's available. Run the test suite and the build again.
 
-**Review.** Launch the `reviewer` agent (agent type `minidev:reviewer`), even when there was no tester. Give it only the feature's backlog entry, the base commit (stage the work first, as for the tester), and the project's lint and type-check commands, if any. As with the tester, don't pass your explanations. It has no tools to edit files; still, check that `git status --short` is the same when it returns. Then act on its report:
+**Review.** Launch the `reviewer` agent (agent type `minidev:reviewer`), even when there was no tester. Give it only the feature's backlog entry, the base commit (stage the work first, as for the tester), and the project's lint and type-check commands, if any. As with the tester, don't pass your explanations. It's told never to edit files or git state, but it has a shell: note `git status --short` and `git rev-parse HEAD` before launching it, and check that both are the same when it returns. Then act on its report:
 - **Blocking:** fix each one, or, if you disagree, tell the user why and let them decide. A fix that changes behavior is done test first, and then a new `tester` round checks the change.
 - **Suggestions:** apply the ones that are clearly better and cheap; for the rest, tell the user in a line each why not.
 

@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Start a new software project from an idea, before any code exists. Interviews the user about the product and its first version, decides the architecture and stack with them, picks where to start, then scaffolds a project whose tests and build already run and records the plan in BACKLOG.md and SPEC.md, ready for the minidev cycle. Use it when the user wants to start, plan or kick off a new project or app, think through its architecture or decide where to begin, in any language (e.g. "I want to build an app that…", "quero começar um projeto novo", "how should I structure this new project?"). Not for adding a feature to an existing project: that's grilling and build.
+description: Start a new software project from an idea, before any code exists. Interviews the user about the product and its first version, decides the architecture and stack with them, picks where to start, then scaffolds a project whose tests and build already run and records the plan in BACKLOG.md and SPEC.md, ready for the minidev cycle. Use it when the user wants to start, plan or kick off a new project or app, think through its architecture or decide where to begin, in any language (e.g. "I want to build an app that…", "quero começar um projeto novo", "how should I structure this new project?"). Not for adding a feature to an existing project: that's document (with grilling when the idea is open), then build.
 ---
 
 # Brainstorm
@@ -88,8 +88,8 @@ Create the skeleton the plan approved. It has no product behavior yet: the first
 
 Load the `document` skill and create the product documents with it; their formats belong to that skill.
 
-- **BACKLOG.md:** the features from step 4 as Ideas, in the order to build them, and the later ideas after them. Each entry's Motivation comes from step 2, and its Constraints from the constraints of step 2 that apply to it.
-- **SPEC.md:** only what exists now: the Goal, and the Technical decisions the scaffold put in place, with their reasons (naming the constraints that drove them, e.g. "SQLite in the browser: it must work offline"). No Behavior yet: the rules join the spec as each feature is built.
+- **BACKLOG.md:** the features from step 4 as Ideas, in the order to build them, and the later ideas after them. Each entry's Motivation comes from step 2, and its Constraints from the constraints of step 2 that apply only to that feature.
+- **SPEC.md:** only what exists now: the Goal, the Constraints of the whole product from step 2 (platforms, offline use, privacy…), which aren't repeated in each entry, and the Technical decisions the scaffold put in place, with their reasons (naming the constraints that drove them, e.g. "SQLite in the browser: it must work offline"). No Behavior yet: the rules join the spec as each feature is built.
 
 ## 8. Finish
 

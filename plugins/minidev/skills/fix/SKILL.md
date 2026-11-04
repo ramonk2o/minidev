@@ -1,6 +1,6 @@
 ---
 name: fix
-description: In projects set up for the minidev cycle (a CLAUDE.md that names it), fix a bug on its own branch, test-first when it can be reproduced in a test, record it in the changelog and merge it once confirmed. Use it whenever the user reports something broken or wrong in existing behavior, e.g. "X has a bug", "saving fails when…", "isso quebrou", "/minidev:fix X". Not for new behavior: that's a feature (document, then build).
+description: In projects set up for the minidev cycle (a CLAUDE.md that names it), fix a bug on its own branch, test-first when it can be reproduced in a test, record it in the changelog and merge it once confirmed. Use it whenever the user reports something broken or wrong in existing behavior, e.g. "X has a bug", "saving fails when…", "isso quebrou", "/minidev:fix X". Not for new behavior: that's a feature (document, then build). Not for typos, refactoring or upgrades that keep the behavior (chore).
 ---
 
 # Fix
@@ -11,7 +11,9 @@ Talk to the user in the language of the conversation. Project instructions (CLAU
 
 ## 1. Check it's a bug
 
-First check that the project uses the cycle, as in the `build` skill's Start section; if it doesn't, offer `/minidev:setup` or simply fix the bug without this skill.
+First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names the `minidev` cycle or the `fix` skill. If it doesn't, offer `/minidev:setup` or simply fix the bug without this skill.
+
+If BACKLOG.md has an entry for it (type Bug), use it as the bug's description.
 
 If fixing it means deciding how the product should behave (two reasonable answers, or a rule SPEC.md doesn't cover), it's a feature: say so and record it with the `document` skill instead.
 
@@ -20,7 +22,7 @@ If fixing it means deciding how the product should behave (two reasonable answer
 1. Read the `build` skill's `references/git-flow.md` (`../build/references/git-flow.md` from this skill's folder) and create the `fix/<short-name>` branch as it says (Start the branch).
 2. If the bug can be reproduced in a test, write the test and show that it fails for the reason reported. Then fix the code until it, the whole suite and the build pass.
 3. If it only shows in the real app, fix it and keep the steps to reproduce it for the commit message.
-4. If the fix changes code (not only text or docs), launch the `reviewer` agent and act on its report as in the `build` skill's Refactor and review section (Review), passing the bug as reported instead of a backlog entry.
+4. If the fix changes code, launch the `reviewer` agent (agent type `minidev:reviewer`) as in the `build` skill's Refactor and review section, Review (`../build/SKILL.md` from this skill's folder; read only that part), passing the bug as reported (or its Bug entry) instead of a backlog entry. A fix has no tester, so a blocking finding that changes behavior is fixed test first, with no tester round after it.
 
 ## 3. Finish
 
