@@ -4,6 +4,28 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-11-04
+
+### Added
+- **Setup reads more of the repository**: commit hooks and message conventions, a changelog generator and a main branch other than the remote's default become optional Development cycle lines (`Commit messages:`, `Changelog:`, `Main branch:`) that the other skills follow. Branch protection is read from rulesets too, and a 403 counts as unknown.
+- **Features that change an existing rule** list the existing tests they change, for approval with the critical tests; the tester is told SPEC.md predates the feature.
+- Trigger evals: a feature request outside the cycle fires nothing, a typo in SPEC.md fires `document` (not `chore`), a broken CI config and an unreported speed-up fire `chore` (not `fix`), discarding an idea fires `document`, `grilling` fires in Portuguese; reading CHANGELOG.md now runs in a project set up for the cycle.
+
+### Changed
+- `build` runs the suite and the build on its new branch before writing anything, stops on a red suite, and tells the tester what already failed.
+- **Checkpoints carry what a resumed session needs**: the approved critical test list, each tester report verbatim, which tests came from the tester and where they moved, the entry before the documents step. A resumed branch missing one redoes that step.
+- `fix`: a flaky test is reproduced by repeated runs, before and after; a CI failure caused by its config goes to `chore`; only bugs users could see get a Fixed line.
+- `chore`: comments that tools read (doctests, lint or compiler directives, typed JSDoc) leave the prose short path; a missing-tests chore that finds a bug stops and offers `fix`.
+- Releases start from the up-to-date main branch, and a tool-generated changelog isn't edited by hand.
+- The reviewer counts a repeated test as a suggestion, not blocking; blocking stays for tests that pass with the code broken.
+- `setup` allows the read-only commands every round runs (`git write-tree`, branch and worktree listing, `git remote`, `git ls-remote`, `git pull --rebase`, `gh pr list`).
+- Behavior eval graders look for the blocks inside a `git commit`, and the fixture's CLAUDE.md tells agents where git is.
+
+### Fixed
+- **Git cases the flow left to improvisation**: a push rejected by branch protection stops and offers pull request mode instead of looping; commit-msg hooks get an adapted first line; a worktree branch is detached before it's deleted, and both worktree cases can hold at once; conflicts only in BACKLOG.md or CHANGELOG.md keep both sides, others say how to continue; a failed `pull --rebase` is aborted; Resume finds branches only on the remote; review comments on a pull request are handled as post-verification fixes; the verification commit uses `--allow-empty`; a revert reapplies document changes that rode along and puts the restored entry back to Idea.
+- Contradictions: In progress on a reused worktree branch, the SPEC outline approved in `brainstorm`, the documents' language before CLAUDE.md exists, the setup's test setup in its review and apply steps, the cycle check in `fix` and `chore`, `build` citing git-flow before reading it, and a feature declared done without `build`.
+- Leftovers: `git push origin` in releases, partial copies of the test patterns in the agents, and the README on the entry, the diagram and the reviewer's inputs.
+
 ## [0.16.0] - 2026-11-04
 
 ### Added
