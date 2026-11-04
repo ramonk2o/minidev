@@ -5,7 +5,7 @@ How a finished change gets its independent code review by the `reviewer` agent. 
 ## Launch
 
 1. Have the documents updated first (each skill says when), then stage the work as in `git-flow.md` (Stage the work): `git diff` doesn't show files git doesn't track yet, and the reviewer needs to see them, documents included.
-2. Note `git status --short` and `git rev-parse HEAD`.
+2. Note the state as in `git-flow.md` (Check after an agent).
 3. Launch the `reviewer` agent (agent type `minidev:reviewer`). Give it only:
    - what the change is for: the feature's backlog entry (`build`), the bug as reported or its Bug entry (`fix`), the chore's description or its Debt entry (`chore`; for a test prune, also the list of removals the user approved), copied in full
    - the Constraints section of SPEC.md, copied in full, if it has one
@@ -14,7 +14,7 @@ How a finished change gets its independent code review by the `reviewer` agent. 
    - whether a `tester` checked the change: yes, or no and why ("bug fix", "chore", "no automated tests"), as a fact, without your view of the change
 
    Don't pass your explanations, the conversation or your own view of what might be weak: its value is not knowing what you meant.
-4. When it returns, check that `git status --short` and `git rev-parse HEAD` are the same as before. It's told never to edit files or git state, but it has a shell. Undo any change and tell the user what it touched.
+4. When it returns, check the repository as in `git-flow.md` (Check after an agent): the reviewer may not leave any change.
 
 ## Act on the report
 

@@ -57,7 +57,7 @@ Otherwise, launch the `tester` agent (agent type `minidev:tester`). Give it only
 
 Don't pass your explanations, the conversation or your own view of what might be weak. Its value is not knowing what you meant.
 
-When it returns, check that it only added new test files: the work was staged before it ran, so `git diff --name-only` (changes to files git already has) must be empty, and every untracked file in `git status --short` must have `tester` in its name. Undo any other change with `git restore <file>` and tell the user what it had touched.
+Before launching it and when it returns, check the repository as in `references/git-flow.md` (Check after an agent): it may only have added new test files with `tester` in their name.
 
 Then act on its report:
 - **Failures (bugs):** fix the code, keep the tester's test that caught it, and launch a **new** tester with the same inputs (stage the fixes first). A new one, so it doesn't carry the previous round's context.

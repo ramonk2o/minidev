@@ -47,6 +47,15 @@ A branch with no checkpoints beyond the main branch is resumed from the skill's 
 
 Before staging, run `git status --short` and read the list: only this work's files should be there. Anything that shouldn't be committed (build output, local reports, secrets like `.env`) goes into `.gitignore`, or ask the user about it. Then stage with `git add -A`.
 
+## Check after an agent
+
+The `tester` and the `reviewer` are told not to touch the work or git state, but they have a shell. Before launching one, with the work staged, note `git rev-parse HEAD` and `git write-tree` (a hash of what is staged). When it returns:
+
+1. **HEAD:** `git rev-parse HEAD` must be the same. If it moved, stop and show the user (`git log <noted HEAD>..HEAD`); undoing it (`git reset --soft <noted HEAD>`) is their call.
+2. **Staged work:** `git write-tree` must be the same. If not, put it back with `git read-tree <noted tree>` and tell the user.
+3. **Files git tracks:** `git diff --name-only` must be empty. Put back each file it lists with `git restore <file>` (it restores the staged version) and tell the user; a rewritten test snapshot counts.
+4. **New files:** in `git status --short --untracked-files=all`, the tester may leave new test files with `tester` in their name; the reviewer, none. Output of running the tools (coverage reports, caches, build files) isn't a change: add its pattern to `.gitignore` and tell the user. Any other new file: show it to the user and ask before deleting it, since `git restore` doesn't remove untracked files.
+
 ## Checkpoints
 
 Commit on the branch whenever a step is done and before stopping, staged as above, with a message starting `wip:` that names the step done and the state (e.g. `wip: tests first — empty cart, failing`, `wip: tester round 2 — no failures`). Checkpoints let the work be resumed in a new session and keep a working state to go back to. They're never pushed to the main branch: the squash replaces them.
