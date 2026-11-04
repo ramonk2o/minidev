@@ -10,3 +10,6 @@
 .DocumentRevisions-V100
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
+
+# Plugin eval results (when run from the repo root)
+evals/results/
