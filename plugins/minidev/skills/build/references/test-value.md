@@ -53,4 +53,4 @@ Run with the suite green, before the review, on the tests the change added or ed
    - **Misplaced tests:** move them to their owner's tests.
 4. Sabotage each rule that lost a test, and run the suite and the build again.
 
-The verification message records the extras merged or removed, each sabotage and, when there are any, the older tests as a block starting with a line that says exactly `Redundant older tests:`, one per line as `<file> — <test name> — <the test that covers it>`, so a prune finds them with `git log --grep "Redundant older tests:"`.
+The verification message records the extras merged or removed and each sabotage under Check of the tests, and the older tests, when there are any, in its `Redundant older tests:` block (`git-flow.md`, The verification commit), so a prune finds them with `git log --grep "Redundant older tests:"`.

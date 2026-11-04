@@ -54,7 +54,7 @@ If, while working, the change turns out to touch anything but prose, stop and sw
 ## 3. Finish
 
 1. If the review's fixes changed what the documents say, update them with the `document` skill.
-2. Stage the work and make the branch's verification commit, as in `git-flow.md`: its message is what the main branch gets. It records what changed and why, the suite and build results before and after, for an upgrade the versions and any breaking change handled, the check of the tests and the review, if there were any. If something should be checked in the real app (an upgraded UI library, a build tool), end the message with a block starting with a line that says exactly `To check by hand:`, one item per line.
+2. Stage the work and make the branch's verification commit, in the format of `git-flow.md` (The verification commit): its message is what the main branch gets. A chore has no Tester, `Critical tests:` or `Regression tests:` section; its Tests line gives the results before and after, and for an upgrade the versions and any breaking change handled. If something should be checked in the real app (an upgraded UI library, a build tool), list it under `To check by hand:`.
 3. Show the user what to check, if anything, and wait for their confirmation.
 4. Merge, test and push as in `git-flow.md` (Merge and push), in the project's integration mode.
 

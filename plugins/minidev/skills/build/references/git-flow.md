@@ -64,7 +64,44 @@ If a pre-commit hook rejects a checkpoint (it runs tests or lint, and the work i
 
 ## The verification commit
 
-When the work is verified, the skill makes the branch's last commit with the verification message (the skill says what goes in it). If fixes come after it (e.g. from checking by hand), commit them as checkpoints.
+When the work is verified, the skill makes the branch's last commit with the verification message, in this format. Keep the sections in this order and leave out the ones the skill doesn't use; within each, write `(none)` when it applies but is empty. The block names (`Critical tests:`, `Regression tests:`, `Redundant older tests:`, `To check by hand:`) are searched with `git log --grep`, so write them exactly, alone on their line.
+
+```
+<Name>: <what changed, in a few words>
+
+<what changed and why, in two or three lines>
+
+Tests: <suite result, with counts>. Build: <result>.
+<chore: the same before the change; an upgrade: versions and breaking changes handled>
+
+Tester:
+<build: one line per earlier round (what it found, how it was resolved, tester tests removed with the user's OK), then the last report verbatim; or "no tester: <why>">
+
+Check of the tests:
+- merged or removed: <file> — <test name> — <why>
+- moved: <old tester file> → <new file> — <test name>
+- sabotage: <rule> — <what was broken> — <the test that failed>
+
+Review:
+- blocking: <finding as the reviewer wrote it> — <how it was resolved>
+- applied: <suggestion>
+- declined: <suggestion> — <why>
+<or "no review: <why>">
+
+Critical tests:
+<build: file> — <test name>
+
+Regression tests:
+<fix: file> — <test name>
+
+Redundant older tests:
+<file> — <test name> — <the test that covers it>
+
+To check by hand:
+<one item per line>
+```
+
+If fixes come after it (e.g. from checking by hand), commit them as checkpoints.
 
 The main branch gets the **final message**: the verification message (`git log -1 --format=%B <branch>` if it's still the last commit; otherwise find it in `git log <main branch>..<branch>`), plus a line for each fix made after it, plus a line for each document change made on the branch that isn't part of the work (e.g. an idea recorded meanwhile).
 

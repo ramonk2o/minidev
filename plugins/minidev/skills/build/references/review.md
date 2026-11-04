@@ -6,12 +6,20 @@ How a finished change gets its independent code review by the `reviewer` agent. 
 
 1. Have the documents updated first (each skill says when), then stage the work as in `git-flow.md` (Stage the work): `git diff` doesn't show files git doesn't track yet, and the reviewer needs to see them, documents included.
 2. Note the state as in `git-flow.md` (Check after an agent).
-3. Launch the `reviewer` agent (agent type `minidev:reviewer`). Give it only:
-   - what the change is for: the feature's backlog entry (`build`), the bug as reported or its Bug entry (`fix`), the chore's description or its Debt entry (`chore`; for a test prune, also the list of removals the user approved), copied in full
-   - the Constraints section of SPEC.md, copied in full, if it has one
-   - the base commit: where the branch left the main branch (`git merge-base HEAD <main branch>`)
-   - the project's lint and type-check commands, if any
-   - whether a `tester` checked the change: yes, or no and why ("bug fix", "chore", "no automated tests"), as a fact, without your view of the change
+3. Launch the `reviewer` agent (agent type `minidev:reviewer`) with this prompt, filled in and nothing added:
+
+   ```
+   What the change is for:
+   <the feature's backlog entry (build), the bug as reported or its Bug entry (fix), the chore's description or its Debt entry (chore), copied in full>
+   <for a test prune: "Removals the user approved:" and the list>
+
+   Product constraints (SPEC.md, Constraints):
+   <the section, copied in full, or "none">
+
+   Base commit: <git merge-base HEAD <main branch>>
+   Lint and type-check commands: <commands, or "none">
+   Tester: <"ran" or "didn't run: <bug fix | chore | no automated tests>">
+   ```
 
    Don't pass your explanations, the conversation or your own view of what might be weak: its value is not knowing what you meant.
 4. When it returns, check the repository as in `git-flow.md` (Check after an agent): the reviewer may not leave any change.
@@ -30,4 +38,4 @@ One review is enough. Launch a second, new reviewer only when the blocking fixes
 
 ## In the verification message
 
-Each blocking finding as the reviewer wrote it, with how it was resolved, and the suggestions applied and declined.
+The Review section of `git-flow.md` (The verification commit): each blocking finding as the reviewer wrote it, with how it was resolved, and the suggestions applied and declined.

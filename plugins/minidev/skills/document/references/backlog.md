@@ -124,7 +124,7 @@ Verifying the feature is the job of whoever built it (e.g. the `build` skill); t
 1. Update SPEC.md with the rules of what was built (`references/spec.md`).
 2. Add the change to CHANGELOG.md (`references/changelog.md`).
 3. Remove the entry and, if its area is left empty, the area.
-4. The verification message, with the "To check by hand" list, is written by the skill that built the feature, not here.
+4. The verification message, with the "To check by hand" list, is written by the skill that built the feature (`../build/references/git-flow.md`, The verification commit), not here.
 
 If the user later finds a problem in use, it's handled as a bug fix, not by reopening the entry. A revert is the exception: it restores the entry as it was, and this skill adds what went wrong to its Open questions (`../build/references/git-flow.md`, When a merged change breaks).
 

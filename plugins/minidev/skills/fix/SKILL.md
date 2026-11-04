@@ -31,6 +31,6 @@ If fixing it means deciding how the product should behave (two reasonable answer
 ## 3. Finish
 
 1. If the review's fixes changed what the documents say, update them with the `document` skill.
-2. Stage the work and make the branch's verification commit, as in `git-flow.md`: its message is what the main branch gets, in one squashed commit with code, tests and documents. It records the suite and build results, the check of the tests and the review, if there were any, and, when the bug was reproduced in a test, that test as a block starting with a line that says exactly `Regression tests:`, one test per line as `<file> — <test name>`, so a later prune knows it's protected. If the fix needs checking in the real app, end the message with a block starting with a line that says exactly `To check by hand:`, with the steps to reproduce the bug, one per line.
+2. Stage the work and make the branch's verification commit, in the format of `git-flow.md` (The verification commit): its message is what the main branch gets, in one squashed commit with code, tests and documents. A fix has no Tester or `Critical tests:` section; the reproducing test goes in `Regression tests:`, so a later prune knows it's protected; if the fix needs checking in the real app, `To check by hand:` holds the steps to reproduce the bug.
 3. Show the user what to check, if anything, and wait for their confirmation.
 4. Merge, test and push as in `git-flow.md` (Merge and push), in the project's integration mode.

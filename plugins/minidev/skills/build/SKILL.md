@@ -49,11 +49,19 @@ Write the code until the critical tests, the whole test suite and the build pass
 
 If the approved list has no automated tests (the feature only shows in the real app), skip this step: the tester can't check anything there. Say so, and record "no tester: no automated tests" in the commit message.
 
-Otherwise, launch the `tester` agent (agent type `minidev:tester`). Give it only:
-- the feature's backlog entry, copied in full
-- the Constraints section of SPEC.md, copied in full, if it has one: limits the whole product respects, which the entry doesn't repeat
-- the base commit: where the feature's branch left the main branch (`git merge-base HEAD <main branch>`). First stage the work as in `references/git-flow.md` (Stage the work): `git diff` doesn't show files git doesn't track yet, and the new modules and tests are exactly what the tester needs to see. The tester reads the change itself with `git diff <base>`, instead of a copy pasted in its prompt
-- the project's test and build commands
+Otherwise, stage the work as in `references/git-flow.md` (Stage the work): `git diff` doesn't show files git doesn't track yet, and the new modules and tests are exactly what the tester needs to see. Then launch the `tester` agent (agent type `minidev:tester`) with this prompt, filled in and nothing added:
+
+```
+Feature entry (BACKLOG.md):
+<the entry, copied in full>
+
+Product constraints (SPEC.md, Constraints):
+<the section, copied in full, or "none">
+
+Base commit: <git merge-base HEAD <main branch>>
+Test command: <command>
+Build command: <command, or "none">
+```
 
 Don't pass your explanations, the conversation or your own view of what might be weak. Its value is not knowing what you meant.
 
@@ -85,13 +93,7 @@ Green tests say the feature works, not that the code, its tests and its document
 ## 7. Finish
 
 1. If anything after the review changed behavior, update SPEC.md and CHANGELOG.md to match, with the `document` skill.
-2. Stage the work and make the branch's verification commit, as in `references/git-flow.md`. It's the message the main branch gets, in the one squashed commit that brings it code, tests, `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`, unless project instructions say otherwise. It records the verification:
-   - the test suite and build results
-   - the tester's last report, verbatim, so the record is the tester's words and not your summary; before it, one line per earlier round: what it found and how it was resolved, and any tester test removed with the user's OK (or why there was no tester)
-   - the check of the tests, as `references/test-value.md` says, and each tester test as `<old tester file> → <new file> — <test name>`, since the tester's report names the old files
-   - the critical tests, as a block starting with a line that says exactly `Critical tests:`, one test per line as `<file> — <test name>`, so a later prune knows they're protected
-   - the review, as `references/review.md` says
-   - what is left for the user to check by hand, as a block starting with a line that says exactly `To check by hand:`, one item per line, so it can be found later with `git log --grep`
+2. Stage the work and make the branch's verification commit, in the format of `references/git-flow.md` (The verification commit). It's the message the main branch gets, in the one squashed commit that brings it code, tests, `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`, unless project instructions say otherwise. A feature uses every section but `Regression tests:`: the tester's last report goes in verbatim, so the record is its words and not your summary, and each tester test kept is listed as moved, since the report names the old files.
 3. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one), update SPEC.md if the fix changes a rule it states, and commit it as a checkpoint.
 4. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push), in the project's integration mode: local merge, or a pull request. Either way, the combined code is tested on the branch before it reaches the main branch. If it breaks after it's on the remote, follow `references/git-flow.md` (When a merged change breaks).
 
