@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-11-04
+
+### Fixed
+- **Revert** no longer contradicts the documents: `git revert` already undoes the change's SPEC rules, changelog line and backlog removal, so `document` only puts back a line from a released version (recording the revert under `[Unreleased]`) and adds what went wrong to the restored entry. `document` and the backlog reference name the revert as the one exception to "a failure in use is a bug".
+- SPEC.md's legend, the spec reference and `document` say the spec changes with fixes, chores and reverts too, not only when a feature is finished; `fix` says when it may change a rule without becoming a feature.
+- The `reviewer` is told whether a tester ran, instead of assuming one did for every feature; its description and the README mention its check of the tests.
+- The test-value sabotage covers tests written after the code (missing tests), as `chore` already used it, and names the agents' copies of its patterns that must change with it.
+- `brainstorm`'s description sends existing projects to `setup` first, as its body does.
+- The verification message is written by the skill that built the feature, not by `document`.
+- README: full paths to the build references, the local-merge flow in the diagram, the reviewer gets the base commit (not the diff), the chore changelog exception; the marketplace description matches `plugin.json`; the three-document table in `document`, the setup template and the trigger evals mention bugs, debt and constraints.
+
 ## [0.12.0] - 2026-11-04
 
 ### Added

@@ -15,7 +15,7 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names 
 
 If BACKLOG.md has an entry for it (type Bug), use it as the bug's description.
 
-If the bug came with a change already on the main branch (a feature, fix or chore just merged), offer the choice in `git-flow.md` (When a merged change breaks): fix forward here, or revert that change.
+If the bug came with a change already on the main branch (a feature, fix or chore just merged), offer the choice in the `build` skill's `references/git-flow.md` (`../build/references/git-flow.md` from this skill's folder), When a merged change breaks: fix forward here, or revert that change.
 
 If fixing it means deciding how the product should behave (two reasonable answers, or a rule SPEC.md doesn't cover), it's a feature: say so and record it with the `document` skill instead.
 
@@ -29,7 +29,7 @@ If fixing it means deciding how the product should behave (two reasonable answer
 
 ## 3. Finish
 
-1. With the `document` skill, record the fix in CHANGELOG.md under Fixed, and in SPEC.md if a rule changed. If BACKLOG.md had a Bug entry for it, remove it.
+1. With the `document` skill, record the fix in CHANGELOG.md under Fixed, and in SPEC.md if the fix corrects a rule written wrong there or makes explicit a rule it left implicit (deciding a new rule makes it a feature, as in section 1). If BACKLOG.md had a Bug entry for it, remove it.
 2. Stage the work and make the branch's verification commit, as in `git-flow.md`: its message is what the main branch gets, in one squashed commit with code, tests and documents. It records the suite and build results, the check of the tests and the review, if there were any, and, when the bug was reproduced in a test, that test as a block starting with a line that says exactly `Regression tests:`, one test per line as `<file> — <test name>`, so a later prune knows it's protected. If the fix needs checking in the real app, end the message with a block starting with a line that says exactly `To check by hand:`, with the steps to reproduce the bug, one per line.
 3. Show the user what to check, if anything, and wait for their confirmation.
 4. Merge, test and push as in `git-flow.md` (Merge and push), in the project's integration mode.

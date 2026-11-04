@@ -70,12 +70,15 @@ Fill it with the current behavior, taken from the code, tests and docs. Don't de
 Right after the title, translated to the file's language:
 
 ```markdown
-How <product> works today, as rules (not visual details), plus its data and technical decisions. Managed with the `document` skill: it's updated when a feature is finished, describing what was built. Ideas live in BACKLOG.md; what changed and when lives in CHANGELOG.md.
+How <product> works today, as rules (not visual details), plus its data and technical decisions. Managed with the `document` skill: it's updated when a feature, fix or chore changes what it describes, from what was built. Ideas live in BACKLOG.md; what changed and when lives in CHANGELOG.md.
 ```
 
 ## Updating it
 
 - **When a feature is finished:** add or change the rules of what was actually built, including what changed along the way (answers to open questions, decisions made during the work). Use the feature's Decisions as a guide, especially when they name a SPEC rule that changes.
+- **When a fix corrects a rule** written wrong here, or makes explicit one left implicit: change that rule.
+- **When a chore changes a technical decision** (a dependency added, replaced or removed, storage, structure the spec names): update the decision and its reason.
+- **When a change is reverted:** the revert already takes its rules out; check that nothing else in the file still depends on them.
 - **Put each rule in the area where a reader would look for it.** If no area fits, add one; if an area grew too big or no longer matches how the product is organized, propose a reorganization.
 - **Remove rules that no longer hold.** A spec with stale rules is worse than a short one.
 - **A feature's Constraints** go next to the rule they limit in Behavior, or under Constraints when they hold for the whole product (e.g. "every page works with the keyboard alone").

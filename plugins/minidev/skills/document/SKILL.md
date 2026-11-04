@@ -9,8 +9,8 @@ Three documents describe the product, each answering one question in time:
 
 | Document | Answers | Time |
 |---|---|---|
-| `BACKLOG.md` | What may come, and why the user wants it | future |
-| `SPEC.md` | How the product works **today**: rules, data, technical decisions | present |
+| `BACKLOG.md` | What may come, and why the user wants it (features, plus bugs and debt left for later) | future |
+| `SPEC.md` | How the product works **today**: rules, data, technical decisions, constraints | present |
 | `CHANGELOG.md` | What changed in each version, for the people who use it | past |
 
 The git history keeps the detail behind all three. This skill is the only one that writes them, so their roles stay apart and their formats stay consistent. Reading them for context needs no skill.
@@ -27,7 +27,7 @@ Read the reference for the document you're about to change, before changing it:
 ## Rules across the documents
 
 - **Each fact lives in one place.** A rule of behavior lives in SPEC.md. The changelog says, in a sentence or two, what changed for the user; a backlog entry says what is wanted and why. Don't copy SPEC rules into other documents (the README included): point to SPEC.md. Copies drift, and then two documents disagree.
-- **SPEC.md describes only what exists.** It's updated when a feature is finished, from what was actually built, not when it's planned. A planned rule lives in the feature's Decisions until then.
+- **SPEC.md describes only what exists.** It's updated from what was actually built (a feature finished, a fix that corrects a rule, a chore that changes a technical decision, a revert), never when something is planned. A planned rule lives in the feature's Decisions until then.
 - **A finished feature leaves the backlog** and lives on in the changelog (what changed), the spec (the rules) and git history (the detail).
 - **When a feature changes existing behavior**, its Decisions say which SPEC.md rule changes and how, so the update at the end is a known edit, not a rediscovery.
 
@@ -35,7 +35,7 @@ Read the reference for the document you're about to change, before changing it:
 
 1. **Recorded** in BACKLOG.md as an Idea.
 2. **Started:** In progress, with what to check by hand.
-3. **Finished:** verified; the entry leaves BACKLOG.md, the change goes to CHANGELOG.md and the rules to SPEC.md, all in the same commit as the code. The verification results go in that commit's message. If it fails later in use, it's a bug, not a reopened entry.
+3. **Finished:** verified; the entry leaves BACKLOG.md, the change goes to CHANGELOG.md and the rules to SPEC.md, all in the same commit as the code. The verification results go in that commit's message. If it fails later in use, it's a bug, not a reopened entry, unless its change is reverted, which restores the entry (`../build/references/git-flow.md`, When a merged change breaks).
 4. **Released:** the version's changes leave `[Unreleased]` in CHANGELOG.md.
 
 Bug and Debt entries skip In progress: they stay in BACKLOG.md until `fix` or `chore` does them, and leave it in that work's commit.
@@ -63,7 +63,8 @@ Each document starts with a short legend, so it's readable without this skill. T
 | Create SPEC.md | Show the proposed outline, wait for OK |
 | Update SPEC.md when a feature is finished, changelog entry | Write directly as part of finishing, then tell them |
 | Bug fix: changelog entry under Fixed, SPEC.md if a rule changed, Bug entry removed | Write directly as part of the fix, then tell them |
-| Chore: SPEC.md if a technical decision changed, changelog if users will notice, Debt entry removed | Write directly as part of the chore, then tell them |
+| Chore: SPEC.md if a technical decision changed, changelog if users will notice (or a notable docs/tooling change, `references/changelog.md`), Debt entry removed | Write directly as part of the chore, then tell them |
+| Revert: restored entry's Open questions, changelog line if the change was released | Write directly as part of the revert, then tell them |
 | Release | Show the version, date and entries, wait for OK |
 
 ## Commits

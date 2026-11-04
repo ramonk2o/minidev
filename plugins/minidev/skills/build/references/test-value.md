@@ -1,6 +1,6 @@
 # Test value
 
-What makes a test worth keeping, and how to check it. Used by the `build`, `fix` and `chore` skills to check the tests a change adds (Check the change's tests) and by `chore` to prune a whole suite; the `tester` and `reviewer` agents judge tests by the same rules.
+What makes a test worth keeping, and how to check it. Used by the `build`, `fix` and `chore` skills to check the tests a change adds (Check the change's tests) and by `chore` to prune a whole suite; the `tester` and `reviewer` agents judge tests by the same rules, from their own short copies (`agents/tester.md`, What to do, step 3; `agents/reviewer.md`, Tests as code): when the patterns below change, update those too.
 
 A test earns its place by being the one that fails when a rule breaks. A test that would still pass with the code broken, or that only repeats another test, costs maintenance and suite time and proves nothing.
 
@@ -36,7 +36,7 @@ A protected test that was renamed or moved is found through the history of its f
 
 ## Sabotage
 
-The proof that removing tests didn't remove a check. First commit a `wip:` checkpoint, so there's a clean point to return to. Then, for each rule that loses a test: break that rule in the code on purpose (invert a condition, return a wrong value, skip the step), run the test that stays and show it fails, then undo the sabotage and check that `git status --short` is clean again. One sabotage per rule, not per removed test. If the test that stays still passes, it isn't keeping the rule: the removal is wrong, keep the test. Record each sabotage (rule, what was broken, the test that failed) in the verification message.
+The proof that a test checks its rule: that removing tests didn't remove a check, or that a test written after the code (missing tests) would fail without it. First commit a `wip:` checkpoint, so there's a clean point to return to. Then, for each rule that loses a test, or that a test written after the code now checks: break that rule in the code on purpose (invert a condition, return a wrong value, skip the step), run the test that stays and show it fails, then undo the sabotage and check that `git status --short` is clean again. One sabotage per rule, not per removed test. If the test that stays still passes, it isn't keeping the rule: the removal is wrong, keep the test. For a new test, it isn't checking the rule: fix the test. Record each sabotage (rule, what was broken, the test that failed) in the verification message.
 
 Coverage, when the project already measures it, is an extra signal: compare it per file, before and after. Line coverage alone doesn't prove a rule is checked, since another test may run those lines without asserting anything.
 

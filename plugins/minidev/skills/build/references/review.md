@@ -10,6 +10,7 @@ How a finished change gets its independent code review by the `reviewer` agent. 
    - what the change is for: the feature's backlog entry (`build`), the bug as reported or its Bug entry (`fix`), the chore's description or its Debt entry (`chore`; for a test prune, also the list of removals the user approved), copied in full
    - the base commit: where the branch left the main branch (`git merge-base HEAD <main branch>`)
    - the project's lint and type-check commands, if any
+   - whether a `tester` checked the change: yes, or no and why ("bug fix", "chore", "no automated tests"), as a fact, without your view of the change
 
    Don't pass your explanations, the conversation or your own view of what might be weak: its value is not knowing what you meant.
 4. When it returns, check that `git status --short` and `git rev-parse HEAD` are the same as before. It's told never to edit files or git state, but it has a shell. Undo any change and tell the user what it touched.
