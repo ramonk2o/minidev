@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-11-04
+
+### Added
+- **Revert**: when a change already pushed breaks, the user chooses between fixing forward with `fix` and reverting its one squashed commit on a `fix/revert-<name>` branch; a reverted feature goes back to BACKLOG.md as an Idea. The main branch's pushed history is never rewritten.
+- `review.md`, next to `git-flow.md`: the reviewer protocol (launch, state check, acting on the report, what changes for `build`, `fix` and `chore`) in one file the three skills read, instead of `fix` and `chore` reading a section of `build`.
+- The plugin ships its own `LICENSE`, so installed copies carry it.
+
+### Changed
+- **Local merge** tests the combined code on the branch first: main is merged into the branch, the suite and build run there, and failures are fixed there. Main gets the squash only after that, and a failed confirmation run undoes the local commit instead of leaving main broken.
+- **The tester's report isn't filtered by the author**: removing a tester's test or calling a failure an assumption goes to the user first, a test the author thinks is wrong is the user's call, and the last report goes into the verification message verbatim.
+
 ## [0.10.1] - 2026-11-04
 
 ### Fixed

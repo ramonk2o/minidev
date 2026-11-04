@@ -26,7 +26,7 @@ If BACKLOG.md has an entry for it (type Debt), use it as the description of the 
    - **Dependency upgrades:** read the dependency's changelog or migration guide between the two versions for breaking changes before upgrading, and upgrade one dependency (or one group that must move together) at a time.
    - **Text, comments, docs:** no tests to add; the suite and build still run, since docs can be part of the build.
 4. Run the test suite and the build again: everything that passed before must pass now.
-5. If the change touches code (not only text, docs or a version number), launch the `reviewer` agent (agent type `minidev:reviewer`) as in the `build` skill's Refactor and review section, Review (`../build/SKILL.md` from this skill's folder; read only that part), passing the chore's description (or its Debt entry) instead of a feature entry. For a refactoring it's the only independent look at the new structure. A blocking finding whose fix would change behavior means the work is no longer only a chore: stop and tell the user, and handle that part as a bug (`fix`) or a feature.
+5. If the change touches code (not only text, docs or a version number), have it reviewed by the `reviewer` agent as in the `build` skill's `references/review.md` (`../build/references/review.md` from this skill's folder), passing the chore's description (or its Debt entry), and act on its report as that file says for `chore`. For a refactoring it's the only independent look at the new structure.
 
 ## 3. Finish
 

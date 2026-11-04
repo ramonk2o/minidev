@@ -15,6 +15,8 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) names 
 
 If BACKLOG.md has an entry for it (type Bug), use it as the bug's description.
 
+If the bug came with a change already on the main branch (a feature, fix or chore just merged), offer the choice in `git-flow.md` (When a merged change breaks): fix forward here, or revert that change.
+
 If fixing it means deciding how the product should behave (two reasonable answers, or a rule SPEC.md doesn't cover), it's a feature: say so and record it with the `document` skill instead.
 
 ## 2. Fix
@@ -22,7 +24,7 @@ If fixing it means deciding how the product should behave (two reasonable answer
 1. Read the `build` skill's `references/git-flow.md` (`../build/references/git-flow.md` from this skill's folder) and create the `fix/<short-name>` branch as it says (Start the branch).
 2. If the bug can be reproduced in a test, write the test and show that it fails for the reason reported. Then fix the code until it, the whole suite and the build pass.
 3. If it only shows in the real app, fix it and keep the steps to reproduce it for the commit message.
-4. If the fix changes code, launch the `reviewer` agent (agent type `minidev:reviewer`) as in the `build` skill's Refactor and review section, Review (`../build/SKILL.md` from this skill's folder; read only that part), passing the bug as reported (or its Bug entry) instead of a backlog entry. A fix has no tester, so a blocking finding that changes behavior is fixed test first, with no tester round after it.
+4. If the fix changes code, have it reviewed by the `reviewer` agent as in the `build` skill's `references/review.md` (`../build/references/review.md` from this skill's folder), passing the bug as reported (or its Bug entry), and act on its report as that file says for `fix`.
 
 ## 3. Finish
 

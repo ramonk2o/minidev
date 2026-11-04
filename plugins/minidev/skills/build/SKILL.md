@@ -62,6 +62,9 @@ Then act on its report:
 - **Extra tests that pass** and check a rule from the entry: keep them.
 - **Assumptions** (a test of a rule that was never decided): remove that test now, before anything is staged again (the report names its file and test). Ask the user, record the answer in the entry's Decisions, and test it if the answer makes it a rule.
 - **Uncovered rules:** add the missing tests.
+- **A tester's test you believe is wrong** (it contradicts the entry, or checks something the entry doesn't say): don't change the code to fit it, and don't remove it. Tell the user which test and why, and let them decide, as with a critical test.
+
+The tester's report is the check of your work, so you don't get to filter it: removing one of its tests, or calling a failure an assumption, always goes to the user first, with the test's name and a line on why. Only the tester's own Assumptions section can be acted on as above.
 
 Repeat until a report comes back with no failures. After 3 rounds with failures still open, stop and show the user what's left instead of looping.
 
@@ -71,21 +74,17 @@ Green tests say the feature works, not that the code is ready to live with. Two 
 
 **Refactor.** With the whole suite green, clean up the code you wrote: remove stubs that are left, dead code and debug output; give things names that say what they do; remove duplication, using what the codebase already has. Don't change behavior or the tests that check it. When the diff is large (many files, or new modules), run the `simplify` skill for this, if it's available. Run the test suite and the build again.
 
-**Review.** Launch the `reviewer` agent (agent type `minidev:reviewer`), even when there was no tester. Give it only the feature's backlog entry, the base commit (stage the work first, as for the tester), and the project's lint and type-check commands, if any. As with the tester, don't pass your explanations. It's told never to edit files or git state, but it has a shell: note `git status --short` and `git rev-parse HEAD` before launching it, and check that both are the same when it returns. Then act on its report:
-- **Blocking:** fix each one, or, if you disagree, tell the user why and let them decide. A fix that changes behavior is done test first, and then a new `tester` round checks the change.
-- **Suggestions:** apply the ones that are clearly better and cheap; for the rest, tell the user in a line each why not.
-
-One review is enough. Launch a second, new reviewer only when the blocking fixes changed a lot of code, and never more than two.
+**Review.** Even when there was no tester, have the change reviewed by the `reviewer` agent as in `references/review.md`, giving it the feature's backlog entry, and act on its report as that file says.
 
 ## 7. Finish
 
 1. With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md.
 2. Stage the work and make the branch's verification commit, as in `references/git-flow.md`. It's the message the main branch gets, in the one squashed commit that brings it code, tests, `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`, unless project instructions say otherwise. It records the verification:
    - the test suite and build results
-   - the tester's last report, summarized: rounds run, what it found and how it was resolved, extra tests kept (or why there was no tester)
-   - the review, summarized: blocking findings and how each was resolved, suggestions applied and declined
+   - the tester's last report, verbatim, so the record is the tester's words and not your summary; before it, one line per earlier round: what it found and how it was resolved, and any tester test removed with the user's OK (or why there was no tester)
+   - the review, as `references/review.md` says
    - what is left for the user to check by hand, as a block starting with a line that says exactly `To check by hand:`, one item per line, so it can be found later with `git log --grep`
 3. Show the user the "To check by hand" list and wait for them to check it. If something fails, fix it on the same branch (test first when it can be reproduced in one) and commit it as a checkpoint.
-4. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push), in the project's integration mode: local merge, or a pull request. Either way, the combined code is tested before it reaches the main branch on the remote.
+4. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push), in the project's integration mode: local merge, or a pull request. Either way, the combined code is tested on the branch before it reaches the main branch. If it breaks after it's on the remote, follow `references/git-flow.md` (When a merged change breaks).
 
 A feature is only finished through step 4, after the review (and, with automated tests, the tester): without their reports it hasn't been independently checked, and the commit message would claim more than was done.

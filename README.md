@@ -107,7 +107,7 @@ The `tester` agent gets only the backlog entry, the base commit to read the diff
 - **Uncovered rules:** missing tests are added.
 - **Assumptions:** tests of behavior nobody decided. They're dropped and the question comes to you.
 
-This repeats until a round has no failures, or stops after 3 rounds to show you what's left.
+Claude doesn't get to filter the report: if it thinks one of the tester's tests is wrong, or wants to remove one, that comes to you first. This repeats until a round has no failures, or stops after 3 rounds to show you what's left. The last report goes into the commit message verbatim, not summarized.
 
 ### 5. Refactor and review
 
@@ -115,7 +115,7 @@ With the suite green, Claude cleans up its own code (leftover stubs, dead code, 
 
 ### 6. Finish
 
-`document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. While working, Claude commits `wip:` checkpoints on the branch, so the work can be resumed in a new session or paused for a bug fix. Code, tests and the three documents reach main as **one squashed commit**, whose message records the test results, the tester's rounds, the review and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch reaches main in the project's integration mode. **Local merge:** it's squashed into main, the test suite and build run again on the combined code, and only then is main pushed. **Pull requests:** the branch is pushed, a pull request is opened with the verification message as its description, and it's squash-merged once the checks pass (Claude stops if it needs a review). A merge conflict, or a failure after the merge, stops the cycle and is shown to you; a failure is then fixed as a bug. The branch steps live in one place, `skills/build/references/git-flow.md`, shared by `build`, `fix`, `chore` and releases.
+`document` moves the feature out of the backlog: the rules that were actually built go to `SPEC.md` and the change goes to `CHANGELOG.md` under `[Unreleased]`. While working, Claude commits `wip:` checkpoints on the branch, so the work can be resumed in a new session or paused for a bug fix. Code, tests and the three documents reach main as **one squashed commit**, whose message records the test results, the tester's rounds, the review and a `To check by hand:` block (findable later with `git log --grep "To check by hand"`). You then check those items in the real app; anything that fails there is fixed on the same branch. Once you confirm everything works, the branch reaches main in the project's integration mode. **Local merge:** main is first merged into the branch and the test suite and build run there, so anything the combination breaks is fixed on the branch; only then is the branch squashed into main, tested once more and pushed. Main never holds untested code. **Pull requests:** the branch is pushed, a pull request is opened with the verification message as its description, and it's squash-merged once the checks pass (Claude stops if it needs a review). A merge conflict stops the cycle and is shown to you. If a change breaks after it's pushed, you choose between fixing forward with `fix` and reverting it: each branch is one commit on main, so a revert removes the whole change, and a reverted feature goes back to the backlog. The branch steps live in one place, `skills/build/references/git-flow.md`, shared by `build`, `fix`, `chore` and releases; the review steps in `skills/build/references/review.md`, shared by `build`, `fix` and `chore`.
 
 ### Bugs, chores and releases
 
@@ -162,4 +162,4 @@ Each case runs 3 times by default (about $0.10 per run); add `--runs 1` for a qu
 
 ## License
 
-MIT, see `LICENSE`. `grilling` keeps its own MIT license from Matt Pocock.
+MIT, see `LICENSE` (also shipped inside the plugin, as `plugins/minidev/LICENSE`). `grilling` keeps its own MIT license from Matt Pocock.

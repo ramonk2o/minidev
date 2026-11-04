@@ -40,12 +40,13 @@ The main branch gets the **final message**: the verification message (`git log -
 
 Once the user confirms everything works (or right after the verification commit, if there's nothing to check by hand), follow the project's integration mode.
 
-**Local merge:**
-1. Switch to the main branch and bring it up to date (`git pull --ff-only` if it has a remote).
-2. `git merge --squash <branch>`. If it has conflicts, stop and show them instead of resolving them on your own.
-3. Commit with the final message.
-4. Run the test suite and the build on the main branch. If the main branch moved since the branch started, this is the first time the combined code runs. If anything fails, don't push: show the user, and fix it as a bug.
-5. Delete the branch with `git branch -D <branch>` (git doesn't see a squashed branch as merged, so `-d` refuses), and push the main branch if the repository has a remote.
+**Local merge:** the main branch only ever receives code that was already tested combined with it, so a failure is fixed on the branch, never on the main branch.
+1. If the repository has a remote, bring the main branch up to date: `git switch <main branch>`, `git pull --ff-only`, `git switch <branch>`.
+2. On the branch, `git merge <main branch>` (the squash flattens this merge). If it has conflicts, stop and show them instead of resolving them on your own.
+3. Run the test suite and the build on the branch. If the main branch moved since the branch started, this is the first time the combined code runs. If anything fails, fix it on the branch (test first when it can be reproduced in one), commit it as a checkpoint and run them again. Tell the user what broke and how it was fixed, and add a line for it to the final message.
+4. Switch to the main branch, `git merge --squash <branch>` and commit with the final message.
+5. Run the test suite and the build once more, as a confirmation. If anything fails now, the commit hasn't left this machine: undo only that commit with `git reset --hard HEAD~1` (the working tree is clean, so nothing else is lost), switch back to the branch and show the user; continue from step 3.
+6. Delete the branch with `git branch -D <branch>` (git doesn't see a squashed branch as merged, so `-d` refuses), and push the main branch if the repository has a remote.
 
 **Pull requests:**
 1. Push the branch: `git push -u origin <branch>`.
@@ -55,3 +56,11 @@ Once the user confirms everything works (or right after the verification commit,
 5. Before merging, check that every commit the local main branch has is in the branch (`git merge-base --is-ancestor <main branch> <branch>`); if not, stop and show the user which commits are missing. Then merge with `gh pr merge --squash --subject "<first line>" --body "<rest>"`, from the final message as it stands now.
 6. Update the local main branch: `git switch <main branch>`, `git fetch origin`. If the local main branch had commits not on the remote (document changes made on it before the branch started), they're now inside the squashed commit, as step 5 checked: `git reset --hard origin/<main branch>`. Otherwise `git pull --ff-only`.
 7. Delete the local branch with `git branch -D <branch>`, and the remote one with `git push origin --delete <branch>` if GitHub didn't.
+
+## When a merged change breaks
+
+If a change that already reached the main branch on the remote turns out broken, show the user two ways and let them choose:
+- **Fix forward** with the `fix` skill, when the cause is clear and the fix is small.
+- **Revert** when the breakage hurts users now, or the cause isn't clear. Each branch reached the main branch as one commit, so reverting it removes the whole change at once: start a `fix/revert-<short-name>` branch as above, run `git revert --no-edit <sha>`, run the test suite and the build, and bring it in like any other branch. With the `document` skill, record it in CHANGELOG.md (under Removed for a feature, Fixed for a fix) and undo what the change wrote in SPEC.md. A reverted feature goes back to BACKLOG.md as an Idea, with what went wrong in its Open questions, and is built again later through `build`.
+
+Never rewrite the main branch's history once it's on the remote (no `reset` or force-push there): a revert is a new commit everyone can see.
