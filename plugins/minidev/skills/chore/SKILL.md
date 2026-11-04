@@ -5,7 +5,7 @@ description: In projects set up for the minidev cycle (a CLAUDE.md that names it
 
 # Chore
 
-Makes a change the user doesn't see in the product's behavior: the code, its dependencies or its tooling change, the rules don't. A chore has no critical test list and no independent tester (only a review of the code); its proof is the existing test suite, green before and after, with the tests that check behavior left as they were. Adding tests for rules that have none is a chore too; pruning tests is the one chore that removes existing tests, under its own rules (section 4).
+Makes a change the user doesn't see in the product's behavior: the code, its dependencies or its tooling change, the rules don't. A chore has no critical test list and no independent tester (only a review of the code); its proof is the existing test suite, green before and after, with the tests that check behavior left as they were. Adding tests for rules that have none is a chore too; pruning tests is the one chore that removes existing tests, under its own procedure (`references/prune.md`).
 
 Talk to the user in the language of the conversation. Project instructions (CLAUDE.md, AGENTS.md…) define the test and build commands; when they conflict with this skill, they win.
 
@@ -40,9 +40,8 @@ If, while working, the change turns out to touch anything but prose, stop and sw
    - **Dependency upgrades:** read the dependency's changelog or migration guide between the two versions for breaking changes before upgrading, and upgrade one dependency (or one group that must move together) at a time.
    - **Text mixed with other changes** (prose only takes the short path in section 1): no tests to add for the text; the suite and build still run.
    - **Missing tests:** test the rules of SPEC.md (or of the Debt entry) from the outside, and show each new test fails when its rule is sabotaged, as in the `build` skill's `references/test-value.md` (`../build/references/test-value.md` from this skill's folder): a test written after the code can't be shown failing first.
-   - **Pruning tests:** follow section 4 instead of this step.
 4. Run the test suite and the build again: everything that passed before must pass now.
-5. If the change added or edited tests (outside a prune), check them as in `test-value.md` (Check the change's tests).
+5. If the change added or edited tests, check them as in `test-value.md` (Check the change's tests).
 6. Update the documents, with the `document` skill, only where the chore touched what they describe:
    - **SPEC.md** when a technical decision changed (a dependency added, replaced or removed, storage, structure the spec names), with its reason.
    - **CHANGELOG.md** only when the people who use the product will notice: a new minimum version, faster loading, a security upgrade (under Security). Otherwise nothing: an internal refactoring isn't news (a notable change to project docs or tooling may still get a line, as the changelog reference allows).
@@ -60,12 +59,4 @@ If, while working, the change turns out to touch anything but prose, stop and sw
 
 ## 4. Pruning tests
 
-Removes the tests that don't earn their place, across the whole project unless the user names a part of it. Read `../build/references/test-value.md` first: it holds the rules, the patterns, the protected tests and the sabotage this section uses. Sections 2 and 3 still apply: steps 1 to 4 below replace step 3 of section 2, step 5 adds to its review (step 7) and step 6 to the verification message (section 3, step 2).
-
-1. **Map.** Handle skipped tests as that file says. Tie each test to what it keeps: a rule of SPEC.md (or its Constraints), a regression, an outside contract. Find the protected tests (`Critical tests:` and `Regression tests:` blocks, or the fallback for older projects) and the `Redundant older tests:` blocks earlier changes left (`git log --grep "Redundant older tests:"`). There's no target number unless the user gives one, and even then a test that stays by the rules stays.
-2. **List.** Show the user, in plain language and grouped by module, each candidate: the test, the pattern it fits, and the test that keeps its rule (or why it keeps nothing). Protected and "maybe protected" ones go in a separate group, named one by one. Also list the moves (misplaced tests) and, apart, the rules of SPEC.md no test checks. Wait for the user's OK; remove only what they approved.
-3. **Remove** in batches, one module at a time, together with the production code only those tests kept alive (an unused export, wrapper or reset hook). After each batch, sabotage each rule that lost a test as that file says (it starts with a checkpoint), and run the module's tests.
-4. **Record** each rule with no test as a Debt entry in BACKLOG.md, with the `document` skill. Don't write tests here: a prune only removes.
-5. **Review:** give the `reviewer` the approved list along with the chore's description.
-6. **Verification message:** tests before and after (count), test lines and production lines removed, counted apart, each sabotage, coverage per file before and after if the project measures it, the tests kept that looked useless and why, and what kept producing the useless tests; suggest the user a line for the project's CLAUDE.md, or, if the cycle itself produced them, a report to the plugin.
-
+A request to remove useless or duplicated tests follows `references/prune.md` from start to finish, instead of sections 2 and 3.

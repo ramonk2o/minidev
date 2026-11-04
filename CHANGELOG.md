@@ -5,6 +5,7 @@ All notable changes to this project are documented here. The format is based on 
 ## [Unreleased]
 
 ### Changed
+- **Test pruning has its own reference**, `chore/references/prune.md`: one linear procedure from branch to merge, instead of a section of `chore` that replaced and extended numbered steps elsewhere. It's loaded only for a prune.
 - **One verification message format**, in `git-flow.md` (The verification commit), with every section and the exact block names `git log --grep` searches; `build`, `fix`, `chore` and the review and test-value references say only which sections they use, instead of describing the blocks in four places.
 - **Fixed prompts for the tester and the reviewer**: `build` and `review.md` give the exact prompt to fill in (entry, SPEC constraints, base commit, commands, whether a tester ran), so nothing else reaches the agents.
 
