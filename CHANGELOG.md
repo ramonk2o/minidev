@@ -4,6 +4,14 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-11-04
+
+### Added
+- **Short path for prose**: a `chore` that only touches docs files or code comments skips the branch (in local merge mode), the suite run before and the review; the build runs if it processes those files, links are checked, and the change is one plain commit. A text the product shows, or anything else, still takes the full path.
+
+### Changed
+- **Local merge runs the suite once less**: after the squash, `git diff --quiet <branch> HEAD` confirms the main branch holds exactly the tree tested on the branch, and the suite and build run again only if it doesn't. The run after merging the main branch into the branch is skipped when that merge brought nothing and they already passed on the branch's last commit.
+
 ## [0.14.0] - 2026-11-04
 
 ### Changed

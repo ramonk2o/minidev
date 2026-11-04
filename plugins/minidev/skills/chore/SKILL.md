@@ -1,6 +1,6 @@
 ---
 name: chore
-description: In projects set up for the minidev cycle (a CLAUDE.md that names it), make a change that keeps the product's behavior as it is, on its own branch, with the test suite green before and after: refactoring, technical debt, dependency upgrades, migrations, tooling, build or CI config, small fixes to text, comments or docs, adding missing tests and pruning useless ones. Use it whenever the user wants to clean up, refactor, reorganize or simplify code, add tests to code that has none, remove useless or duplicated tests, upgrade or replace a dependency, migrate a tool, or fix a typo, e.g. "refactor the storage module", "update React to 19", "atualiza as dependências", "fix the typo in the README", "limpa os testes inúteis", "/minidev:chore X". Not for broken behavior (fix) or new behavior (document, then build).
+description: In projects set up for the minidev cycle (a CLAUDE.md that names it), make a change that keeps the product's behavior as it is, on its own branch, with the test suite green before and after (prose-only changes take a short path): refactoring, technical debt, dependency upgrades, migrations, tooling, build or CI config, small fixes to text, comments or docs, adding missing tests and pruning useless ones. Use it whenever the user wants to clean up, refactor, reorganize or simplify code, add tests to code that has none, remove useless or duplicated tests, upgrade or replace a dependency, migrate a tool, or fix a typo, e.g. "refactor the storage module", "update React to 19", "atualiza as dependências", "fix the typo in the README", "limpa os testes inúteis", "/minidev:chore X". Not for broken behavior (fix) or new behavior (document, then build).
 ---
 
 # Chore
@@ -17,6 +17,20 @@ If the change alters what the user sees or a rule in SPEC.md, it isn't a chore: 
 
 If BACKLOG.md has an entry for it (type Debt), use it as the description of the work.
 
+If the change only touches prose (Markdown or other docs files, and comments in code), follow the short path below instead of sections 2 and 3. Anything else, including a text the product shows to users or a string a test may check, takes the full path.
+
+### Short path: prose only
+
+Prose can't break the code, so a branch, a suite run before and a review would only add cost. What can still break is the build, when it builds the docs, and links.
+
+1. In **local merge** mode, work on the main branch: bring it up to date and handle uncommitted or in-progress work as in the `build` skill's `references/git-flow.md` (`../build/references/git-flow.md` from this skill's folder), The main branch and Start the branch. In **pull request** mode, create a `chore/<short-name>` branch as that file says: the main branch only takes pull requests.
+2. Make the change. Check that any link or anchor you touched still points somewhere.
+3. If the build processes these files (a docs site, a README bundled in a package), run it.
+4. Show the diff, then commit with a one-line message (e.g. `docs: fix typo in the README title`), with a line for the build result if it ran; no verification blocks. Product documents (BACKLOG.md, SPEC.md, CHANGELOG.md) are still changed only through the `document` skill.
+5. Local merge: push the main branch if it has a remote. Pull requests: bring it in as in `git-flow.md` (Merge and push).
+
+If, while working, the change turns out to touch anything but prose, stop and switch to the full path from section 2 (in local merge mode, move the work to a branch first: `git switch -c chore/<short-name>`).
+
 ## 2. Work
 
 1. Read the `build` skill's `references/git-flow.md` (`../build/references/git-flow.md` from this skill's folder) and create the `chore/<short-name>` branch as it says (Start the branch), or resume it if this work was started before (Resume).
@@ -24,7 +38,7 @@ If BACKLOG.md has an entry for it (type Debt), use it as the description of the 
 3. Make the change. Commit `wip:` checkpoints as in `git-flow.md`.
    - **Refactoring, debt, migrations:** don't change the tests that check behavior; if one fails, the change broke something, not the test. A test that checks an internal detail the refactoring removes may be changed: say which and why, and ask before changing it.
    - **Dependency upgrades:** read the dependency's changelog or migration guide between the two versions for breaking changes before upgrading, and upgrade one dependency (or one group that must move together) at a time.
-   - **Text, comments, docs:** no tests to add; the suite and build still run, since docs can be part of the build.
+   - **Text mixed with other changes** (prose only takes the short path in section 1): no tests to add for the text; the suite and build still run.
    - **Missing tests:** test the rules of SPEC.md (or of the Debt entry) from the outside, and show each new test fails when its rule is sabotaged, as in the `build` skill's `references/test-value.md` (`../build/references/test-value.md` from this skill's folder): a test written after the code can't be shown failing first.
    - **Pruning tests:** follow section 4 instead of this step.
 4. Run the test suite and the build again: everything that passed before must pass now.

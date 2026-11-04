@@ -1,6 +1,6 @@
 # Git flow
 
-How a feature, a fix or a chore gets its own branch and how that branch reaches the main branch. Used by the `build` skill (branch `feature/<short-name>`), the `fix` skill (branch `fix/<short-name>`), the `chore` skill (branch `chore/<short-name>`) and releases in pull request mode (branch `release/<version>`).
+How a feature, a fix or a chore (except a prose-only chore in local merge mode, `chore` skill) gets its own branch and how that branch reaches the main branch. Used by the `build` skill (branch `feature/<short-name>`), the `fix` skill (branch `fix/<short-name>`), the `chore` skill (branch `chore/<short-name>`) and releases in pull request mode (branch `release/<version>`).
 
 The branch may have as many commits as the work needs; the main branch gets **one squashed commit** per branch, whose message records the verification. So the branch's history is a working log, and the main branch's history is the record.
 
@@ -57,9 +57,9 @@ Once the user confirms everything works (or right after the verification commit,
 **Local merge:** the main branch only ever receives code that was already tested combined with it, so a failure is fixed on the branch, never on the main branch.
 1. If the repository has a remote, bring the main branch up to date: `git switch <main branch>`, update it as in The main branch, `git switch <branch>`.
 2. On the branch, `git merge <main branch>` (the squash flattens this merge). If it has conflicts, stop and show them instead of resolving them on your own.
-3. Run the test suite and the build on the branch. If the main branch moved since the branch started, this is the first time the combined code runs. If anything fails, fix it on the branch (test first when it can be reproduced in one), commit it as a checkpoint and run them again. Tell the user what broke and how it was fixed, and add a line for it to the final message.
+3. Run the test suite and the build on the branch, unless step 2 brought nothing (`Already up to date`) and they already passed on the branch's last commit. If the main branch moved since the branch started, this is the first time the combined code runs. If anything fails, fix it on the branch (test first when it can be reproduced in one), commit it as a checkpoint and run them again. Tell the user what broke and how it was fixed, and add a line for it to the final message.
 4. Switch to the main branch, `git merge --squash <branch>` and commit with the final message.
-5. Run the test suite and the build once more, as a confirmation. If anything fails now, the commit hasn't left this machine: undo only that commit with `git reset --hard HEAD~1` (the working tree is clean, so nothing else is lost), switch back to the branch and show the user; continue from step 3.
+5. Check that the main branch now holds exactly what was tested: `git diff --quiet <branch> HEAD`. It should, since step 2 merged the main branch into the branch; then the suite and build don't need to run again. Only if it shows a difference, run the test suite and the build. If anything fails, the commit hasn't left this machine: undo only that commit with `git reset --hard HEAD~1` (the working tree is clean, so nothing else is lost), switch back to the branch and show the user; continue from step 3.
 6. Delete the branch with `git branch -D <branch>` (git doesn't see a squashed branch as merged, so `-d` refuses), and push the main branch if the repository has a remote.
 
 **Pull requests:**
