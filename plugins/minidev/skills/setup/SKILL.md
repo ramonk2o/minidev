@@ -96,7 +96,7 @@ If the project already has a `CLAUDE.md` (or `AGENTS.md`, `.claude/CLAUDE.md`), 
 The cycle runs the same commands many times (tests before and after the code, the build, the tester's rounds, commits), and a permission prompt on each one breaks the flow. Propose `.claude/settings.json` entries under `permissions.allow` for:
 
 - the test, build, lint and type-check commands from step 2, each as a prefix rule so its arguments are covered (e.g. `Bash(npm test:*)`, `Bash(npm run build:*)`, `Bash(npx vitest:*)`);
-- the git commands the cycle uses locally: `git status`, `git diff`, `git log`, `git show`, `git blame`, `git rev-parse`, `git merge-base`, `git symbolic-ref`, `git write-tree`, `git branch --list`, `git branch -r`, `git worktree list`, `git remote`, `git ls-remote`, `git add`, `git commit`, `git switch`, `git merge`, `git fetch`, `git pull --ff-only`, `git pull --rebase`;
+- the git commands the cycle uses locally: `git status`, `git diff`, `git log`, `git show`, `git blame`, `git rev-parse`, `git merge-base`, `git symbolic-ref`, `git write-tree`, `git branch --list`, `git branch -r`, `git worktree list`, `git remote`, `git ls-remote`, `git add`, `git commit`, `git switch`, `git merge`, `git fetch`, `git pull --ff-only`, `git pull --rebase`, `git rebase --abort`, `git read-tree`, `git restore`, `git branch -m`, `git remote set-head`, `git tag`;
 - in pull request mode, the read-only `gh` commands: `gh pr view`, `gh pr list`, `gh pr checks`, `gh auth status`.
 
 Never add install, publish, deploy, `git push`, `git reset`, `gh pr create` or `gh pr merge` commands, or anything that deletes files or branches: those keep asking. If the file exists, merge: keep every existing entry and setting, add only what's missing. Show the resulting list.
