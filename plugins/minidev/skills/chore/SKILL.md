@@ -61,7 +61,7 @@ If the change turns out to touch anything but the wording, switch to the full pa
    - **BACKLOG.md**: remove the Debt entry, if there was one.
 
    This comes before the review, so the reviewer reads the documents with the code.
-7. If the change touches code (not only text, docs or a version number), have it reviewed by the `reviewer` agent as in the `build` skill's `references/review.md` (`../build/references/review.md` from this skill's folder), passing the chore's description (or its Debt entry), and act on its report as that file says for `chore`. For a refactoring it's the only independent look at the new structure.
+7. If the change touches code, have it reviewed by the `reviewer` agent as in the `build` skill's `references/review.md` (`../build/references/review.md` from this skill's folder), passing the chore's description (or its Debt entry), and act on its report as that file says for `chore`. For a refactoring it's the only independent look at the new structure. An upgrade counts as touching code even when only a version number and the lockfile change: the code now runs on another version. Only a change to text or docs skips the review.
 
 ## 3. Finish
 
