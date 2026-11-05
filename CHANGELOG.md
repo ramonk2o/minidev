@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-11-05
+
+### Changed
+- The verification commit's Tests and Build lines are copied from a run, not written: the runner's summary verbatim and the build's result, each with its command, from a run made after the last change to the code being committed.
+- The squash grader of the behavior evals accepts flags before `--squash` (`git merge -q --squash`).
+
 ## [0.20.0] - 2026-11-05
 
 ### Changed

@@ -77,7 +77,8 @@ When the work is verified, the skill makes the branch's last commit with the ver
 
 <what changed and why, in two or three lines>
 
-Tests: <suite result, with counts>. Build: <result>.
+Tests (<command>): <the runner's summary, copied verbatim>
+Build (<command>): <ok, or the last lines of the error; or "none">
 <chore: the same before the change; an upgrade: versions and breaking changes handled>
 
 Tester:
@@ -107,6 +108,8 @@ Redundant older tests:
 To check by hand:
 <one item per line>
 ```
+
+The Tests and Build lines are copied from a run, not written: the summary the test runner prints (its pass, fail and skip counts) and the build's result, from a run made after the last change to the code being committed. The last full run of the skill usually is that run; if anything changed after it (a fix from the review), run them again first. A chore's "before" line is copied the same way, from its run before the change.
 
 If fixes come after it (e.g. from checking by hand), commit them as checkpoints.
 
