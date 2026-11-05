@@ -4,6 +4,20 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.25.0] - 2026-11-05
+
+### Changed
+- **Chore review:** an upgrade is reviewed even when only a version number and the lockfile change, as `review.md` already said; only text or docs skip it.
+- **Prune** records the rules left with no test the way the spec audit does: one Debt entry per area, `Missing tests: <area>`.
+- **Setup permissions** also allow `git rebase --abort`, `git read-tree`, `git restore`, `git branch -m`, `git remote set-head` and `git tag`, which the cycle runs locally.
+- **README:** the cycle is now a map that points to each skill's file, instead of a second copy of the rules.
+
+### Fixed
+- `document` said reading the documents needs no skill, while presenting the backlog ("what's in the backlog?") is one of its operations; that's now the stated exception.
+
+### Added
+- `evals/check-copies.py` lists the eval copies of the CLAUDE.md template and of the unattended-run prompt that no longer match their source. The unattended-run prompt now names the start message and the adopted tester assumptions, `outcome/patch.sh` no longer needs BSD `sed`, and the README says what the evals need to run.
+
 ## [0.24.1] - 2026-11-05
 
 ### Fixed
