@@ -100,7 +100,7 @@ Critical tests:
 <build: file> — <test name>
 
 Regression tests:
-<fix: file> — <test name>
+<fix, or build's tester tests that caught a failure: file> — <test name>
 
 Redundant older tests:
 <file> — <test name> — <the test that covers it>

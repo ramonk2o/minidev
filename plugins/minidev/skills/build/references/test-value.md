@@ -30,7 +30,7 @@ Removing or merging one of these always goes to the user first, named one by one
 
 - **Critical tests:** the ones the user approved in a feature's critical test list, listed in its verification commit under `Critical tests:` (`git log --grep "Critical tests:"`).
 - **Regression tests:** the ones that reproduce a fixed bug, listed under `Regression tests:` (`git log --grep "Regression tests:"`).
-- **Tester tests:** during `build`, a test the `tester` wrote; the author doesn't filter the tester's work.
+- **Tester tests:** during `build`, a test the `tester` wrote; the author doesn't filter the tester's work. After the merge, the ones that caught a failure are regression tests (listed under `Regression tests:`); the others are ordinary tests, judged like any other.
 
 A protected test that was renamed or moved is found through the history of its file (`git log --follow`). In projects whose commits have no such blocks (built before them), count as "maybe protected" every test added by a commit that also added a line under Fixed in CHANGELOG.md, and let the user decide.
 

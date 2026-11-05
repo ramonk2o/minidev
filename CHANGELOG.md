@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.24.0] - 2026-11-05
+
+### Changed
+- **Tester:** Constraints on how the code is made (no new dependency, a platform version, no network access in a module) are left to the reviewer, who already reads the diff for them; the tester no longer writes tests that only read config or source text for them, or reports them as uncovered.
+- **Tester tests after the merge:** the ones that caught a failure are listed under `Regression tests:` in the feature's verification commit, so a later prune keeps asking before removing them; the other tester tests become ordinary tests at the merge.
+
 ## [0.23.0] - 2026-11-05
 
 ### Added
