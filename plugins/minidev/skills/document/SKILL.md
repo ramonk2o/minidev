@@ -13,7 +13,7 @@ Three documents describe the product, each answering one question in time:
 | `SPEC.md` | How the product works **today**: rules, data, technical decisions, constraints | present |
 | `CHANGELOG.md` | What changed in each version, for the people who use it | past |
 
-The git history keeps the detail behind all three. This skill is the only one that writes them, so their roles stay apart and their formats stay consistent. Reading them for context needs no skill.
+The git history keeps the detail behind all three. This skill is the only one that writes them, so their roles stay apart and their formats stay consistent. Reading them for context needs no skill; presenting the backlog when the user asks what's in it ("what's in the backlog?") does, since it's an operation of `references/backlog.md` (Present).
 
 Project instructions (CLAUDE.md, AGENTS.md…) may add project-specific details, such as how to verify a feature or the release steps outside these files. Follow them on top of this skill; when they conflict, they win.
 
