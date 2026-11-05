@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-11-05
+
+### Changed
+- **Leaner tester.** Only failures start a new tester round; assumptions, uncovered rules and extra tests no longer do, and a blocking review fix gets a test but no new round. The tester reports at most 3 assumptions, each with a recommended answer and no test. The feature size no longer counts rules, only lines and risk. On the Search outcome eval this cut the cost from $3.11 to $0.94 per run, with every hidden test still passing.
+
 ### Added
 - Outcome evals (`evals/outcome/`): a feature and a refactor run with and without the plugin, scored by hidden acceptance tests that `run.sh` runs against the code each run left.
 

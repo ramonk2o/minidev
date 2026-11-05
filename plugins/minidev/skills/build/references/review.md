@@ -27,7 +27,7 @@ How a finished change gets its independent code review by the `reviewer` agent. 
 ## Act on the report
 
 - **Blocking:** fix each one, or, if you disagree, tell the user why and let them decide. When the fix changes behavior:
-  - `build`: test first, then a new `tester` round checks the change.
+  - `build`: test first; no new `tester` round (the test and the finding it answers go in the verification message's Review section).
   - `fix`: test first; there's no tester round.
   - `chore`: the work is no longer only a chore. Stop and tell the user, and handle that part as a bug (`fix`) or a feature.
   A finding about the documents (a SPEC rule the code doesn't follow, a changelog line that says more than was done) is fixed with the `document` skill, or in the code if the document is right.

@@ -38,7 +38,7 @@ Show the list to the user in plain language, without code, in two groups:
 
 When the entry's Decisions change a rule SPEC.md states, also list, in a third group, the **existing tests this feature changes**: each test of the old rule, with how it will change. Tests that a fix or an earlier feature approved are protected (`references/test-value.md`), so this list is where the user approves changing them.
 
-Also say the feature's **size**. It's **small** when all of these hold: about 50 lines of production code or fewer (tests not counted), no new module or dependency, no Constraint about security, stored data, volume or user input (in the entry, or in the SPEC.md Constraints that apply), and at most 5 rules in the Automated tests group. A small feature skips the tester (step 5); the review still runs. Anything else is **full**, and so is a feature the user wants a tester for, or one you're unsure about. Propose it with the list, e.g. "Size: small, so no tester; say if you want one".
+Also say the feature's **size**. It's **small** when all of these hold: about 50 lines of production code or fewer (tests not counted), no new module or dependency, no Constraint about security, stored data, volume or user input (in the entry, or in the SPEC.md Constraints that apply). The number of rules doesn't count: many small rules in a few lines are still a small change. A small feature skips the tester (step 5); the review still runs. Anything else is **full**, and so is a feature the user wants a tester for, or one you're unsure about. Propose it with the list, e.g. "Size: small, so no tester; say if you want one".
 
 Wait for the user's OK on the list and the size. This is their chance to check that the right rules are being tested without reading test code. Put the approved list and size in the body of the next checkpoint (`references/git-flow.md`, Checkpoints), so a resumed session has it.
 
@@ -80,15 +80,15 @@ Before launching it and when it returns, check the repository as in `references/
 Then act on its report:
 - **Failures (bugs):** fix the code, keep the tester's test that caught it, and launch a **new** tester with the same inputs (stage the fixes first). A new one, so it doesn't carry the previous round's context.
 - **Extra tests that pass** and check a rule from the entry: keep them.
-- **Assumptions** (a test of a rule that was never decided): remove that test now, before anything is staged again (the report names its file and test). Ask the user, record the answer in the entry's Decisions, and test it if the answer makes it a rule.
+- **Assumptions** (behavior the entry never decided; the tester writes no test for them): ask the user, with the tester's recommended answer, record the answer in the entry's Decisions, and write the test yourself if the answer makes it a rule.
 - **Uncovered rules:** add the missing tests.
 - **A tester's test you believe is wrong** (it contradicts the entry, or checks something the entry doesn't say): don't change the code to fit it, and don't remove it. Tell the user which test and why, and let them decide, as with a critical test.
 
-The tester's report is the check of your work, so you don't get to filter it: removing one of its tests, or calling a failure an assumption, always goes to the user first, with the test's name and a line on why. Only the tester's own Assumptions section can be acted on as above.
+The tester's report is the check of your work, so you don't get to filter it: removing one of its tests, or calling a failure an assumption, always goes to the user first, with the test's name and a line on why. Only the tester's own Assumptions section is questions rather than tests.
 
 Put each report in the body of the checkpoint that follows it, verbatim, with its round.
 
-Repeat until a report comes back with no failures. After 3 rounds with failures still open, stop and show the user what's left instead of looping.
+Only failures start a new round: a round with none ends this step, even when it brought assumptions, uncovered rules or extra tests. The tests you add for those are read by the reviewer, not by another tester. After 3 rounds with failures still open, stop and show the user what's left instead of looping.
 
 ## 6. Refactor, check the tests, documents and review
 
@@ -96,7 +96,7 @@ Green tests say the feature works, not that the code, its tests and its document
 
 **Refactor.** With the whole suite green, clean up the code you wrote: remove stubs that are left, dead code and debug output; give things names that say what they do; remove duplication, using what the codebase already has. Don't change behavior or the tests that check it. When the diff is large (many files, or new modules), run the `simplify` skill for this, if it's available. Then run the tests of the modules the refactor touched (selected by file or name, when the test runner can; otherwise the whole suite). The whole suite and the build run at the end of the next step.
 
-**Check the tests.** Read `references/test-value.md`. First move the tester's kept tests out of their `tester` files into the tests of the module they exercise, following the project's conventions (the `tester` name only served the check after each round). Note which tests came from the tester, in the checkpoint's body; they stay protected, so merging or removing one still goes to the user. Then check the tests this feature added as that file says (Check the change's tests). If a later tester round adds tests (after a blocking review fix), move and check those too. End with the whole suite and the build, even when no test changed: it's the full run after the refactor.
+**Check the tests.** Read `references/test-value.md`. First move the tester's kept tests out of their `tester` files into the tests of the module they exercise, following the project's conventions (the `tester` name only served the check after each round). Note which tests came from the tester, in the checkpoint's body; they stay protected, so merging or removing one still goes to the user. Then check the tests this feature added as that file says (Check the change's tests). End with the whole suite and the build, even when no test changed: it's the full run after the refactor.
 
 **Documents.** With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md. This comes before the review, so the rules written in SPEC.md from what was built are read against the code by someone who didn't write them.
 
