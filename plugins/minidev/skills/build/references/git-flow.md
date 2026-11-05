@@ -1,6 +1,6 @@
 # Git flow
 
-How a feature, a fix or a chore (except a prose-only chore in local merge mode, `chore` skill) gets its own branch and how that branch reaches the main branch. Used by the `build` skill (branch `feature/<short-name>`), the `fix` skill (branch `fix/<short-name>`), the `chore` skill (branch `chore/<short-name>`) and releases in pull request mode (branch `release/<version>`).
+How a feature, a fix or a chore (except a chore's short paths, prose and product text, in local merge mode: `chore` skill) gets its own branch and how that branch reaches the main branch. Used by the `build` skill (branch `feature/<short-name>`), the `fix` skill (branch `fix/<short-name>`), the `chore` skill (branch `chore/<short-name>`) and releases in pull request mode (branch `release/<version>`).
 
 The branch may have as many commits as the work needs; the main branch gets **one squashed commit** per branch, whose message records the verification. So the branch's history is a working log, and the main branch's history is the record.
 
@@ -62,7 +62,7 @@ The `tester` and the `reviewer` are told not to touch the work or git state, but
 
 Commit on the branch whenever a step is done and before stopping, staged as above, with a message starting `wip:` that names the step done and the state (e.g. `wip: tests first — empty cart, failing`, `wip: tester round 2 — no failures`). Checkpoints let the work be resumed in a new session and keep a working state to go back to. They're never pushed to the main branch: the squash replaces them.
 
-A new session sees only the repository, not this conversation, so what a later step needs goes in the checkpoint's body: the approved critical test list, each tester report verbatim (with its round), which tests came from the tester and where they were moved, and the entry as it was before the documents step removed it. If a resumed branch lacks one of these, redo the step that produces it (e.g. a new tester round) rather than writing it from memory.
+A new session sees only the repository, not this conversation, so what a later step needs goes in the checkpoint's body, wherever the skill says to put something there. For a feature: the approved critical test list and size, each tester report verbatim (with its round), the tester's assumptions adopted, which tests came from the tester, where they were moved and which of them caught a failure, and the entry as it was before the documents step removed it. If a resumed branch lacks one of these, redo the step that produces it (e.g. a new tester round) rather than writing it from memory.
 
 If a commit-msg hook enforces a message format (commitlint, a conventional-commits check), adapt only the first line to it and keep the marker: `chore(wip): <step>` for checkpoints, `feat(<name>): …` or `fix(<name>): …` for the final message, `docs(backlog): …` for document commits; the body stays as below. If the project's CLAUDE.md doesn't name it yet, add a `Commit messages:` line to its Development cycle section, and look for the adapted marker when resuming.
 

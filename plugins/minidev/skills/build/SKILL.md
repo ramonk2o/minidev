@@ -40,7 +40,7 @@ The user is asked twice in a feature that goes as planned: once at the start (st
 
 ## 2. Critical test list
 
-A critical test checks a rule the user can see and that, if broken, means the feature fails. Take the rules from the entry's Description and Decisions, including the edge cases that were decided, its Constraints, and the SPEC.md Constraints that apply to it. A measurable constraint becomes an automated test (e.g. a search over 10,000 generated notes, with a time limit loose enough not to fail on a slow machine) or a check the project already runs (an accessibility or security linter); one that only shows in the real app goes to **To check by hand**. Each one tests behavior from the outside, through the public function or module, never internal details. Internal details change during implementation; the user-visible rules don't.
+A critical test checks a rule the user can see and that, if broken, means the feature fails. Take the rules from the entry's Description and Decisions, including the edge cases that were decided, its Constraints, and the SPEC.md Constraints that apply to it. A measurable constraint becomes an automated test (e.g. a search over 10,000 generated notes, with a time limit loose enough not to fail on a slow machine) or a check the project already runs (an accessibility or security linter); one that only shows in the real app goes to **To check by hand**. A Constraint on how the code is made rather than on what it does (no new dependency, a language or platform version) gets no test: the reviewer reads the diff for it. Each one tests behavior from the outside, through the public function or module, never internal details. Internal details change during implementation; the user-visible rules don't.
 
 The list is shown in the start message (section 1, step 4), in plain language, without code, in two groups:
 - **Automated tests:** the rules the test suite can check.
@@ -48,7 +48,7 @@ The list is shown in the start message (section 1, step 4), in plain language, w
 
 When the entry's Decisions change a rule SPEC.md states, also list, in a third group, the **existing tests this feature changes**: each test of the old rule, with how it will change. Tests that a fix or an earlier feature approved are protected (`references/test-value.md`), so this list is where the user approves changing them.
 
-Also say the feature's **size**. It's **small** when all of these hold: about 50 lines of production code or fewer (tests not counted), no new module or dependency, no Constraint about security, stored data, volume or user input (in the entry, or in the SPEC.md Constraints that apply). The number of rules doesn't count: many small rules in a few lines are still a small change. A small feature skips the tester (step 5); the review still runs. Anything else is **full**, and so is a feature the user wants a tester for, or one you're unsure about. Propose it with the list, e.g. "Size: small, so no tester; say if you want one".
+Also say the feature's **size**. It's **small** when all of these hold: about 50 lines of production code or fewer (tests not counted), no new module or dependency, no Constraint about security, stored data, volume or user input (in the entry, or in the SPEC.md Constraints that apply). The number of rules doesn't count: many small rules in a few lines are still a small change. A small feature skips the tester (section 5); the review still runs. Anything else is **full**, and so is a feature the user wants a tester for, or one you're unsure about. Propose it with the list, e.g. "Size: small, so no tester; say if you want one".
 
 The user's OK in the start message covers the list and the size. It's their chance to check that the right rules are being tested without reading test code. Put the approved list and size in the body of the branch's first checkpoint (`references/git-flow.md`, Checkpoints), so a resumed session has it.
 
@@ -60,13 +60,13 @@ Write the automated tests, following the project's test conventions (location, n
 
 ## 4. Implement
 
-Write the code until the critical tests, the whole test suite and the build pass. Change the existing tests the user approved in step 2, as approved, and no others. Don't change a critical test to make it pass. If a test turns out to be wrong, say why and ask before changing it, since the user approved that list.
+Write the code until the critical tests, the whole test suite and the build pass. Change the existing tests the user approved in section 2, as approved, and no others. Don't change a critical test to make it pass. If a test turns out to be wrong, say why and ask before changing it, since the user approved that list.
 
 ## 5. Independent tester
 
 Skip this step in two cases, saying so to the user and recording why in the verification message's Tester section:
 - **No automated tests** in the approved list (the feature only shows in the real app): the tester can't check anything there. Record "no tester: no automated tests".
-- **Small**, as approved in step 2, and still small once built: count the production lines the feature changed (`git diff --numstat <base>`, test files left out) and check it added no module or dependency. Record "no tester: small feature (<N> lines)"; the reviewer checks the coverage instead. If it grew past that, it's full now: tell the user and run the tester. The estimate made before the code is a guess; this count is the check.
+- **Small**, as approved in section 2, and still small once built: count the production lines the feature changed (`git diff --numstat <base>`, test files left out) and check it added no module or dependency. Record "no tester: small feature (<N> lines)"; the reviewer checks the coverage instead. If it grew past that, it's full now: tell the user and run the tester. The estimate made before the code is a guess; this count is the check.
 
 Otherwise, stage the work as in `references/git-flow.md` (Stage the work): `git diff` doesn't show files git doesn't track yet, and the new modules and tests are exactly what the tester needs to see. Then launch the `tester` agent (agent type `minidev:tester`) with this prompt, filled in and nothing added:
 
@@ -80,7 +80,7 @@ Product constraints (SPEC.md, Constraints):
 Base commit: <git merge-base HEAD <main branch>>
 Test command: <command>
 Build command: <command, or "none">
-Failing before the feature: <tests or build errors that already failed in step 1, or "none">
+Failing before the feature: <tests or build errors that already failed in section 1, step 7, or "none">
 ```
 
 Don't pass your explanations, the conversation or your own view of what might be weak. Its value is not knowing what you meant.
@@ -119,4 +119,4 @@ Green tests say the feature works, not that the code, its tests and its document
 3. **The end message.** Show the user, in one message, the assumptions adopted from the tester (section 5), each with its answer, to confirm or change, and the "To check by hand" list, to try in the real app; then wait. A changed answer, or something that fails by hand, is fixed on the same branch: test first (when it can be reproduced in one), then the code, SPEC.md updated if the fix changes a rule it states, and a checkpoint. With no assumptions and nothing to check by hand, there's no end message: go on to step 4.
 4. **Merge and push** the feature's branch as in `references/git-flow.md` (Merge and push), in the project's integration mode: local merge, or a pull request. Either way, the combined code is tested on the branch before it reaches the main branch. If it breaks after it's on the remote, follow `references/git-flow.md` (When a merged change breaks).
 
-A feature is only finished through step 4, after the review (and the tester, unless step 5 skipped it): without their reports it hasn't been independently checked, and the commit message would claim more than was done.
+A feature is only finished through step 4, after the review (and the tester, unless section 5 skipped it): without their reports it hasn't been independently checked, and the commit message would claim more than was done.

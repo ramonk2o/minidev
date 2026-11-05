@@ -4,6 +4,16 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.24.1] - 2026-11-05
+
+### Fixed
+- **Constraints on how the code is made** (no new dependency, a platform version) are left to the reviewer everywhere, not only in the tester: `build` no longer puts them in the critical test list, and the reviewer no longer blocks them for having no test.
+- **Adopted tester assumptions:** `document` now allows them in an entry's Decisions, marked "(assumed: the tester's recommendation)"; before, it said an assumption is always an open question. The entry format shows that marker and the **To check by hand** field.
+- **Checkpoint contents:** the list in `git-flow.md` now includes the size, the adopted assumptions and which tester tests caught a failure, so a resumed feature doesn't lose them.
+- **Setup** offers the spec audit only for a SPEC.md that already has behavior rules, not for one `brainstorm` just wrote.
+- **`fix` description:** a broken CI config goes to `chore`, and the changelog line is written only when users could see the bug, as in the skill's steps (also in `document` and the README).
+- Smaller leftovers: broken `git-flow.md` links in `document`'s backlog reference, the branch exception in `git-flow.md` now covering both chore short paths, "step N" references in `build` that meant sections, README passages left over from 0.22–0.24, and the trigger evals' copy of the CLAUDE.md template ("the features in progress").
+
 ## [0.24.0] - 2026-11-05
 
 ### Changed

@@ -58,6 +58,7 @@ Only the user moves a feature to Discarded. A new entry is always an Idea. Only 
 - **Description:** <the solution, from the user's point of view>
 - **Decisions:**
   - <a rule or choice already made>
+  - <a tester's assumption adopted by `build`> (assumed: the tester's recommendation)
 - **Constraints:**
   - <a limit the feature must respect, checkable: performance, security, accessibility, compatibility, privacy, volume>
 - **Out of scope:** <what was explicitly left out>
@@ -65,6 +66,8 @@ Only the user moves a feature to Discarded. A new entry is always an Idea. Only 
   - <what is still undecided>
 - **Notes (<what they are>, <date>):**
   - <findings from research, trials or options discussed>
+- **To check by hand:** (In progress only)
+  - <a rule that only shows in the real app>
 ```
 
 Omit any field with nothing to say; Status, Motivation and Description are always present.
@@ -82,7 +85,7 @@ How to fill it:
 - **Constraints** hold what the feature must respect besides its behavior: speed, security, accessibility, compatibility, privacy, how much data it handles. Write each so it can be checked ("searching 10,000 notes answers in under 200 ms", "works without a network", "usable with the keyboard alone"), not as a wish ("fast", "secure"); a limit nobody can name yet is an open question. Constraints of the whole product live in SPEC.md, not repeated in each entry.
 - **Open questions** keep undecided points visible instead of silently assuming an answer.
 - **Notes** keep context that isn't a decision yet: research findings, a trial's results, options weighed. Date them and say what they are (e.g. "options discussed on 2026-10-12, nothing decided").
-- Write only what the user said or decided. Don't invent requirements; an assumption is an open question.
+- Write only what the user said or decided. Don't invent requirements; an assumption is an open question. The one exception is a tester's assumption that `build` adopts while it builds the feature: it goes in Decisions marked "(assumed: the tester's recommendation)", until the user confirms or changes it at the end.
 
 ## Operations
 
@@ -116,22 +119,22 @@ Summarize by area: each feature's name and status. Apply the filter the user ask
 ### Start a feature
 1. If other features are In progress, check whether one overlaps this one: the same modules (from its Description and Decisions, and `git diff --stat <main branch>...<its branch>` when the branch exists) or the same SPEC.md section. If one does, name it and recommend finishing it first: both would change the same rules, and the second merge would conflict in SPEC.md or the code. The user decides. With no overlap, say which features are in progress and go on.
 2. Create the entry if it doesn't exist (a direct request).
-3. Set it **In progress**, with its branch's name (`In progress (feature/<name>)`), on the main branch, before its branch is created, and commit that there: the main branch is where anyone looks to see what is being built. When the work reuses the session's worktree branch instead, it goes in that branch's first commit (`../build/references/git-flow.md`, Worktrees).
-4. Once the critical test list is approved (on the feature's branch), add **To check by hand**: the rules that only show in the real app, for the user to try once it's built. The automated checks live in the tests, not here.
+3. Set it **In progress**, with its branch's name (`In progress (feature/<name>)`), on the main branch, before its branch is created, and commit that there: the main branch is where anyone looks to see what is being built. When the work reuses the session's worktree branch instead, it goes in that branch's first commit (`../../build/references/git-flow.md`, Worktrees).
+4. Once the critical test list is approved, add **To check by hand**, on the feature's branch: the rules that only show in the real app, for the user to try once it's built. The automated checks live in the tests, not here.
 
 ### Finish a feature
 Verifying the feature is the job of whoever built it (e.g. the `build` skill); this step only records it, in the same commit as the code.
 1. Update SPEC.md with the rules of what was built (`references/spec.md`).
 2. Add the change to CHANGELOG.md (`references/changelog.md`).
 3. Remove the entry and, if its area is left empty, the area.
-4. The verification message, with the "To check by hand" list, is written by the skill that built the feature (`../build/references/git-flow.md`, The verification commit), not here.
+4. The verification message, with the "To check by hand" list, is written by the skill that built the feature (`../../build/references/git-flow.md`, The verification commit), not here.
 
 When the user says a feature is done that didn't go through `build` (built by hand or elsewhere), tell them it wasn't checked independently (no tester, no review) and offer to run it through `build` from its review step. If they just want it recorded, check that the code does what the entry says, write steps 1 to 3 from the code as it is, and commit them on their own, with a message that says it wasn't verified.
 
-If the user later finds a problem in use, it's handled as a bug fix, not by reopening the entry. A revert is the exception: it restores the entry as it was, and this skill adds what went wrong to its Open questions (`../build/references/git-flow.md`, When a merged change breaks).
+If the user later finds a problem in use, it's handled as a bug fix, not by reopening the entry. A revert is the exception: it restores the entry as it was, and this skill adds what went wrong to its Open questions (`../../build/references/git-flow.md`, When a merged change breaks).
 
 ### Change status
-Update the field when the user asks, e.g. pause a feature (In progress → Idea). Write it directly and tell them. Pausing is written on the main branch; the feature's branch, if any, stays as it is, to be resumed later (`../build/references/git-flow.md`, Resume).
+Update the field when the user asks, e.g. pause a feature (In progress → Idea). Write it directly and tell them. Pausing is written on the main branch; the feature's branch, if any, stays as it is, to be resumed later (`../../build/references/git-flow.md`, Resume).
 
 ### Discard
 Move the entry to "Discarded", keeping only its **Description** and a **Why discarded** line with the reason and the date. If its area is left empty, remove the area. If the feature was In progress and has a branch, ask whether to delete it (`git branch -D`, the work is lost) or keep it. Before deleting it, look in `git log <main branch>..<branch> -- BACKLOG.md SPEC.md CHANGELOG.md` for document changes made on it that aren't part of the feature (an idea recorded meanwhile) and carry them to the main branch first, or they're lost with it.
