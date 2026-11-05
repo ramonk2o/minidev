@@ -117,7 +117,7 @@ The main branch gets the **final message**: the verification message (`git log -
 
 ## Merge and push
 
-Once the user confirms everything works (or right after the verification commit, if there's nothing to check by hand), follow the project's integration mode.
+Once the user confirms everything works (or right after the verification commit, if there's nothing to check by hand and no assumption to confirm), follow the project's integration mode.
 
 **Local merge:** the main branch only ever receives code that was already tested combined with it, so a failure is fixed on the branch, never on the main branch.
 1. If the repository has a remote, bring the main branch up to date: `git switch <main branch>`, update it as in The main branch, `git switch <branch>`.

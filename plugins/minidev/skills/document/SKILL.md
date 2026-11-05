@@ -57,7 +57,7 @@ Each document starts with a short legend, so it's readable without this skill. T
 
 | Operation | Before writing |
 |---|---|
-| Capture a feature from the conversation | Show the draft, wait for OK (an interview summary the user already approved counts as that OK) |
+| Capture a feature from the conversation | Show the draft, wait for OK (an interview summary the user already approved counts as that OK, and so does `build`'s start message, which shows the draft with the critical test list) |
 | Clear idea, bug or debt left for later, status change asked by the user | Write directly, then tell them |
 | Clean up, reorganize, new area, aligning a document's format | Show the plan, wait for OK |
 | Create SPEC.md | Show the proposed outline, wait for OK (an outline the user approved in a `brainstorm` plan counts as that OK) |

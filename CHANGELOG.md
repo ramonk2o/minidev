@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.22.0] - 2026-11-05
+
+### Changed
+- **Two stops in a feature that goes as planned.** At the start, one message holds everything the work needs decided: the entry's draft for a direct request, the open points with recommended answers, modules with no tests, an overlap with another feature in progress, the critical test list and the size; one OK covers it, before the entry is set In progress or the branch exists. The tester's assumptions no longer stop the work: their recommended answers are adopted, tested and marked in the entry's Decisions, and shown at the end with what to check by hand, to confirm or change. Unexpected stops (a red suite, a disputed test, a review disagreement, a conflict) and the `grilling` interview stay.
+
 ## [0.21.0] - 2026-11-05
 
 ### Changed

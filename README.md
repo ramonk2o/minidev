@@ -41,16 +41,17 @@ You don't need to call `grilling`, `document`, `build`, `fix` or `chore` by name
  idea ──► grilling (if behavior is open) ──► BACKLOG.md: Idea
                                                   │
                                                   ▼
-                                   build: new branch feature/<name>
+                                   build: critical test list, open points
+                                   and size in one message ──► your OK
                                                   │
                                                   ▼
-                                   critical test list ──► your OK
+                                   new branch feature/<name>
                                                   │
                                                   ▼
                                    tests first (shown failing) ──► code
                                                   │
                                                   ▼
-                                   tester agent ◄──► fixes (new tester each round)
+                                   tester agent ◄──► fixes (a new tester for each round with failures)
                                                   │
                                                   ▼
   refactor ──► check the tests ──► SPEC + CHANGELOG, entry leaves BACKLOG ──► reviewer ──► fixes
@@ -59,7 +60,7 @@ You don't need to call `grilling`, `document`, `build`, `fix` or `chore` by name
                        verification commit: code, tests and documents
                                                   │
                                                   ▼
-                                   you check by hand what tests can't
+                                   you confirm the tester's assumptions and check by hand what tests can't
                                                   │
                                                   ▼
         main merged into the branch, test ──► squash into main, push
@@ -93,10 +94,10 @@ A clear idea is recorded straight into `BACKLOG.md` as an **Idea**. If it leaves
 
 ### 3. Build
 
-`build` works on each feature in a fixed order. Several features can be in progress at once, each on its own branch (and worktree, if you want); when one you start touches the same modules or `SPEC.md` section as another in progress, Claude recommends finishing that one first, and you decide. All the work happens on a `feature/<name>` branch, created from an up-to-date main branch right after the rules check, so main only receives finished, verified features. Just before the branch, the entry is set **In progress** on main, with its branch's name, so main's backlog always shows what is being built.
+`build` works on each feature in a fixed order. Several features can be in progress at once, each on its own branch (and worktree, if you want); when one you start touches the same modules or `SPEC.md` section as another in progress, Claude recommends finishing that one first, and you decide. All the work happens on a `feature/<name>` branch, created from an up-to-date main branch once you approve the start message, so main only receives finished, verified features. Just before the branch, the entry is set **In progress** on main, with its branch's name, so main's backlog always shows what is being built.
 
-1. **Rules check.** The entry needs its rules and its **Constraints**, plus the product-wide ones in `SPEC.md` that apply to it: what it must respect besides behavior (speed, security, accessibility, compatibility, how much data), written so they can be checked. If a few are missing, or the feature has an obvious risk nobody addressed, Claude asks them directly; if it's still a bare idea, it offers a `grilling` interview first. Tests built on guessed rules would encode assumptions nobody approved.
-2. **Critical test list.** In plain language, no code, split in two: what the test suite will check (measurable constraints included), and what you'll **check by hand** in the real app (visuals, focus, dragging…). You approve the list; its check-by-hand part is added to the entry (the automated part lives in the tests).
+1. **Rules check.** The entry needs its rules and its **Constraints**, plus the product-wide ones in `SPEC.md` that apply to it: what it must respect besides behavior (speed, security, accessibility, compatibility, how much data), written so they can be checked. If a few are missing, or the feature has an obvious risk nobody addressed, Claude gives each its recommended answer, for the critical test list's message; if it's still a bare idea, it offers a `grilling` interview first. Tests built on guessed rules would encode assumptions nobody approved.
+2. **Critical test list.** In plain language, no code, split in two: what the test suite will check (measurable constraints included), and what you'll **check by hand** in the real app (visuals, focus, dragging…). It comes in one message with everything else the work needs decided: the entry's draft for a direct request, the open points with recommended answers, modules with no tests, an overlap with another feature in progress, and the size. One OK covers it all, and changing an answer changes the list before anything is written. Its check-by-hand part is added to the entry (the automated part lives in the tests).
 3. **Tests first.** The automated tests are written and run (against a stub of the public interface, if the module is new), and must fail for the right reason: the feature is missing. A test that passes before the code exists isn't testing the feature.
 4. **Code.** Written until the critical tests, the whole suite and the build pass. A critical test is never changed to make it pass without asking you.
 
@@ -106,7 +107,7 @@ The `tester` agent gets only the backlog entry, the Constraints section of `SPEC
 
 - **Failures:** Claude fixes the code, keeps the test that caught it and launches a *new* tester, so nothing carries over from the last round.
 - **Uncovered rules:** missing tests are added.
-- **Assumptions:** behavior nobody decided, at most 3, each with a recommended answer and no test. The question comes to you, and Claude tests the answer if it becomes a rule.
+- **Assumptions:** behavior nobody decided, at most 3, each with a recommended answer and no test. Claude doesn't stop for them: it adopts the recommended answer, tests it, and shows it to you at the end, with what you check by hand, to confirm or change.
 
 Claude doesn't get to filter the report: if it thinks one of the tester's tests is wrong, or wants to remove one, that comes to you first. Only failures start a new round: a round with none ends the step, and what you decide about its assumptions is tested by Claude and read by the reviewer. After 3 rounds with failures, it stops to show you what's left. The last report goes into the commit message verbatim, not summarized.
 
