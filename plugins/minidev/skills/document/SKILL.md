@@ -1,6 +1,6 @@
 ---
 name: document
-description: In projects set up for the minidev cycle, or elsewhere when the user explicitly asks to change one of these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the feature being built, and bugs or debt left for later), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done"), update or create the spec, write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
+description: In projects set up for the minidev cycle, or elsewhere when the user explicitly asks to change one of these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the features being built, and bugs or debt left for later), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done"), update or create the spec, write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
 ---
 
 # Document
@@ -34,7 +34,7 @@ Read the reference for the document you're about to change, before changing it:
 ## The feature lifecycle at a glance
 
 1. **Recorded** in BACKLOG.md as an Idea.
-2. **Started:** In progress, committed on the main branch; what to check by hand is added on the feature's branch.
+2. **Started:** In progress, with its branch's name, committed on the main branch (several features can be in progress, each on its own branch); what to check by hand is added on the feature's branch.
 3. **Finished:** verified; the entry leaves BACKLOG.md, the change goes to CHANGELOG.md and the rules to SPEC.md, all in the same commit as the code. The verification results go in that commit's message. If it fails later in use, it's a bug, not a reopened entry, unless its change is reverted, which restores the entry (`../build/references/git-flow.md`, When a merged change breaks).
 4. **Released:** the version's changes leave `[Unreleased]` in CHANGELOG.md.
 

@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-11-05
+
+### Changed
+- **Several features in progress at once**, each on its own branch (and worktree, if wanted). An In progress entry names its branch (`In progress (feature/<name>)`), so Resume finds it. Starting a feature no longer asks what to do with the one in progress: it checks whether another in progress touches the same modules or SPEC.md section, and if so recommends finishing that one first, leaving the choice to the user.
+
 ## [0.19.0] - 2026-11-05
 
 ### Changed

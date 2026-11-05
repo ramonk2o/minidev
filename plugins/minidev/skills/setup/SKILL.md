@@ -49,7 +49,7 @@ Build the file from the template below. Fill every `<…>`; the final file has n
 # <Project name>
 
 <What the project is, in one sentence.>
-- How it works today: `SPEC.md`. Ideas, the feature in progress and bugs or debt left for later: `BACKLOG.md`. What changed in each version: `CHANGELOG.md`.
+- How it works today: `SPEC.md`. Ideas, the features in progress and bugs or debt left for later: `BACKLOG.md`. What changed in each version: `CHANGELOG.md`.
 
 ## Commands
 - Install: `<command>` <(side effects worth knowing)>

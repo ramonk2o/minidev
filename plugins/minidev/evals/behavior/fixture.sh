@@ -69,9 +69,9 @@ EOF
 cat > BACKLOG.md <<'EOF'
 # Backlog
 
-Feature ideas, the feature being built, and bugs and debt left for later, managed with the `document` skill. Implemented features leave this file: what changed goes to CHANGELOG.md and the rules to SPEC.md.
+Feature ideas, the features being built, and bugs and debt left for later, managed with the `document` skill. Implemented features leave this file: what changed goes to CHANGELOG.md and the rules to SPEC.md.
 
-Status: **Idea** → **In progress** (one at a time) → done (leaves the file in the commit that implements it). Discarded ideas go to the last section.
+Status: **Idea** → **In progress** (each on its own branch) → done (leaves the file in the commit that implements it). Discarded ideas go to the last section.
 
 ## Notes
 
@@ -102,7 +102,7 @@ cat > CLAUDE.md <<'EOF'
 # Notes
 
 A tiny in-memory notes library for scripts.
-- How it works today: `SPEC.md`. Ideas, the feature in progress and bugs or debt left for later: `BACKLOG.md`. What changed in each version: `CHANGELOG.md`.
+- How it works today: `SPEC.md`. Ideas, the features in progress and bugs or debt left for later: `BACKLOG.md`. What changed in each version: `CHANGELOG.md`.
 
 ## Commands
 - Tests: `npm test` (node:test)

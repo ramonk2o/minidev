@@ -38,7 +38,7 @@ First check whether this work already has a branch (Resume, below). Otherwise, f
 Work stopped in an earlier session lives on its branch; the main branch doesn't show how far it got. When the user asks to continue something, or before starting a branch for work that may have been started already:
 
 1. List the work branches: `git branch --list 'feature/*' 'fix/*' 'chore/*' 'release/*'` and, if the repository has a remote, after `git fetch <remote>`, the ones only on it (`git branch -r --list '<remote>/feature/*'`, and so on; `git switch <branch>` creates the local one, tracking it). Also `git worktree list` (a branch checked out in another worktree is worked on there; tell the user and don't switch to it). In pull request mode, also `gh pr list --author @me`.
-2. If one matches the work by name (or the user isn't sure which), show it and confirm. Ask before resuming work on a branch the user didn't name.
+2. If one matches the work by name (an In progress entry names its branch), or the user isn't sure which, show it and confirm. Ask before resuming work on a branch the user didn't name.
 3. With a clean working tree (otherwise ask the user first), `git switch <branch>`. Read `git log --format='%h %s' <main branch>..<branch>`: the checkpoint messages say which steps are done, and their bodies hold what the next steps need (Checkpoints). Read the last checkpoint's diff and run the test suite to see where the work stands.
 4. Tell the user where it stopped and continue from the next step of the skill. A step half done since the last checkpoint is redone from its start.
 5. In pull request mode, if the branch has an open pull request, read its state (`gh pr view <branch>`): it may be waiting for checks or a review (Merge and push, steps 3 and 4).

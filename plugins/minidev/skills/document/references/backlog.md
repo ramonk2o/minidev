@@ -1,6 +1,6 @@
 # BACKLOG.md
 
-`BACKLOG.md`, at the project root, is the single place for feature ideas, for the feature being built, and for bugs and technical debt left for later. Each entry starts from **why** the user wants it, because a feature that loses its motivation gets built wrong or never gets prioritized. Implemented features leave the file.
+`BACKLOG.md`, at the project root, is the single place for feature ideas, for the features being built, and for bugs and technical debt left for later. Each entry starts from **why** the user wants it, because a feature that loses its motivation gets built wrong or never gets prioritized. Implemented features leave the file.
 
 Read `BACKLOG.md` before changing it.
 
@@ -32,9 +32,9 @@ Read `BACKLOG.md` before changing it.
 Translated to the file's language:
 
 ```markdown
-Feature ideas, the feature being built, and bugs and debt left for later, managed with the `document` skill. Implemented features leave this file: what changed goes to CHANGELOG.md and the rules to SPEC.md.
+Feature ideas, the features being built, and bugs and debt left for later, managed with the `document` skill. Implemented features leave this file: what changed goes to CHANGELOG.md and the rules to SPEC.md.
 
-Status: **Idea** → **In progress** (one at a time) → done (leaves the file in the commit that implements it). Discarded ideas go to the last section.
+Status: **Idea** → **In progress** (each on its own branch) → done (leaves the file in the commit that implements it). Discarded ideas go to the last section.
 ```
 
 ## Statuses
@@ -42,7 +42,7 @@ Status: **Idea** → **In progress** (one at a time) → done (leaves the file i
 | Status | Meaning | Extra fields |
 |---|---|---|
 | **Idea** | Recorded, not decided. | — |
-| **In progress** | Being built. Only one at a time. Set on the main branch when the work starts. | **To check by hand** (once the critical test list is approved) |
+| **In progress** | Being built, on the branch it names: `In progress (feature/<name>)`. Several can be in progress at once, each on its own branch. Set on the main branch when the work starts. | **To check by hand** (once the critical test list is approved) |
 | done | Implemented and verified: the entry leaves the file. | — |
 
 Only the user moves a feature to Discarded. A new entry is always an Idea. Only features go In progress: a Bug or Debt entry stays an Idea until `fix` or `chore` does it, and then leaves the file.
@@ -114,9 +114,9 @@ Before adding or capturing, look for an identical or similar entry (including in
 Summarize by area: each feature's name and status. Apply the filter the user asks for (area, status). Give a feature's details only when asked.
 
 ### Start a feature
-1. If another feature is In progress, say so, with its branch if one exists (`git branch --list 'feature/*'`), and ask what to do: resume it, pause it back to Idea, or stop.
+1. If other features are In progress, check whether one overlaps this one: the same modules (from its Description and Decisions, and `git diff --stat <main branch>...<its branch>` when the branch exists) or the same SPEC.md section. If one does, name it and recommend finishing it first: both would change the same rules, and the second merge would conflict in SPEC.md or the code. The user decides. With no overlap, say which features are in progress and go on.
 2. Create the entry if it doesn't exist (a direct request).
-3. Set it **In progress**, on the main branch, before its branch is created, and commit that there: the main branch is where anyone looks to see what is being built. When the work reuses the session's worktree branch instead, it goes in that branch's first commit (`../build/references/git-flow.md`, Worktrees).
+3. Set it **In progress**, with its branch's name (`In progress (feature/<name>)`), on the main branch, before its branch is created, and commit that there: the main branch is where anyone looks to see what is being built. When the work reuses the session's worktree branch instead, it goes in that branch's first commit (`../build/references/git-flow.md`, Worktrees).
 4. Once the critical test list is approved (on the feature's branch), add **To check by hand**: the rules that only show in the real app, for the user to try once it's built. The automated checks live in the tests, not here.
 
 ### Finish a feature
