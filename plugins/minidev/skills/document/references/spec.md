@@ -63,7 +63,7 @@ Adapt it to the project:
 Show the user the adapted outline: the sections, the Behavior areas, and a sentence on what each one will hold, with why the outline differs from the default where it does. Wait for the OK. An outline the user already approved in a `brainstorm` plan counts as that OK: don't ask again.
 
 ### 4. Write it from what exists
-Fill it with the current behavior, taken from the code, tests and docs. Don't describe intended behavior as if it existed. When the code is ambiguous about a rule (behavior that looks accidental, or code and docs that disagree), don't decide it: list those points to the user at the end and ask which is the rule.
+Fill it with the current behavior, taken from the code, tests and docs. Don't describe intended behavior as if it existed. Check each rule as you write it, as in `references/spec-audit.md` (Each rule): a rule no test checks is written and goes into a `Missing tests` Debt entry; code that contradicts the docs, behavior that looks accidental, or a documented rule no code does, isn't written until the user says which is the rule. Show those points, and the Debt entries, with the finished draft.
 
 ## Legend
 
@@ -74,6 +74,8 @@ How <product> works today, as rules (not visual details), plus its data and tech
 ```
 
 ## Updating it
+
+When the user asks to audit it, or to update it without naming a change, follow `references/spec-audit.md`.
 
 - **When a feature is finished:** add or change the rules of what was actually built, including what changed along the way (answers to open questions, decisions made during the work). Use the feature's Decisions as a guide, especially when they name a SPEC rule that changes.
 - **When a fix corrects a rule** written wrong here, or makes explicit one left implicit: change that rule.

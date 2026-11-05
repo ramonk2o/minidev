@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.23.0] - 2026-11-05
+
+### Added
+- **Spec audit** (`document`, `references/spec-audit.md`): SPEC.md checked against the code rule by rule, and the code's visible behavior checked against the rules. Contradictions, rules no code does and behavior that looks accidental come as questions with a recommendation; untested rules become `Missing tests` Debt entries; a large product goes one area at a time. It runs when asked ("does SPEC.md match the code?"), when `setup` adopts a project that already has SPEC.md (offered), and as part of writing a new SPEC.md for existing code.
+- Trigger evals: auditing the spec fires `document` (not `chore`), in Portuguese and English.
+
 ## [0.22.0] - 2026-11-05
 
 ### Changed

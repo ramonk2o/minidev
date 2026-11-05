@@ -120,5 +120,5 @@ Show everything in one message: git setup and, if there were no tests, the test 
 ## 9. Finish
 
 1. Apply what was approved, in this order: `git init` and `.gitignore`; the test setup, run and shown passing (if it fails, fix it or stop before the CLAUDE.md); the CLAUDE.md; `.claude/settings.json`; the removals.
-2. If any of `SPEC.md`, `BACKLOG.md`, `CHANGELOG.md` is missing, or an old document was pointed out in step 7, load the `document` skill and create or align them with it. Don't write them yourself: their formats belong to that skill.
+2. If any of `SPEC.md`, `BACKLOG.md`, `CHANGELOG.md` is missing, or an old document was pointed out in step 7, load the `document` skill and create or align them with it. Don't write them yourself: their formats belong to that skill. For existing code, `document` checks each rule of a new SPEC.md against the code as it writes it, so untested rules become `Missing tests` Debt entries before the first feature. If SPEC.md already exists, it was written before the cycle and may have drifted: offer the spec audit (`document`, `references/spec-audit.md`), now or later. A large product is audited one area at a time.
 3. Offer a commit with the changes (the first commit, in a new repository). Don't commit without the OK.

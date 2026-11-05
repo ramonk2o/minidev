@@ -86,7 +86,7 @@ After you approve the plan, it scaffolds the project (git, the framework's gener
 - `.claude/settings.json` permissions for the test, build and local git commands (including `switch` and `merge`) and, in pull request mode, the read-only `gh` commands, so the cycle doesn't stop on a prompt for each run (install, publish, push, resets, opening or merging pull requests, and deletes keep asking);
 - what the cycle leaves orphaned: old `TODO.md`/`FEATURES.md`, local skills that overlap the plugin, broken references.
 
-It then creates the missing product documents through `document`. The cycle needs automated tests; if the project has none, setup proposes a minimal test setup with a passing smoke test, and tests for the existing code come later as chores, before the features that change it.
+It then creates the missing product documents through `document`. For existing code, `SPEC.md` is written rule by rule from the code and checked as it goes: each rule no test checks becomes a `Missing tests` Debt entry, and code that contradicts the docs, or behavior that looks accidental, comes to you as a question instead of becoming a rule. If `SPEC.md` already exists, setup offers to audit it the same way, since it was written before the cycle. The cycle needs automated tests; if the project has none, setup proposes a minimal test setup with a passing smoke test, and tests for the existing code come later as chores, before the features that change it.
 
 ### 2. Idea
 
@@ -138,7 +138,7 @@ Each answers one question, so they never repeat each other:
 | `SPEC.md` | How the product works **today**: rules, data, technical decisions, constraints | present |
 | `CHANGELOG.md` | What changed in each version, for the people who use it | past |
 
-`SPEC.md` describes only what exists: it's updated from what was built when a feature, fix or chore changes what it describes, never when something is only planned. Each fact lives in one place, and git history keeps the detail behind all three.
+`SPEC.md` describes only what exists: it's updated from what was built when a feature, fix or chore changes what it describes, never when something is only planned. Each fact lives in one place, and git history keeps the detail behind all three. When you suspect it drifted ("does SPEC.md match the code?"), `document` audits it: each rule against the code and its tests, and what the code exposes against the rules. The report lists contradictions, rules no code does, untested rules and behavior with no rule; you approve what changes, and the result is SPEC.md corrections plus Bug and Debt entries, without touching code. A large product is audited one area at a time.
 
 ## Developing the plugin
 

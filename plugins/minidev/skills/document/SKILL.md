@@ -1,6 +1,6 @@
 ---
 name: document
-description: In projects set up for the minidev cycle, or elsewhere when the user explicitly asks to change one of these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the features being built, and bugs or debt left for later), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done"), update or create the spec, write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
+description: In projects set up for the minidev cycle, or elsewhere when the user explicitly asks to change one of these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the features being built, and bugs or debt left for later), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done"), update, create or audit the spec ("does SPEC.md match the code?"), write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
 ---
 
 # Document
@@ -22,6 +22,7 @@ Project instructions (CLAUDE.md, AGENTS.md…) may add project-specific details,
 Read the reference for the document you're about to change, before changing it:
 - `references/backlog.md`: statuses, the entry format and every backlog operation (create, capture, record a bug or debt, add, check for duplicates, present, start, finish, change status, discard, clean up, reorganize).
 - `references/spec.md`: the spec's role, how to create one adapted to the project, and when and how to update it.
+- `references/spec-audit.md`: checking SPEC.md against the code, rule by rule, when it's created for existing code, when `setup` adopts a project, or when the user asks.
 - `references/changelog.md`: entry format, creating the file, and releases.
 
 ## Rules across the documents
@@ -66,6 +67,7 @@ Each document starts with a short legend, so it's readable without this skill. T
 | Chore: SPEC.md if a technical decision changed, changelog if users will notice (or a notable docs/tooling change, `references/changelog.md`), Debt entry removed | Write directly as part of the chore, then tell them |
 | Revert: restored entry back to Idea with what went wrong in its Open questions, document changes that rode along reapplied, changelog line if the change was released | Write directly as part of the revert, then tell them |
 | Release | Show the version, date and entries, wait for OK |
+| Spec audit | Show the report, wait for OK (the user may approve parts) |
 
 ## Commits
 
