@@ -4,6 +4,9 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+### Added
+- Outcome evals (`evals/outcome/`): a feature and a refactor run with and without the plugin, scored by hidden acceptance tests that `run.sh` runs against the code each run left.
+
 ## [0.18.0] - 2026-11-04
 
 ### Added

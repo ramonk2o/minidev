@@ -169,6 +169,16 @@ claude plugin eval . --tag behavior --ablation none --no-publish --scaffold --al
 
 They're slow and cost a few dollars per run (a whole feature with its tester and reviewer); run them after changing a skill's steps.
 
+### Outcome evals
+
+The behavior evals check what Claude did; `plugins/minidev/evals/outcome/` checks whether the result is right, and whether the plugin beats Claude without it. Each case runs with and without the plugin on the same fixture (`patch.sh` adapts the behavior fixture: the ordering bug fixed, a Search idea in the backlog, a SPEC rule no visible test checks, and a CLAUDE.md that doesn't tell the baseline to stop). `claude plugin eval` has no grader that runs code, so `run.sh` keeps each run's folder and `score.py` copies the `src/` it left next to the case's hidden acceptance tests (`<case>/hidden/`, which Claude never sees) and runs them with `node --test`. Every hidden test checks a rule the entry or SPEC.md states. `search-feature` builds a feature whose rules are easy to miss (accents, combining marks, several words in any order); `list-refactor` speeds up `listNotes` without breaking the rule that its result can be changed safely.
+
+```
+plugins/minidev/evals/outcome/run.sh 3
+```
+
+It prints the hidden tests' pass rate and the mean cost per arm. A full run (2 cases, 2 arms, 3 runs) costs about $10. The first one, on 0.18.0: both arms passed every hidden test in every run; the feature cost $3.11 with the plugin and $0.37 without, the refactor $0.65 and $0.27.
+
 ## Credits
 
 `grilling` is from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, see `plugins/minidev/skills/grilling/LICENSE`). The patterns of useless tests in `test-value.md` are adapted from the `test-audit` skill in [mblode/agent-skills](https://github.com/mblode/agent-skills) (MIT), itself from OpenClaw's.
