@@ -4,9 +4,10 @@
 # added, and CLAUDE.md no longer tells Claude to stop without the minidev skills
 # (the baseline arm runs without them).
 set -euo pipefail
-sed -i '' 's/a.createdAt - b.createdAt/b.createdAt - a.createdAt/' src/notes.js
 python3 -I - <<'PY'
 import re
+n=open('src/notes.js').read()
+open('src/notes.js','w').write(n.replace('a.createdAt - b.createdAt','b.createdAt - a.createdAt',1))
 s=open('SPEC.md').read()
 s=s.replace("- Notes are listed newest first.\n","- Notes are listed newest first.\n- `listNotes` returns a new list each time: changing that list doesn't change the stored notes.\n",1)
 open('SPEC.md','w').write(s)
