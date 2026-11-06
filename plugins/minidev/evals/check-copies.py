@@ -11,6 +11,8 @@ source doesn't leave stale copies behind.
 - The unattended-run prompt is the same in every behavior and outcome case.
 - The cycle check at the start of build, fix and chore is the same in the
   three, up to its last clause (what to do instead, which is each skill's own).
+- Graders with the same file name are the same in every case that has one; a
+  case that needs a different check gives it another name.
 
 Run from plugins/minidev: python3 evals/check-copies.py
 """
@@ -96,6 +98,15 @@ for skill in ("build", "fix", "chore"):
 if len(cycle_checks) > 1:
     problems.append("the cycle check differs between skills (it should match up to \"or simply\"):\n" + "\n".join(
         f"  {', '.join(skills)}: {text}" for text, skills in cycle_checks.items()))
+
+graders = {}
+for path in sorted(glob.glob(f"{ROOT}/evals/*/*/graders/*.md")):
+    name = path.rsplit("/", 1)[1]
+    graders.setdefault(name, {}).setdefault(open(path).read(), []).append(path[len(ROOT) + 1:])
+for name, versions in graders.items():
+    if len(versions) > 1:
+        problems.append(f"grader {name} differs between cases (give a different version its own name):\n" + "\n".join(
+            f"  {', '.join(paths)}" for paths in versions.values()))
 
 if problems:
     print("\n".join(problems))
