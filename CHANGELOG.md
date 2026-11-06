@@ -262,3 +262,33 @@ All notable changes to this project are documented here. The format is based on 
 
 ### Changed
 - Plugin and marketplace renamed to `minidev`. Features and fixes are built on their own branches and merged into main once checked.
+
+[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.25.2...HEAD
+[0.25.2]: https://github.com/ramonk2o/minidev/compare/v0.25.1...v0.25.2
+[0.25.1]: https://github.com/ramonk2o/minidev/compare/v0.25.0...v0.25.1
+[0.25.0]: https://github.com/ramonk2o/minidev/compare/v0.24.1...v0.25.0
+[0.24.1]: https://github.com/ramonk2o/minidev/compare/v0.24.0...v0.24.1
+[0.24.0]: https://github.com/ramonk2o/minidev/compare/v0.23.0...v0.24.0
+[0.23.0]: https://github.com/ramonk2o/minidev/compare/v0.22.0...v0.23.0
+[0.22.0]: https://github.com/ramonk2o/minidev/compare/v0.21.0...v0.22.0
+[0.21.0]: https://github.com/ramonk2o/minidev/compare/v0.20.0...v0.21.0
+[0.20.0]: https://github.com/ramonk2o/minidev/compare/v0.19.0...v0.20.0
+[0.19.0]: https://github.com/ramonk2o/minidev/compare/v0.18.0...v0.19.0
+[0.18.0]: https://github.com/ramonk2o/minidev/compare/v0.17.0...v0.18.0
+[0.17.0]: https://github.com/ramonk2o/minidev/compare/v0.16.0...v0.17.0
+[0.16.0]: https://github.com/ramonk2o/minidev/compare/v0.15.0...v0.16.0
+[0.15.0]: https://github.com/ramonk2o/minidev/compare/v0.14.0...v0.15.0
+[0.14.0]: https://github.com/ramonk2o/minidev/compare/v0.13.0...v0.14.0
+[0.13.0]: https://github.com/ramonk2o/minidev/compare/v0.12.1...v0.13.0
+[0.12.1]: https://github.com/ramonk2o/minidev/compare/v0.12.0...v0.12.1
+[0.12.0]: https://github.com/ramonk2o/minidev/compare/v0.11.0...v0.12.0
+[0.11.0]: https://github.com/ramonk2o/minidev/compare/v0.10.1...v0.11.0
+[0.10.1]: https://github.com/ramonk2o/minidev/compare/v0.10.0...v0.10.1
+[0.10.0]: https://github.com/ramonk2o/minidev/compare/v0.9.0...v0.10.0
+[0.9.0]: https://github.com/ramonk2o/minidev/compare/v0.8.0...v0.9.0
+[0.8.0]: https://github.com/ramonk2o/minidev/compare/v0.7.0...v0.8.0
+[0.7.0]: https://github.com/ramonk2o/minidev/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/ramonk2o/minidev/compare/v0.5.0...v0.6.0
+[0.5.0]: https://github.com/ramonk2o/minidev/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/ramonk2o/minidev/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/ramonk2o/minidev/tree/v0.3.0
