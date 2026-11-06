@@ -99,7 +99,7 @@ The cycle runs the same commands many times (tests before and after the code, th
 - the git commands the cycle uses locally: `git status`, `git diff`, `git log`, `git show`, `git blame`, `git rev-parse`, `git merge-base`, `git symbolic-ref`, `git write-tree`, `git branch --list`, `git branch -r`, `git worktree list`, `git remote`, `git ls-remote`, `git add`, `git commit`, `git switch`, `git merge`, `git fetch`, `git pull --ff-only`, `git pull --rebase`, `git rebase --abort`, `git read-tree`, `git restore`, `git branch -m`, `git remote set-head`, `git tag`;
 - in pull request mode, the read-only `gh` commands: `gh pr view`, `gh pr list`, `gh pr checks`, `gh auth status`.
 
-Never add install, publish, deploy, `git push`, `git reset`, `gh pr create` or `gh pr merge` commands, or anything that deletes files or branches: those keep asking. If the file exists, merge: keep every existing entry and setting, add only what's missing. Show the resulting list.
+Never add install, publish, deploy, `git push`, `git reset`, `gh pr create` or `gh pr merge` commands, or anything that deletes files or branches: those keep asking. If the file exists, merge: keep every existing entry and setting, add only what's missing. Show the resulting list. Add no `git -C` rule: when the main branch is checked out in another worktree (often in a worktree the app made for the session), `git-flow.md` runs its steps there with `git -C <path>`, and no rule allows those without letting a push or reset through, so they keep asking; say so with the list.
 
 ## 7. Orphans and redundancies
 

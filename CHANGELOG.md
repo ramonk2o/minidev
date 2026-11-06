@@ -4,6 +4,9 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+### Changed
+- **Setup permissions** add no `git -C` rule and say why: the steps run in the main branch's folder when it's checked out in another worktree keep asking, since no rule allows them without letting a push or reset through.
+
 ## [0.25.2] - 2026-11-06
 
 ### Changed

@@ -75,7 +75,7 @@ In an empty folder, describe the idea. `brainstorm` interviews you in `grilling`
 
 ### 1. Setup (once per project)
 
-`/minidev:setup` proposes, in one message: git, a `CLAUDE.md` with the project's real commands and conventions and the integration mode (local merge or pull requests), `.claude/settings.json` permissions for the commands the cycle repeats (push, resets, installs and deletes keep asking), and what the cycle leaves orphaned. Then it creates the missing product documents through `document`; for existing code, `SPEC.md` is written rule by rule from the code, and untested rules become `Missing tests` Debt entries. Detail: `plugins/minidev/skills/setup/SKILL.md`.
+`/minidev:setup` proposes, in one message: git, a `CLAUDE.md` with the project's real commands and conventions and the integration mode (local merge or pull requests), `.claude/settings.json` permissions for the commands the cycle repeats (push, resets, installs and deletes keep asking, and so do the git commands run in the main branch's folder when it's checked out in another worktree), and what the cycle leaves orphaned. Then it creates the missing product documents through `document`; for existing code, `SPEC.md` is written rule by rule from the code, and untested rules become `Missing tests` Debt entries. Detail: `plugins/minidev/skills/setup/SKILL.md`.
 
 ### 2. Idea
 
