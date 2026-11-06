@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.25.3] - 2026-11-06
+
 ### Changed
 - **Setup permissions** add no `git -C` rule and say why: the steps run in the main branch's folder when it's checked out in another worktree keep asking, since no rule allows them without letting a push or reset through.
 
@@ -266,7 +268,8 @@ All notable changes to this project are documented here. The format is based on 
 ### Changed
 - Plugin and marketplace renamed to `minidev`. Features and fixes are built on their own branches and merged into main once checked.
 
-[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.25.2...HEAD
+[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.25.3...HEAD
+[0.25.3]: https://github.com/ramonk2o/minidev/compare/v0.25.2...v0.25.3
 [0.25.2]: https://github.com/ramonk2o/minidev/compare/v0.25.1...v0.25.2
 [0.25.1]: https://github.com/ramonk2o/minidev/compare/v0.25.0...v0.25.1
 [0.25.0]: https://github.com/ramonk2o/minidev/compare/v0.24.1...v0.25.0
