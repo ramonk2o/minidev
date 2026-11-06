@@ -33,7 +33,7 @@ The user is asked twice in a feature that goes as planned: once at the start (st
    - the critical test list and the size.
 
    Wait for one OK. If the user changes an answer, change the list to match and show what changed before writing anything. Then, with the `document` skill, write the entry (for a direct request) and record the answers in its Decisions.
-5. With the `document` skill, set the entry **In progress**, with the branch name it will have, on the main branch. It's committed there, so the main branch's BACKLOG.md shows what is being built, from any branch or session; it reaches the remote with the next merge into the main branch.
+5. With the `document` skill, set the entry **In progress**, with the branch name it will have, as its Start a feature says (on the main branch, before the branch exists).
 6. If the user chose to add the missing tests first, do that chore before going on. If they went on without them, note it in the verification message.
 7. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch), then run the test suite and the build there before writing anything. If something already fails, stop and show the user: a red suite would never let the Implement step (section 4) pass, and the tester would report failures that aren't the feature's. They decide whether to fix it first (with `fix`) or go on with those failures named, so the tester gets them as known. Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
 8. Do whatever the project instructions require before writing code.
