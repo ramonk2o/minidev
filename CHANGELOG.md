@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.25.2] - 2026-11-06
+
+### Changed
+- `evals/check-copies.py` also requires graders with the same file name to be identical in every case that has one; a case that needs a different check gives it its own name.
+
 ## [0.25.1] - 2026-11-06
 
 ### Changed
