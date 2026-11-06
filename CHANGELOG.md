@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+## [0.25.1] - 2026-11-06
+
+### Changed
+- The In progress rule (where and when the status is written) lives only in `document`'s Start a feature; `build` and `document`'s lifecycle summary point to it instead of repeating it.
+- `evals/check-copies.py` also checks that `build`, `fix` and `chore` start with the same cycle check.
+
 ## [0.25.0] - 2026-11-05
 
 ### Changed
