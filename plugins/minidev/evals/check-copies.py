@@ -9,6 +9,8 @@ source doesn't leave stale copies behind.
   that starts like a template line may differ from it.
 - outcome/patch.sh rewrites a sentence of that template: it must still be there.
 - The unattended-run prompt is the same in every behavior and outcome case.
+- The cycle check at the start of build, fix and chore is the same in the
+  three, up to its last clause (what to do instead, which is each skill's own).
 
 Run from plugins/minidev: python3 evals/check-copies.py
 """
@@ -83,6 +85,17 @@ for path in sorted(glob.glob(f"{ROOT}/evals/behavior/*/prompt.md") + glob.glob(f
 if len(unattended) > 1:
     problems.append("the unattended-run prompt differs between cases:\n" + "\n".join(
         f"  {len(paths)} case(s), e.g. {paths[0]}: {prompt[:80]}…" for prompt, paths in unattended.items()))
+
+cycle_checks = {}
+for skill in ("build", "fix", "chore"):
+    m = re.search(r"^First check that the project uses the cycle.*?or simply", open(f"{ROOT}/skills/{skill}/SKILL.md").read(), re.M)
+    if m:
+        cycle_checks.setdefault(m.group(0), []).append(skill)
+    else:
+        problems.append(f"skills/{skill}/SKILL.md: no cycle check paragraph found")
+if len(cycle_checks) > 1:
+    problems.append("the cycle check differs between skills (it should match up to \"or simply\"):\n" + "\n".join(
+        f"  {', '.join(skills)}: {text}" for text, skills in cycle_checks.items()))
 
 if problems:
     print("\n".join(problems))
