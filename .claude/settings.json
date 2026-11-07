@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 */plugins/cache/*/sensei/*/scripts/check.py*)",
+      "Bash(python3 evals/check-copies.py*)",
+      "Bash(claude plugin validate*)",
+      "Bash(claude plugin eval*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git switch*)",
+      "Bash(git merge*)",
+      "Bash(git branch --list*)",
+      "Bash(git tag*)",
+      "Bash(git merge-base*)",
+      "Bash(git rev-parse*)",
+      "Bash(git archive*)"
+    ]
+  }
+}
