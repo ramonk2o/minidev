@@ -1,26 +1,41 @@
 # Changelog
 
-All notable changes to this project are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
+All notable changes to this plugin are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html),
+applied to how the skills behave.
 
 ## [Unreleased]
 
 ## [0.25.3] - 2026-11-06
+
+Setup explains why some git prompts in worktrees keep asking.
 
 ### Changed
 - **Setup permissions** add no `git -C` rule and say why: the steps run in the main branch's folder when it's checked out in another worktree keep asking, since no rule allows them without letting a push or reset through.
 
 ## [0.25.2] - 2026-11-06
 
+The eval copy check also catches graders that share a name but not their content.
+
 ### Changed
 - `evals/check-copies.py` also requires graders with the same file name to be identical in every case that has one; a case that needs a different check gives it its own name.
 
 ## [0.25.1] - 2026-11-06
+
+The In progress rule lives in one place, and the eval copy check covers the cycle check.
 
 ### Changed
 - The In progress rule (where and when the status is written) lives only in `document`'s Start a feature; `build` and `document`'s lifecycle summary point to it instead of repeating it.
 - `evals/check-copies.py` also checks that `build`, `fix` and `chore` start with the same cycle check.
 
 ## [0.25.0] - 2026-11-05
+
+Review and prune rules are aligned across skills, the README becomes a map, and an eval copy check arrives.
+
+### Added
+- `evals/check-copies.py` lists the eval copies of the CLAUDE.md template and of the unattended-run prompt that no longer match their source. The unattended-run prompt now names the start message and the adopted tester assumptions, `outcome/patch.sh` no longer needs BSD `sed`, and the README says what the evals need to run.
 
 ### Changed
 - **Chore review:** an upgrade is reviewed even when only a version number and the lockfile change, as `review.md` already said; only text or docs skip it.
@@ -31,10 +46,9 @@ All notable changes to this project are documented here. The format is based on 
 ### Fixed
 - `document` said reading the documents needs no skill, while presenting the backlog ("what's in the backlog?") is one of its operations; that's now the stated exception.
 
-### Added
-- `evals/check-copies.py` lists the eval copies of the CLAUDE.md template and of the unattended-run prompt that no longer match their source. The unattended-run prompt now names the start message and the adopted tester assumptions, `outcome/patch.sh` no longer needs BSD `sed`, and the README says what the evals need to run.
-
 ## [0.24.1] - 2026-11-05
+
+Leftovers from 0.22–0.24 are fixed: constraints, adopted assumptions and checkpoints now agree everywhere.
 
 ### Fixed
 - **Constraints on how the code is made** (no new dependency, a platform version) are left to the reviewer everywhere, not only in the tester: `build` no longer puts them in the critical test list, and the reviewer no longer blocks them for having no test.
@@ -46,11 +60,15 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.24.0] - 2026-11-05
 
+The tester leaves how-the-code-is-made constraints to the reviewer, and its useful tests are kept as regression tests.
+
 ### Changed
 - **Tester:** Constraints on how the code is made (no new dependency, a platform version, no network access in a module) are left to the reviewer, who already reads the diff for them; the tester no longer writes tests that only read config or source text for them, or reports them as uncovered.
 - **Tester tests after the merge:** the ones that caught a failure are listed under `Regression tests:` in the feature's verification commit, so a later prune keeps asking before removing them; the other tester tests become ordinary tests at the merge.
 
 ## [0.23.0] - 2026-11-05
+
+`document` can audit SPEC.md against the code.
 
 ### Added
 - **Spec audit** (`document`, `references/spec-audit.md`): SPEC.md checked against the code rule by rule, and the code's visible behavior checked against the rules. Contradictions, rules no code does and behavior that looks accidental come as questions with a recommendation; untested rules become `Missing tests` Debt entries; a large product goes one area at a time. It runs when asked ("does SPEC.md match the code?"), when `setup` adopts a project that already has SPEC.md (offered), and as part of writing a new SPEC.md for existing code.
@@ -58,10 +76,14 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.22.0] - 2026-11-05
 
+A feature that goes as planned stops only twice: once at the start and once at the end.
+
 ### Changed
 - **Two stops in a feature that goes as planned.** At the start, one message holds everything the work needs decided: the entry's draft for a direct request, the open points with recommended answers, modules with no tests, an overlap with another feature in progress, the critical test list and the size; one OK covers it, before the entry is set In progress or the branch exists. The tester's assumptions no longer stop the work: their recommended answers are adopted, tested and marked in the entry's Decisions, and shown at the end with what to check by hand, to confirm or change. Unexpected stops (a red suite, a disputed test, a review disagreement, a conflict) and the `grilling` interview stay.
 
 ## [0.21.0] - 2026-11-05
+
+The verification commit's test and build lines are copied from a real run.
 
 ### Changed
 - The verification commit's Tests and Build lines are copied from a run, not written: the runner's summary verbatim and the build's result, each with its command, from a run made after the last change to the code being committed.
@@ -69,18 +91,24 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.20.0] - 2026-11-05
 
+Several features can be in progress at once, each on its own branch.
+
 ### Changed
 - **Several features in progress at once**, each on its own branch (and worktree, if wanted). An In progress entry names its branch (`In progress (feature/<name>)`), so Resume finds it. Starting a feature no longer asks what to do with the one in progress: it checks whether another in progress touches the same modules or SPEC.md section, and if so recommends finishing that one first, leaving the choice to the user.
 
 ## [0.19.0] - 2026-11-05
 
-### Changed
-- **Leaner tester.** Only failures start a new tester round; assumptions, uncovered rules and extra tests no longer do, and a blocking review fix gets a test but no new round. The tester reports at most 3 assumptions, each with a recommended answer and no test. The feature size no longer counts rules, only lines and risk. On the Search outcome eval this cut the cost from $3.11 to $0.94 per run, with every hidden test still passing.
+A leaner tester cuts a feature's cost by about two thirds, and outcome evals compare the plugin with plain Claude.
 
 ### Added
 - Outcome evals (`evals/outcome/`): a feature and a refactor run with and without the plugin, scored by hidden acceptance tests that `run.sh` runs against the code each run left.
 
+### Changed
+- **Leaner tester.** Only failures start a new tester round; assumptions, uncovered rules and extra tests no longer do, and a blocking review fix gets a test but no new round. The tester reports at most 3 assumptions, each with a recommended answer and no test. The feature size no longer counts rules, only lines and risk. On the Search outcome eval this cut the cost from $3.11 to $0.94 per run, with every hidden test still passing.
+
 ## [0.18.0] - 2026-11-04
+
+Small features skip the tester and trivial fixes skip the review.
 
 ### Added
 - **Size tiers.** A small feature (about 50 production lines, no new module or dependency, no security, data, volume or input constraint, at most 5 automated rules) skips the tester; the size is approved with the critical test list, recounted once built, and the reviewer checks coverage instead. A trivial fix (about 10 lines, with a regression test shown failing first) skips the review.
@@ -91,6 +119,8 @@ All notable changes to this project are documented here. The format is based on 
 - `build` runs only the affected tests after the refactor; the whole suite runs once, after the check of the tests.
 
 ## [0.17.0] - 2026-11-04
+
+Setup reads more of the repository, checkpoints carry everything a resumed session needs, and many git edge cases get a defined path.
 
 ### Added
 - **Setup reads more of the repository**: commit hooks and message conventions, a changelog generator and a main branch other than the remote's default become optional Development cycle lines (`Commit messages:`, `Changelog:`, `Main branch:`) that the other skills follow. Branch protection is read from rulesets too, and a 403 counts as unknown.
@@ -113,6 +143,8 @@ All notable changes to this project are documented here. The format is based on 
 - Leftovers: `git push origin` in releases, partial copies of the test patterns in the agents, and the README on the entry, the diagram and the reviewer's inputs.
 
 ## [0.16.0] - 2026-11-04
+
+Behavior evals run the cycle for real, projects without tests are supported, and shared rules move to one place each.
 
 ### Added
 - **Behavior evals** in `evals/behavior/`: the cycle runs for real on a small fixture project and the graders check what Claude did: `build-flow` (In progress on main, feature branch, `wip:` checkpoints, tester and reviewer, `Critical tests:`, squash), `fix-flow` (fix branch, `Regression tests:`, review, no tester) and `chore-prose-flow` (one commit on main, no branch, suite or review).
@@ -139,6 +171,8 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.15.0] - 2026-11-04
 
+Prose-only chores take a short path, and local merge runs the suite once less.
+
 ### Added
 - **Short path for prose**: a `chore` that only touches docs files or code comments skips the branch (in local merge mode), the suite run before and the review; the build runs if it processes those files, links are checked, and the change is one plain commit. A text the product shows, or anything else, still takes the full path.
 
@@ -147,11 +181,15 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.14.0] - 2026-11-04
 
+Product constraints reach the tester and reviewer, and the documents are reviewed with the code.
+
 ### Changed
 - **Product constraints reach the checks**: SPEC.md's Constraints (whole-product limits like "works offline", which entries don't repeat) count in `build`'s rules check and critical test list, and are passed, copied in full, to the `tester` and the `reviewer`. The tester lists them among the rules to cover; the reviewer blocks a change that breaks one.
 - **Documents before the review**: `build`, `fix` and `chore` update SPEC.md, CHANGELOG.md and BACKLOG.md before the `reviewer` runs, so the rules written from what was built are read against the code by someone who didn't write them. The reviewer blocks a SPEC rule the code doesn't follow, new behavior SPEC.md doesn't state, a rule left false, or a changelog line that claims more than was done. Fixes after the review update the documents again.
 
 ## [0.13.0] - 2026-11-04
+
+Work can be resumed in a new session, and In progress is visible from the main branch.
 
 ### Added
 - **Resume**: `git-flow.md` says how to continue work from an earlier session: find its branch (and worktree or pull request), read its `wip:` checkpoints, which now name the step done, run the suite and go on from the next step. `build`, `fix` and `chore` resume instead of starting again when the work already has a branch; `build` also when its entry is In progress. Trigger eval: "continue feature X" fires `build`.
@@ -161,6 +199,8 @@ All notable changes to this project are documented here. The format is based on 
 - Bringing the main branch up to date falls back to `git pull --rebase` when it holds local document commits not yet pushed.
 
 ## [0.12.1] - 2026-11-04
+
+The revert flow, the spec's lifecycle and the reviewer's inputs no longer contradict each other.
 
 ### Fixed
 - **Revert** no longer contradicts the documents: `git revert` already undoes the change's SPEC rules, changelog line and backlog removal, so `document` only puts back a line from a released version (recording the revert under `[Unreleased]`) and adds what went wrong to the restored entry. `document` and the backlog reference name the revert as the one exception to "a failure in use is a bug".
@@ -172,6 +212,8 @@ All notable changes to this project are documented here. The format is based on 
 - README: full paths to the build references, the local-merge flow in the diagram, the reviewer gets the base commit (not the diff), the chore changelog exception; the marketplace description matches `plugin.json`; the three-document table in `document`, the setup template and the trigger evals mention bugs, debt and constraints.
 
 ## [0.12.0] - 2026-11-04
+
+Tests are judged by their value: a shared reference, a check in every change, missing-test chores and test pruning.
 
 ### Added
 - **Test value**: `test-value.md`, next to `review.md`, holds what makes a test worth keeping, the patterns of useless tests, which tests are protected and the **sabotage** check (break a rule on purpose to show the test that stays fails). `build`, `fix` and `chore` read it; the `tester` and `reviewer` judge tests by the same rules.
@@ -188,6 +230,8 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.11.0] - 2026-11-04
 
+Pushed changes can be reverted, and local merge tests the combined code before main gets it.
+
 ### Added
 - **Revert**: when a change already pushed breaks, the user chooses between fixing forward with `fix` and reverting its one squashed commit on a `fix/revert-<name>` branch; a reverted feature goes back to BACKLOG.md as an Idea. The main branch's pushed history is never rewritten.
 - `review.md`, next to `git-flow.md`: the reviewer protocol (launch, state check, acting on the report, what changes for `build`, `fix` and `chore`) in one file the three skills read, instead of `fix` and `chore` reading a section of `build`.
@@ -198,6 +242,8 @@ All notable changes to this project are documented here. The format is based on 
 - **The tester's report isn't filtered by the author**: removing a tester's test or calling a failure an assumption goes to the user first, a test the author thinks is wrong is the user's call, and the last report goes into the verification message verbatim.
 
 ## [0.10.1] - 2026-11-04
+
+Fixes to the reviewer's assumptions, the skills' boundaries and setup's permissions.
 
 ### Fixed
 - The `reviewer` no longer assumes a tester ran: in `fix` and `chore` it also checks that the change keeps the behavior it should. `build` checks that `HEAD` didn't move while it ran, instead of claiming it can't edit files.
@@ -212,6 +258,8 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.10.0] - 2026-11-03
 
+An independent reviewer agent checks every change for what tests don't catch.
+
 ### Added
 - **Reviewer agent**: a read-only, independent code review of every change, after the tester, looking for what tests don't catch (risky logic, error handling, security, design, leftovers, the project's conventions). Blocking findings are fixed or brought to the user; suggestions are applied when clearly better and cheap. `fix` and `chore` run it whenever they change code.
 
@@ -220,6 +268,8 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.9.0] - 2026-11-03
 
+The `chore` skill handles changes that keep behavior, and the backlog takes bugs and debt.
+
 ### Added
 - **chore skill**: changes that keep the behavior (refactoring, debt, dependency upgrades, migrations, tooling, typos) get their own `chore/<name>` branch, with the suite green before and after and behavior tests left untouched. No critical list or tester; SPEC.md and CHANGELOG.md change only when a technical decision or something users notice did.
 - **Bug and Debt entries** in BACKLOG.md, for bugs and chores left for later; they leave the file when `fix` or `chore` does them.
@@ -227,10 +277,14 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.8.0] - 2026-11-03
 
+Non-functional constraints are recorded, tested and checked by hand.
+
 ### Added
 - **Constraints**: backlog entries get a Constraints field for non-functional requirements (speed, security, accessibility, compatibility, privacy, volume), written so they can be checked. `build` asks about obvious unaddressed risks, turns measurable constraints into tests or checks and the rest into "To check by hand"; the tester covers them and pushes them to their limit. SPEC.md gets a Constraints section for the whole product, and `brainstorm` carries its constraints into each feature.
 
 ## [0.7.0] - 2026-11-03
+
+Pull request mode and resumable checkpoints arrive.
 
 ### Added
 - **Pull request mode**: `setup` asks how branches reach main and records it in CLAUDE.md. In pull request mode the branch is pushed, a pull request is opened with the verification message, and it's squash-merged once the checks pass; releases go through a `release/<version>` pull request.
@@ -241,6 +295,8 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.6.0] - 2026-11-03
 
+The git flow lives in one shared reference, and merges are tested before they're pushed.
+
 ### Changed
 - **Tester**: writes its tests in new files whose name contains `tester`, never changes git state, and declares `model: inherit`. After each round, `build` checks it only added test files and removes assumption tests before staging again.
 - **Merge**: the test suite and build run again on the merged main branch before it's pushed. The main branch is the remote's default branch when there is one.
@@ -249,6 +305,8 @@ All notable changes to this project are documented here. The format is based on 
 - The branch, staging and merge steps live in one place, `skills/build/references/git-flow.md`, shared by `build` and `fix`.
 
 ## [0.5.0] - 2026-10-29
+
+The `fix` skill fixes bugs test-first on their own branch.
 
 ### Added
 - **fix skill**: fixes bugs on their own branch, test-first when they can be reproduced.
@@ -260,10 +318,14 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [0.4.0] - 2026-10-29
 
+The `brainstorm` skill starts a new project from an idea.
+
 ### Added
 - **brainstorm skill**: takes a new project from an idea to a scaffold whose tests and build pass, with its plan in BACKLOG.md and SPEC.md.
 
 ## [0.3.0] - 2026-10-29
+
+The plugin is renamed to minidev, and work happens on branches.
 
 ### Changed
 - Plugin and marketplace renamed to `minidev`. Features and fixes are built on their own branches and merged into main once checked.
