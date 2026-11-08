@@ -13,6 +13,7 @@
 
 # Plugin eval results (when run from the repo root)
 evals/results/
+evals/**/results/
 
 # Claude Code personal settings
 .claude/settings.local.json
