@@ -11,6 +11,12 @@ applied to how the skills behave.
 ### Added
 - **Pull requests, merged by the reviewer**: a new integration mode for teams where the author never merges their own pull request. The cycle pushes the branch, opens the pull request, waits for the checks and handles review comments as in pull request mode, keeping the pull request's body equal to the final message and requesting a new review after each round of fixes, but never runs `gh pr merge`: it tells the author the merge is the reviewer's and stops. When the author asks to continue, or says the pull request was merged and asks to update (`build` handles it, whatever the branch: feature, fix or chore), a merged pull request updates the local main branch, deletes the branches and checks that the squashed commit kept the verification message (otherwise it says the repository should squash with "Title and description"); an open one gets its comments, failing checks or conflicts handled, or its state reported. In both pull request modes, a pull request no one was asked to review gets a reviewer the user names, review comments include those on lines of code, and Resume reads the pull request's state before switching to its branch. `setup` recommends it when the main branch requires an approving review and warns about the squash setting; releases are tagged after the reviewer merges.
 
+### Changed
+- **Resume** with several matching branches, in pull request mode, reads each pull request first: it updates from a merged one, reports the ones only waiting, and proposes the branch left with work instead of asking which.
+
+### Fixed
+- In pull request mode, the final message also lists document commits the branch carries from the main branch, so a revert of the squash doesn't drop them unrecorded.
+
 ## [0.25.3] - 2026-11-06
 
 Setup explains why some git prompts in worktrees keep asking.
