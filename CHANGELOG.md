@@ -8,6 +8,10 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+## [0.27.0] - 2026-11-09
+
+The backlog can live in GitHub issues, and setup in pull request mode commits through a pull request.
+
 ### Added
 - **Backlog in GitHub issues**: a project whose CLAUDE.md says `Backlog: GitHub issues` keeps its ideas, bugs and debt in the repository's issues instead of BACKLOG.md, so the team sees what's being built as it starts, without waiting for a merge. Each entry is an issue in the same format, with areas and types as labels; starting a feature labels and assigns its issue (no commit on the main branch) and names the branch after its number; the change's final message closes it with `Closes #<number>`; a discarded idea is closed as not planned, and a revert reopens it. Changing the body of an issue someone else opened asks first, and an issue is read again, comments included, before it's used. `setup` asks where the backlog lives when pull requests are recommended or chosen, allows the read-only `gh issue` commands, and migrates an existing BACKLOG.md to issues after an OK to the list. SPEC.md and CHANGELOG.md stay files.
 
@@ -349,7 +353,8 @@ The plugin is renamed to minidev, and work happens on branches.
 ### Changed
 - Plugin and marketplace renamed to `minidev`. Features and fixes are built on their own branches and merged into main once checked.
 
-[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.26.0...HEAD
+[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.27.0...HEAD
+[0.27.0]: https://github.com/ramonk2o/minidev/compare/v0.26.0...v0.27.0
 [0.26.0]: https://github.com/ramonk2o/minidev/compare/v0.25.3...v0.26.0
 [0.25.3]: https://github.com/ramonk2o/minidev/compare/v0.25.2...v0.25.3
 [0.25.2]: https://github.com/ramonk2o/minidev/compare/v0.25.1...v0.25.2
