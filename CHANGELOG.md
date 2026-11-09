@@ -8,6 +8,10 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+## [0.26.0] - 2026-11-09
+
+A new integration mode where the reviewer, not the author, merges pull requests; Resume reads pull requests before picking a branch.
+
 ### Added
 - **Pull requests, merged by the reviewer**: a new integration mode for teams where the author never merges their own pull request. The cycle pushes the branch, opens the pull request, waits for the checks and handles review comments as in pull request mode, keeping the pull request's body equal to the final message and requesting a new review after each round of fixes, but never runs `gh pr merge`: it tells the author the merge is the reviewer's and stops. When the author asks to continue, or says the pull request was merged and asks to update (`build` handles it, whatever the branch: feature, fix or chore), a merged pull request updates the local main branch, deletes the branches and checks that the squashed commit kept the verification message (otherwise it says the repository should squash with "Title and description"); an open one gets its comments, failing checks or conflicts handled, or its state reported. In both pull request modes, a pull request no one was asked to review gets a reviewer the user names, review comments include those on lines of code, and Resume reads the pull request's state before switching to its branch. `setup` recommends it when the main branch requires an approving review and warns about the squash setting; releases are tagged after the reviewer merges.
 
@@ -339,7 +343,8 @@ The plugin is renamed to minidev, and work happens on branches.
 ### Changed
 - Plugin and marketplace renamed to `minidev`. Features and fixes are built on their own branches and merged into main once checked.
 
-[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.25.3...HEAD
+[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.26.0...HEAD
+[0.26.0]: https://github.com/ramonk2o/minidev/compare/v0.25.3...v0.26.0
 [0.25.3]: https://github.com/ramonk2o/minidev/compare/v0.25.2...v0.25.3
 [0.25.2]: https://github.com/ramonk2o/minidev/compare/v0.25.1...v0.25.2
 [0.25.1]: https://github.com/ramonk2o/minidev/compare/v0.25.0...v0.25.1
