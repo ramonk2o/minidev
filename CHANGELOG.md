@@ -8,6 +8,9 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+### Added
+- **Backlog in GitHub issues**: a project whose CLAUDE.md says `Backlog: GitHub issues` keeps its ideas, bugs and debt in the repository's issues instead of BACKLOG.md, so the team sees what's being built as it starts, without waiting for a merge. Each entry is an issue in the same format, with areas and types as labels; starting a feature labels and assigns its issue (no commit on the main branch) and names the branch after its number; the change's final message closes it with `Closes #<number>`; a discarded idea is closed as not planned, and a revert reopens it. Changing the body of an issue someone else opened asks first, and an issue is read again, comments included, before it's used. `setup` asks where the backlog lives when it recommends pull requests, allows the read-only `gh issue` commands, and migrates an existing BACKLOG.md to issues after an OK to the list. SPEC.md and CHANGELOG.md stay files.
+
 ## [0.26.0] - 2026-11-09
 
 A new integration mode where the reviewer, not the author, merges pull requests; Resume reads pull requests before picking a branch.

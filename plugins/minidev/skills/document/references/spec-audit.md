@@ -36,6 +36,6 @@ Show it in one message, grouped: what the code contradicts, rules not found, beh
 
 With this skill, once approved:
 - SPEC.md: the corrections, removed rules and new rules (`references/spec.md`, Updating it).
-- BACKLOG.md: one Debt entry per area with untested rules, one Bug entry per contradiction where the code is wrong (unless the user fixes it now with `fix`), as in `references/backlog.md`.
+- The backlog (BACKLOG.md, or issues: `issues.md`): one Debt entry per area with untested rules, one Bug entry per contradiction where the code is wrong (unless the user fixes it now with `fix`), as in `references/backlog.md`.
 
 Commit them together, as one commit of these documents ("Spec audit: <areas>"). When the audit runs inside `setup` or while creating SPEC.md, the changes go in the commit that skill offers.

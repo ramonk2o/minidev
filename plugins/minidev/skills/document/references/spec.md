@@ -70,7 +70,7 @@ Fill it with the current behavior, taken from the code, tests and docs. Don't de
 Right after the title, translated to the file's language:
 
 ```markdown
-How <product> works today, as rules (not visual details), plus its data and technical decisions. Managed with the `document` skill: it's updated when a feature, fix or chore changes what it describes, from what was built. Ideas live in BACKLOG.md; what changed and when lives in CHANGELOG.md.
+How <product> works today, as rules (not visual details), plus its data and technical decisions. Managed with the `document` skill: it's updated when a feature, fix or chore changes what it describes, from what was built. Ideas live in <BACKLOG.md | the repository's GitHub issues>; what changed and when lives in CHANGELOG.md.
 ```
 
 ## Updating it

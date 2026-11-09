@@ -4,6 +4,8 @@
 
 Read `BACKLOG.md` before changing it.
 
+When the project's CLAUDE.md says `Backlog: GitHub issues`, the entries live in the repository's issues: everything here holds except where they're stored and how each operation writes them, which `issues.md` says.
+
 ## File structure
 
 ```markdown

@@ -1,6 +1,6 @@
 ---
 name: document
-description: In projects set up for the minidev cycle, or elsewhere when the user explicitly asks to change one of these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the features being built, and bugs or debt left for later), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done"), update, create or audit the spec ("does SPEC.md match the code?"), write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
+description: In projects set up for the minidev cycle, or elsewhere when the user explicitly asks to change one of these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the features being built, and bugs or debt left for later; or the GitHub issues a project keeps them in), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done"), update, create or audit the spec ("does SPEC.md match the code?"), write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
 ---
 
 # Document
@@ -13,6 +13,8 @@ Three documents describe the product, each answering one question in time:
 | `SPEC.md` | How the product works **today**: rules, data, technical decisions, constraints | present |
 | `CHANGELOG.md` | What changed in each version, for the people who use it | past |
 
+A project whose CLAUDE.md says `Backlog: GitHub issues` keeps the backlog in the repository's issues instead of BACKLOG.md, so the team sees it as it changes; this skill writes those issues too, and each step below that names BACKLOG.md is written on the issue (`references/issues.md`).
+
 The git history keeps the detail behind all three. This skill is the only one that writes them, so their roles stay apart and their formats stay consistent. Reading them for context needs no skill; presenting the backlog when the user asks what's in it ("what's in the backlog?") does, since it's an operation of `references/backlog.md` (Present).
 
 Project instructions (CLAUDE.md, AGENTS.md…) may add project-specific details, such as how to verify a feature or the release steps outside these files. Follow them on top of this skill; when they conflict, they win.
@@ -21,6 +23,7 @@ Project instructions (CLAUDE.md, AGENTS.md…) may add project-specific details,
 
 Read the reference for the document you're about to change, before changing it:
 - `references/backlog.md`: statuses, the entry format and every backlog operation (create, capture, record a bug or debt, add, check for duplicates, present, start, finish, change status, discard, clean up, reorganize).
+- `references/issues.md`: the backlog in GitHub issues: how entries, statuses and each operation map to issues and labels, and migrating from BACKLOG.md.
 - `references/spec.md`: the spec's role, how to create one adapted to the project, and when and how to update it.
 - `references/spec-audit.md`: checking SPEC.md against the code, rule by rule, when it's created for existing code, when `setup` adopts a project, or when the user asks.
 - `references/changelog.md`: entry format, creating the file, and releases.
@@ -71,4 +74,4 @@ Each document starts with a short legend, so it's readable without this skill. T
 
 ## Commits
 
-In a git repository, commit after writing, on the branch you're on (a feature set In progress is the exception: `references/backlog.md`, Start a feature), with a short message saying what changed (e.g. "Tables: recorded in BACKLOG (Idea)", "Sync discarded", "Release 1.4.0"). Commit only these documents, never other pending changes. When the change is part of a larger piece of work being committed, it goes in that commit instead: finishing a feature, a fix or a chore, or the documents `brainstorm` or `setup` create, which go in the commit those skills offer (don't commit them here). Don't push these commits on their own: they go out with the next merge into the main branch or release (in pull request mode, inside the next pull request). On a work branch (feature, fix, chore, release) they're squashed into that branch's commit, whose message gets a line for each change that isn't part of the work.
+In a git repository, commit after writing (backlog changes kept in issues aren't committed), on the branch you're on (a feature set In progress is the exception: `references/backlog.md`, Start a feature), with a short message saying what changed (e.g. "Tables: recorded in BACKLOG (Idea)", "Sync discarded", "Release 1.4.0"). Commit only these documents, never other pending changes. When the change is part of a larger piece of work being committed, it goes in that commit instead: finishing a feature, a fix or a chore, or the documents `brainstorm` or `setup` create, which go in the commit those skills offer (don't commit them here). Don't push these commits on their own: they go out with the next merge into the main branch or release (in pull request mode, inside the next pull request). On a work branch (feature, fix, chore, release) they're squashed into that branch's commit, whose message gets a line for each change that isn't part of the work.

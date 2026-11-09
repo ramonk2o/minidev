@@ -21,7 +21,7 @@ If the user says a pull request of the cycle was merged, or asks to update after
 
 The user is asked twice in a feature that goes as planned: once at the start (step 4), for everything the work needs decided, and once at the end (section 7, step 3), for what only they can check. Other stops are for the unexpected: a red suite, a test you believe is wrong, a disagreement with the review, a conflict.
 
-1. Find the feature's entry in `BACKLOG.md`. If it's already **In progress** (its status names the branch), or a `feature/` branch matches it, the work was started: resume it as in `references/git-flow.md` (Resume) instead of starting again. If the user names no feature (a bare "continue"), resume as in Resume, which weighs every work branch, not only the In progress entries. For a direct request with no entry, draft one with the `document` skill; it's shown in the start message (step 4), not on its own.
+1. Find the feature's entry in the backlog (`BACKLOG.md`, or its issue when the project's CLAUDE.md says `Backlog: GitHub issues`). If it's already **In progress** (its status names the branch), or a `feature/` branch matches it, the work was started: resume it as in `references/git-flow.md` (Resume) instead of starting again. If the user names no feature (a bare "continue"), resume as in Resume, which weighs every work branch, not only the In progress entries. For a direct request with no entry, draft one with the `document` skill; it's shown in the start message (step 4), not on its own.
 2. If other features are In progress, the `document` skill checks whether one overlaps this one (Start a feature): the same modules or SPEC.md section. An overlap and its recommendation (finish that one first) go in the start message; the user decides there. Without overlap, they can be built in parallel, each on its own branch (and, if the user wants, its own worktree).
 3. Check that the entry has enough rules to derive tests from: what the user sees, plus the edge cases that matter, plus the Constraints the feature must respect: its own, and those in SPEC.md's Constraints (whole-product limits, like "works offline") that apply to what it touches. When the feature has an obvious risk the entry doesn't address (data that can grow without limit, user input reaching a query or the page, a public surface), count it as an open point, with a recommended limit. Guessing missing rules would make the tests, and then the code, encode assumptions nobody approved, so settle them first, with the smallest step that does it:
    - **Enough rules** (usually, when the idea was interviewed): go on. Don't re-ask what the entry already decides.
@@ -35,9 +35,9 @@ The user is asked twice in a feature that goes as planned: once at the start (st
    - the critical test list and the size.
 
    Wait for one OK. If the user changes an answer, change the list to match and show what changed before writing anything. Then, with the `document` skill, write the entry (for a direct request) and record the answers in its Decisions.
-5. With the `document` skill, set the entry **In progress**, with the branch name it will have, as its Start a feature says (on the main branch, before the branch exists).
+5. With the `document` skill, set the entry **In progress**, with the branch name it will have, as its Start a feature says (in BACKLOG.md, on the main branch before the branch exists; in issues, on the issue).
 6. If the user chose to add the missing tests first, do that chore before going on. If they went on without them, note it in the verification message.
-7. Create the feature's branch `feature/<short-name>` as in `references/git-flow.md` (Start the branch), then run the test suite and the build there before writing anything. If something already fails, stop and show the user: a red suite would never let the Implement step (section 4) pass, and the tester would report failures that aren't the feature's. They decide whether to fix it first (with `fix`) or go on with those failures named, so the tester gets them as known. Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
+7. Create the feature's branch `feature/<short-name>` (`feature/<number>-<short-name>` for an issue) as in `references/git-flow.md` (Start the branch), then run the test suite and the build there before writing anything. If something already fails, stop and show the user: a red suite would never let the Implement step (section 4) pass, and the tester would report failures that aren't the feature's. They decide whether to fix it first (with `fix`) or go on with those failures named, so the tester gets them as known. Commit a `wip:` checkpoint on the branch whenever a step below is done, and before stopping.
 8. Do whatever the project instructions require before writing code.
 
 ## 2. Critical test list
@@ -54,7 +54,7 @@ Also say the feature's **size**. It's **small** when all of these hold: about 50
 
 The user's OK in the start message covers the list and the size. It's their chance to check that the right rules are being tested without reading test code. Put the approved list and size in the body of the branch's first checkpoint (`references/git-flow.md`, Checkpoints), so a resumed session has it.
 
-With the `document` skill, add the approved **To check by hand** list to the entry. This change isn't committed on its own: it goes in the branch's next checkpoint.
+With the `document` skill, add the approved **To check by hand** list to the entry (not to an issue: it stays in the checkpoint). This change isn't committed on its own: it goes in the branch's next checkpoint.
 
 ## 3. Tests first
 
@@ -110,9 +110,9 @@ Green tests say the feature works, not that the code, its tests and its document
 
 **Check the tests.** Read `references/test-value.md`. First move the tester's kept tests out of their `tester` files into the tests of the module they exercise, following the project's conventions (the `tester` name only served the check after each round). Note which tests came from the tester, and which of them caught a failure, in the checkpoint's body; they stay protected until the merge, so merging or removing one still goes to the user. Then check the tests this feature added as that file says (Check the change's tests). End with the whole suite and the build, even when no test changed: it's the full run after the refactor.
 
-**Documents.** With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md. This comes before the review, so the rules written in SPEC.md from what was built are read against the code by someone who didn't write them.
+**Documents.** With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md (an issue is closed by the final message instead). This comes before the review, so the rules written in SPEC.md from what was built are read against the code by someone who didn't write them.
 
-**Review.** Even when there was no tester, have the change reviewed by the `reviewer` agent as in `references/review.md`, giving it the feature's backlog entry as it was before the documents step removed it (in a resumed session, `git show <the checkpoint before that step>:BACKLOG.md`), and act on its report as that file says.
+**Review.** Even when there was no tester, have the change reviewed by the `reviewer` agent as in `references/review.md`, giving it the feature's backlog entry as it was before the documents step removed it (in a resumed session, `git show <the checkpoint before that step>:BACKLOG.md`; for an issue, its body read now), and act on its report as that file says.
 
 ## 7. Finish
 
