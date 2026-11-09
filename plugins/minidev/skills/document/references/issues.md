@@ -21,7 +21,9 @@ A label that doesn't exist yet (`gh label list`) is created the first time it's 
 
 Everyone who can see the repository sees an issue as soon as it's written. The confirmation table in SKILL.md applies to issues as it does to BACKLOG.md: a user's direct request ("note this idea") is the OK to create the issue, and a capture that interprets the conversation shows the draft first. One rule is added: changing the body of an issue someone else opened shows the change and waits for the OK, since it rewrites a colleague's text.
 
-Read an issue again before using it (`gh issue view <number> --comments`): others edit and comment on it. If a comment newer than the body changes what the body says (a Decision, the scope), show it to the user and ask which holds before going on; then update the body, so it keeps being the entry.
+Write issues and comments in the documents' language (SKILL.md, Language), like BACKLOG.md.
+
+Read an issue again before using it (`gh issue view <number> --comments`): others edit and comment on it. If a comment newer than the body changes what the body says (a Decision, the scope), ask the user which holds (in `build`, as an open point of its start message); then update the body, so it keeps being the entry.
 
 Wherever another skill copies the entry (into a checkpoint's body, for the tester, for the reviewer), it copies the issue's body read at that moment, with its number.
 
@@ -44,12 +46,12 @@ Each operation of `backlog.md` does the same thing, stored this way:
 - **Bug and Debt done by `fix` or `chore`:** the branch is `fix/<number>-<short-name>` or `chore/<number>-<short-name>`, and the final message (or a chore's one-line commit) ends with `Closes #<number>`.
 - **Change status:** pausing removes the label and the assignee (`gh issue edit <number> --remove-label "in progress" --remove-assignee @me`); the branch stays, as in `backlog.md`.
 - **Discard:** only on the user's word, as in `backlog.md`: `gh issue close <number> --reason "not planned" --comment "<why discarded> (<date>)"`. The branch, if any, is handled as `backlog.md` says.
-- **Revert** (`../../build/references/git-flow.md`, When a merged change breaks): GitHub doesn't reopen an issue when its change is reverted. Reopen it (`gh issue reopen <number>`), remove the `in progress` label and the assignee, and add what went wrong to its Open questions.
+- **Revert** (`../../build/references/git-flow.md`, When a merged change breaks): GitHub doesn't reopen an issue when its change is reverted. On the revert's branch, as part of the revert, reopen it (`gh issue reopen <number>`), remove the `in progress` label and its assignees, and add what went wrong to its Open questions. The revert's own final message has no `Closes` line: it would close the issue again.
 - **Clean up and reorganize:** as in `backlog.md`, with the plan shown first; moving issues between areas is a change of labels, and the clean-up looks at open issues.
 - **Debt entries from a spec audit or a test pruning** are created as issues, one per area, after the approval those steps already ask for.
 
 ## Migrate from BACKLOG.md
 
-When `setup` switches a project to issues and BACKLOG.md exists, show the user the list: one issue per entry, in the file's order, with its title and labels. Discarded entries aren't migrated: they stay in git history. An In progress entry becomes an issue with the label and the assignee; its branch keeps its name. Creating them publishes the whole backlog at once, so wait for an explicit OK to the list.
+When `setup` switches a project to issues and BACKLOG.md exists, show the user the list: one issue per entry, in the file's order, with its title and labels. Discarded entries aren't migrated: they stay in git history. An In progress entry becomes an issue with the label and the assignee; its branch keeps its name. Creating them publishes the whole backlog at once, so wait for an explicit OK to the list; it also covers the area labels the list names.
 
 Create them one by one with `gh issue create`, and show each link. Then remove BACKLOG.md (`git rm`) in the commit `setup` offers, and drop its mention from the CLAUDE.md (`setup`'s template has the line for issues). If a creation fails halfway, stop: show which entries became issues and which didn't, and keep BACKLOG.md until all of them exist.

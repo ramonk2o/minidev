@@ -54,7 +54,7 @@ Also say the feature's **size**. It's **small** when all of these hold: about 50
 
 The user's OK in the start message covers the list and the size. It's their chance to check that the right rules are being tested without reading test code. Put the approved list and size in the body of the branch's first checkpoint (`references/git-flow.md`, Checkpoints), so a resumed session has it.
 
-With the `document` skill, add the approved **To check by hand** list to the entry. This change isn't committed on its own: it goes in the branch's next checkpoint.
+With the `document` skill, add the approved **To check by hand** list to the entry (not to an issue: it stays in the checkpoint). This change isn't committed on its own: it goes in the branch's next checkpoint.
 
 ## 3. Tests first
 
@@ -112,7 +112,7 @@ Green tests say the feature works, not that the code, its tests and its document
 
 **Documents.** With the `document` skill, finish the feature: it updates SPEC.md with what was built, adds the change to CHANGELOG.md and removes the entry from BACKLOG.md (an issue is closed by the final message instead). This comes before the review, so the rules written in SPEC.md from what was built are read against the code by someone who didn't write them.
 
-**Review.** Even when there was no tester, have the change reviewed by the `reviewer` agent as in `references/review.md`, giving it the feature's backlog entry as it was before the documents step removed it (in a resumed session, `git show <the checkpoint before that step>:BACKLOG.md`, or for an issue the copy in the checkpoint's body), and act on its report as that file says.
+**Review.** Even when there was no tester, have the change reviewed by the `reviewer` agent as in `references/review.md`, giving it the feature's backlog entry as it was before the documents step removed it (in a resumed session, `git show <the checkpoint before that step>:BACKLOG.md`; for an issue, its body read now), and act on its report as that file says.
 
 ## 7. Finish
 

@@ -112,7 +112,7 @@ To check by hand:
 
 The Tests and Build lines are copied from a run, not written: the summary the test runner prints (its pass, fail and skip counts) and the build's result, from a run made after the last change to the code being committed. The last full run of the skill usually is that run; if anything changed after it (a fix from the review), run them again first. A chore's "before" line is copied the same way, from its run before the change.
 
-When the work comes from an issue (the backlog in GitHub issues), the message's last line is `Closes #<number>`, so the issue closes when the change reaches the main branch (`../../document/references/issues.md`).
+When the work comes from an issue (the backlog in GitHub issues), the message's last line is `Closes #<number>`, and it stays the last line of the final message after the lines added to it, so the issue closes when the change reaches the main branch (`../../document/references/issues.md`).
 
 If fixes come after it (e.g. from checking by hand), commit them as checkpoints.
 
@@ -120,7 +120,7 @@ The main branch gets the **final message**: the verification message (`git log -
 
 ## Merge and push
 
-Once the user confirms everything works (or right after the verification commit, if there's nothing to check by hand and no assumption to confirm), follow the project's integration mode.
+Once the user confirms everything works (or right after the verification commit, if there's nothing to check by hand and no assumption to confirm), follow the project's integration mode. With the backlog in GitHub issues and a `Main branch:` line, GitHub doesn't close the issue: once the change is on the remote's main branch, close it as `../../document/references/issues.md` says (Finish a feature).
 
 **Local merge:** the main branch only ever receives code that was already tested combined with it, so a failure is fixed on the branch, never on the main branch.
 1. If the repository has a remote, bring the main branch up to date: `git switch <main branch>`, update it as in The main branch, `git switch <branch>`.
