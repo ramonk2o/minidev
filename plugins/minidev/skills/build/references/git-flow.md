@@ -9,6 +9,7 @@ The branch may have as many commits as the work needs; the main branch gets **on
 The project's CLAUDE.md says how branches reach the main branch, in its Development cycle section:
 - **Local merge** (the default, when it says nothing): the branch is squashed into the main branch locally, tested there and pushed.
 - **Pull requests:** the branch is pushed, a pull request is opened, and it's squash-merged on GitHub once the user confirms and the checks pass. For repositories with a protected main branch, CI or more than one person. Needs `gh`, signed in (`gh auth status`).
+- **Pull requests, merged by the reviewer:** as pull requests, but whoever reviews approves and merges on GitHub; the cycle never runs `gh pr merge`. For teams where the author never merges their own pull request. Everything this file says for pull request mode applies to it, except Merge and push steps 5 to 7 (Pull requests), which Merged by the reviewer replaces.
 
 ## The main branch
 
@@ -41,7 +42,7 @@ Work stopped in an earlier session lives on its branch; the main branch doesn't 
 2. If one matches the work by name (an In progress entry names its branch), or the user isn't sure which, show it and confirm. Ask before resuming work on a branch the user didn't name.
 3. With a clean working tree (otherwise ask the user first), `git switch <branch>`. Read `git log --format='%h %s' <main branch>..<branch>`: the checkpoint messages say which steps are done, and their bodies hold what the next steps need (Checkpoints). Read the last checkpoint's diff and run the test suite to see where the work stands.
 4. Tell the user where it stopped and continue from the next step of the skill. A step half done since the last checkpoint is redone from its start.
-5. In pull request mode, if the branch has an open pull request, read its state (`gh pr view <branch>`): it may be waiting for checks or a review (Merge and push, steps 3 and 4).
+5. In pull request mode, if the branch has an open pull request, read its state (`gh pr view <branch>`): it may be waiting for checks or a review (Merge and push, steps 3 and 4). When pull requests are merged by the reviewer, it may already be merged: go on from Merged by the reviewer, step 6.
 
 A branch with no checkpoints beyond the main branch is resumed from the skill's first step on the branch. If no branch matches (it was deleted, or the work never got that far), start it as usual.
 
@@ -129,7 +130,7 @@ Once the user confirms everything works (or right after the verification commit,
 5. Check that the main branch now holds exactly what was tested: `git diff --quiet <branch> HEAD`. It should, since step 2 merged the main branch into the branch; then the suite and build don't need to run again. Only if it shows a difference, run the test suite and the build. If anything fails, the commit hasn't left this machine: undo only that commit with `git reset --hard HEAD~1` (the working tree is clean, so nothing else is lost), switch back to the branch and show the user; continue from step 3.
 6. Push the main branch, if the repository has a remote. Never force it. If it's rejected, the squashed commit hasn't left this machine: undo only it with `git reset --hard HEAD~1` and switch back to the branch. Then read why:
    - **The remote moved meanwhile** (`fetch first`, `non-fast-forward`): continue from step 1.
-   - **The branch is protected** (`protected branch`, `GH006`, a rule or ruleset that requires pull requests): stop. Tell the user the main branch only takes pull requests, offer to switch the project's Integration line to pull requests, and if they agree, bring this branch in that way.
+   - **The branch is protected** (`protected branch`, `GH006`, a rule or ruleset that requires pull requests): stop. Tell the user the main branch only takes pull requests, offer to switch the project's Integration line to pull requests (to pull requests merged by the reviewer when the rule requires an approving review), and if they agree, bring this branch in that way.
    - **Anything else** (permissions, a hook on the server): stop and show the user the message.
 7. Delete the branch with `git branch -D <branch>` (git doesn't see a squashed branch as merged, so `-d` refuses). If it's checked out in this worktree, see Worktrees first.
 
@@ -137,10 +138,17 @@ Once the user confirms everything works (or right after the verification commit,
 1. Push the branch: `git push -u <remote> <branch>`.
 2. Open the pull request with `gh pr create --base <main branch> --head <branch>`, its title the final message's first line and its body the rest. If one is already open for the branch, update it instead (`gh pr edit`). Give the user its link.
 3. Wait for the checks: `gh pr checks --watch`. A failing check is fixed on the branch, committed, pushed, and waited for again. If the repository has no checks, bring the main branch into the branch (`git fetch <remote>`, `git merge <remote>/<main branch>`; the squash flattens this merge too), run the test suite and the build, and push.
-4. If the main branch requires a review, stop: tell the user the pull request is waiting for one. When review comments come back (`gh pr view <branch> --comments`), handle each change asked as a fix after the verification commit: test first when it changes behavior, the documents updated with `document`, a checkpoint and a line in the final message; push and wait for the checks again. A comment you disagree with goes to the user, not unanswered.
+4. If the main branch requires a review, stop: tell the user the pull request is waiting for one. When review comments come back (`gh pr view <branch> --comments`), handle each change asked as a fix after the verification commit: test first when it changes behavior, the documents updated with `document`, a checkpoint and a line in the final message; push and wait for the checks again. A comment you disagree with goes to the user, not unanswered. After each push of fixes, set the pull request's body to the final message as it stands (`gh pr edit <branch> --body-file <file>`).
 5. Before merging, check that every commit the local main branch has is in the branch (`git merge-base --is-ancestor <main branch> <branch>`); if not, stop and show the user which commits are missing. Then merge with `gh pr merge --squash --subject "<first line>" --body "<rest>"`, from the final message as it stands now.
 6. Update the local main branch: `git switch <main branch>`, `git fetch <remote>`. If the local main branch had commits not on the remote (document changes made on it before the branch started), they're now inside the squashed commit, as step 5 checked: `git reset --hard <remote>/<main branch>`. Otherwise `git pull --ff-only`.
 7. Delete the local branch with `git branch -D <branch>` (in a worktree, see Worktrees first), and the remote one with `git push <remote> --delete <branch>` if GitHub didn't.
+
+**Merged by the reviewer:** steps 1 to 4 of Pull requests, then instead of steps 5 to 7:
+5. Check that every commit the local main branch has is in the branch (`git merge-base --is-ancestor <main branch> <branch>`); if not, stop and show the user which commits are missing. Then tell the user the pull request (its link) is ready, and that merging it is the reviewer's call: the cycle doesn't merge it. Stop. Do the same after each round of fixes from step 4.
+6. When the user asks to continue or to update, read the pull request: `gh pr view <branch> --json state,reviewDecision,mergeable,statusCheckRollup,mergeCommit`.
+   - **Merged:** update the local main branch and delete the branches as in Pull requests, steps 6 and 7. Then read the squashed commit's message (`git log -1 --format=%B <mergeCommit>`): it must hold the verification message (its `Tests (` line and block names). If it doesn't, tell the user the record didn't reach the main branch, and that the repository should use "Title and description" as its squash-merge commit message (GitHub: Settings → General → Pull Requests). Don't rewrite the main branch.
+   - **Open, with something for the author** (review comments asking for changes, a failing check, a conflict with the main branch): handle it as in steps 3 and 4 (a conflict: bring the main branch in as in Local merge, step 2, run the test suite and the build, push), then step 5 again.
+   - **Otherwise** (waiting for a review, approved but not merged, closed without merging): tell the user its state and do nothing.
 
 ## When a merged change breaks
 
