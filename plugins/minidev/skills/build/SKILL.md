@@ -1,6 +1,6 @@
 ---
 name: build
-description: In projects set up for the minidev cycle (a CLAUDE.md that says it uses the `minidev` cycle), implement a feature from the project's backlog test-first, then have it checked by an independent tester agent and reviewed by an independent reviewer agent before it is committed. Use it whenever the user wants to implement, build, develop or start coding a feature, from BACKLOG.md or as a direct request, e.g. "let's build Tables", "implement the sync idea", "/minidev:build X", "start working on X", "continue X where we left off", or when project instructions say to use the build skill. Not for broken behavior (fix) or changes that keep the behavior, like refactoring or upgrades (chore).
+description: In projects set up for the minidev cycle (a CLAUDE.md that says it uses the `minidev` cycle), implement a feature from the project's backlog test-first, then have it checked by an independent tester agent and reviewed by an independent reviewer agent before it is committed. Use it whenever the user wants to implement, build, develop or start coding a feature, from BACKLOG.md or as a direct request, e.g. "let's build Tables", "implement the sync idea", "/minidev:build X", "start working on X", "continue X where we left off", "the PR was merged, update" or "o revisor mergeou, atualiza" (after any of the cycle's pull requests: feature, fix or chore), or when project instructions say to use the build skill. Not for broken behavior (fix), changes that keep the behavior, like refactoring or upgrades (chore), or a plain pull of the main branch.
 ---
 
 # Build
@@ -16,6 +16,8 @@ Talk to the user in the language of the conversation.
 First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says it uses the `minidev` cycle (the line `/minidev:setup` writes: "This project uses the `minidev` cycle"). A CLAUDE.md that only mentions a build command or a fix isn't that. If not, don't create a backlog, branches or documents in it: offer `/minidev:setup` and stop, or simply implement the request without this skill if the user prefers.
 
 Read `references/git-flow.md` now: the resume, branch, staging, checkpoint and merge steps below follow it.
+
+If the user says a pull request of the cycle was merged, or asks to update after one, whatever its branch (`feature/`, `fix/`, `chore/` or `release/`), don't start a feature: follow `references/git-flow.md` (Merged by the reviewer, step 6) for that pull request, and stop there.
 
 The user is asked twice in a feature that goes as planned: once at the start (step 4), for everything the work needs decided, and once at the end (section 7, step 3), for what only they can check. Other stops are for the unexpected: a red suite, a test you believe is wrong, a disagreement with the review, a conflict.
 
