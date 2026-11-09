@@ -31,13 +31,14 @@ Read the repository to fill the project-specific sections. Look, don't guess:
 - **Tests:** where test files live and how they're named, shared fakes, mocks or helpers, and how rules that change data or state are tested (find one existing test that does it well, to cite as the example). Also what only shows in the real app (visuals, focus, browser or device behavior): that's what goes to "To check by hand".
 - **Conventions:** only rules with clear evidence in the code: a module that centralizes access to something, strict compiler settings, a test that checks consistency between files, a lint rule. Don't invent conventions and don't list what any developer would do anyway.
 - **Integration:** whether branches should reach the main branch by local merge or by pull request. Signs for pull requests: a GitHub remote plus CI workflows (`.github/workflows/`), a protected main branch (`gh api repos/<owner>/<repo>/rules/branches/<main>` lists a rule, or `gh api repos/<owner>/<repo>/branches/<main>/protection` answers; that one needs admin rights, so a 403 means unknown, not unprotected), or commits from more than one author (`git shortlog -sn`). Pull requests need `gh` signed in (`gh auth status`); if it isn't, say so. If the main branch requires an approving review (`required_approving_review_count` of 1 or more in the rule or the protection), that's a sign for pull requests merged by the reviewer. Then also read the repository's squash setting (`gh api repos/<owner>/<repo> --jq .squash_merge_commit_message`), for step 3; empty means unknown (it needs admin rights). If pull requests target a branch other than the remote's default (e.g. `develop`, per CONTRIBUTING or recent pull requests), note it for a `Main branch:` line.
+- **Backlog:** whether the repository has GitHub issues turned on (`gh repo view --json hasIssuesEnabled`). With pull requests, they let the team see the backlog as it changes, instead of in a BACKLOG.md that only changes with each merge.
 - **Commit rules:** hooks that check commits (`.husky/`, `.pre-commit-config.yaml`, `lefthook.yml`, `.git/hooks/` that aren't samples) and a commit message convention (`commitlint.config.*`, conventional commits in `git log`). The cycle's own messages adapt to a convention (the `build` skill's `references/git-flow.md`, Checkpoints): note it for the Development cycle section.
 - **Release:** whether the project publishes versions (a store, a registry, deploys) and where the steps are written (e.g. a `STORE.md`, `RELEASING.md`, a CI workflow).
 - **Product documents:** which of `SPEC.md`, `BACKLOG.md`, `CHANGELOG.md` exist, and the language of the project's existing docs. Whether a tool generates the changelog (`release-please-config.json`, `.changeset/`, `.releaserc`, `cliff.toml`).
 
 ## 3. Ask
 
-In one short round with a suggested answer for each, ask only what you couldn't find. Always include the integration mode, recommending pull requests merged by the reviewer when the main branch requires an approving review, pull requests when step 2 found other signs for them, and local merge otherwise, and one question: "What rule would someone new to this project break without knowing it?" Its answers become Conventions. If there are none, the Conventions section is left out. When recommending pull requests merged by the reviewer, say with it what step 2 found of the squash setting: if it's `COMMIT_MESSAGES` or `BLANK`, the main branch's commits won't carry the verification record as written; if it's unknown, that it couldn't be read. Either way, it should be "Title and description" (`PR_BODY`), set in GitHub's Settings → General → Pull Requests.
+In one short round with a suggested answer for each, ask only what you couldn't find. Always include the integration mode, recommending pull requests merged by the reviewer when the main branch requires an approving review, pull requests when step 2 found other signs for them, and local merge otherwise; where the backlog lives, when you recommend either pull request mode and issues are on (recommending GitHub issues: the team sees what's being built without waiting for a merge; otherwise it's BACKLOG.md, without asking); and one question: "What rule would someone new to this project break without knowing it?" Its answers become Conventions. If there are none, the Conventions section is left out. When recommending pull requests merged by the reviewer, say with it what step 2 found of the squash setting: if it's `COMMIT_MESSAGES` or `BLANK`, the main branch's commits won't carry the verification record as written; if it's unknown, that it couldn't be read. Either way, it should be "Title and description" (`PR_BODY`), set in GitHub's Settings → General → Pull Requests.
 
 ## 4. Write the draft
 
@@ -49,7 +50,7 @@ Build the file from the template below. Fill every `<…>`; the final file has n
 # <Project name>
 
 <What the project is, in one sentence.>
-- How it works today: `SPEC.md`. Ideas, the features in progress and bugs or debt left for later: `BACKLOG.md`. What changed in each version: `CHANGELOG.md`.
+- How it works today: `SPEC.md`. Ideas, the features in progress and bugs or debt left for later: <`BACKLOG.md` | the repository's GitHub issues>. What changed in each version: `CHANGELOG.md`.
 
 ## Commands
 - Install: `<command>` <(side effects worth knowing)>
@@ -72,6 +73,7 @@ Build the file from the template below. Fill every `<…>`; the final file has n
 This project uses the `minidev` cycle. When a step needs one of its skills and it isn't available, tell the user and stop; don't imitate it from memory.
 - Ideas: `document`. Features: `build`. Bugs: `fix`. Refactoring, upgrades and other changes that keep the behavior: `chore`.
 - Integration: <local merge | pull requests | pull requests, merged by the reviewer>.
+- Backlog: GitHub issues. <only when the backlog lives in the repository's issues>
 - Documents: <language of BACKLOG.md, SPEC.md and CHANGELOG.md>.
 - Releases: <where the release steps live>.
 - Main branch: <name, only when it isn't the remote's default branch>.
@@ -80,7 +82,7 @@ This project uses the `minidev` cycle. When a step needs one of its skills and i
 ````
 
 Template notes:
-- The **Development cycle** section is copied as is. Only the Integration, Documents and Releases lines change, and the last three lines are added only when step 2 found them.
+- The **Development cycle** section is copied as is. Only the Integration, Documents and Releases lines change, the Backlog line is added only when the backlog lives in GitHub issues, and the last three lines are added only when step 2 found them.
 - **Release:** if the project doesn't publish versions, drop the Releases line. If it does but the steps aren't written anywhere, use "cut the version with `document`" and offer to write the steps down later.
 - **Commands:** drop a line the project has no command for (e.g. Type-check when the build already type-checks: say so in the Build line).
 - **Tests:** if no existing test shows how state-changing rules are tested, drop the "as in" part rather than citing a weak example.
@@ -97,9 +99,10 @@ The cycle runs the same commands many times (tests before and after the code, th
 
 - the test, build, lint and type-check commands from step 2, each as a prefix rule so its arguments are covered (e.g. `Bash(npm test:*)`, `Bash(npm run build:*)`, `Bash(npx vitest:*)`);
 - the git commands the cycle uses locally: `git status`, `git diff`, `git log`, `git show`, `git blame`, `git rev-parse`, `git merge-base`, `git symbolic-ref`, `git write-tree`, `git branch --list`, `git branch -r`, `git worktree list`, `git remote`, `git ls-remote`, `git add`, `git commit`, `git switch`, `git merge`, `git fetch`, `git pull --ff-only`, `git pull --rebase`, `git rebase --abort`, `git read-tree`, `git restore`, `git branch -m`, `git remote set-head`, `git tag`;
-- in either pull request mode, the read-only `gh` commands: `gh pr view`, `gh pr list`, `gh pr checks`, `gh auth status`.
+- in either pull request mode, the read-only `gh` commands: `gh pr view`, `gh pr list`, `gh pr checks`, `gh auth status`;
+- with the backlog in GitHub issues, the read-only `gh issue view`, `gh issue list`, `gh label list`, `gh repo view`.
 
-Never add install, publish, deploy, `git push`, `git reset`, `gh pr create` or `gh pr merge` commands, or anything that deletes files or branches: those keep asking. If the file exists, merge: keep every existing entry and setting, add only what's missing. Show the resulting list. Add no `git -C` rule: when the main branch is checked out in another worktree (often in a worktree the app made for the session), `git-flow.md` runs its steps there with `git -C <path>`, and no rule allows those without letting a push or reset through, so they keep asking; say so with the list.
+Never add install, publish, deploy, `git push`, `git reset`, `gh pr create`, `gh pr merge` or `gh issue` commands that write (create, edit, close, reopen, comment), or anything that deletes files or branches: those keep asking. If the file exists, merge: keep every existing entry and setting, add only what's missing. Show the resulting list. Add no `git -C` rule: when the main branch is checked out in another worktree (often in a worktree the app made for the session), `git-flow.md` runs its steps there with `git -C <path>`, and no rule allows those without letting a push or reset through, so they keep asking; say so with the list.
 
 ## 7. Orphans and redundancies
 
@@ -120,5 +123,5 @@ Show everything in one message: git setup and, if there were no tests, the test 
 ## 9. Finish
 
 1. Apply what was approved, in this order: `git init` and `.gitignore`; the test setup, run and shown passing (if it fails, fix it or stop before the CLAUDE.md); the CLAUDE.md; `.claude/settings.json`; the removals.
-2. If any of `SPEC.md`, `BACKLOG.md`, `CHANGELOG.md` is missing, or an old document was pointed out in step 7, load the `document` skill and create or align them with it. Don't write them yourself: their formats belong to that skill. For existing code, `document` checks each rule of a new SPEC.md against the code as it writes it, so untested rules become `Missing tests` Debt entries before the first feature. If SPEC.md already exists with Behavior rules, it was written before the cycle and may have drifted: offer the spec audit (a SPEC.md fresh from `brainstorm` has no Behavior yet, so there's nothing to audit) (`document`, `references/spec-audit.md`), now or later. A large product is audited one area at a time.
+2. If any of `SPEC.md`, `BACKLOG.md` (unless the backlog lives in issues), `CHANGELOG.md` is missing, or an old document was pointed out in step 7, load the `document` skill and create or align them with it. When the backlog moves to issues and BACKLOG.md exists, `document` migrates it (`references/issues.md`, Migrate from BACKLOG.md), with its own OK to the list of issues. Don't write them yourself: their formats belong to that skill. For existing code, `document` checks each rule of a new SPEC.md against the code as it writes it, so untested rules become `Missing tests` Debt entries before the first feature. If SPEC.md already exists with Behavior rules, it was written before the cycle and may have drifted: offer the spec audit (a SPEC.md fresh from `brainstorm` has no Behavior yet, so there's nothing to audit) (`document`, `references/spec-audit.md`), now or later. A large product is audited one area at a time.
 3. Offer a commit with the changes (the first commit, in a new repository). Don't commit without the OK.

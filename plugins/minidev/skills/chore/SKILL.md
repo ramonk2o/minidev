@@ -15,7 +15,7 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says i
 
 If the change alters what the user sees or a rule in SPEC.md, it isn't a chore: broken behavior is a bug (`fix`), new or different behavior is a feature (`document`, then `build`). Say so and switch. A dependency upgrade that forces a visible change (a removed option, a new minimum version) is still a chore, but tell the user what will change before starting.
 
-If BACKLOG.md has an entry for it (type Debt), use it as the description of the work.
+If the backlog has an entry for it (type Debt), use it as the description of the work. When the backlog is in GitHub issues, that's an issue labeled `debt`: the branch is `chore/<number>-<short-name>` and the commit's message closes it (`document`, `references/issues.md`).
 
 If the change only touches prose (Markdown or other docs files, and comments in code), follow the prose short path below instead of sections 2 and 3. If it only fixes the wording of text the product shows (a typo, punctuation, the same message said better, in code strings or translation files), follow the product text short path. Anything else takes the full path, including comments that tools read: doctests, lint or compiler directives (`eslint-disable`, `noqa`, `//go:build`, `@ts-expect-error`), type annotations in comments (JSDoc in a type-checked project). A new text, or one that changes what a message means, isn't a wording fix: it's a feature (or a bug, if the text was wrong).
 
@@ -58,7 +58,7 @@ If the change turns out to touch anything but the wording, switch to the full pa
 6. Update the documents, with the `document` skill, only where the chore touched what they describe:
    - **SPEC.md** when a technical decision changed (a dependency added, replaced or removed, storage, structure the spec names), with its reason.
    - **CHANGELOG.md** only when the people who use the product will notice: a new minimum version, faster loading, a security upgrade (under Security). Otherwise nothing: an internal refactoring isn't news (a notable change to project docs or tooling may still get a line, as the changelog reference allows).
-   - **BACKLOG.md**: remove the Debt entry, if there was one.
+   - **BACKLOG.md**: remove the Debt entry, if there was one (an issue is closed by the commit's message instead).
 
    This comes before the review, so the reviewer reads the documents with the code.
 7. If the change touches code, have it reviewed by the `reviewer` agent as in the `build` skill's `references/review.md` (`../build/references/review.md` from this skill's folder), passing the chore's description (or its Debt entry), and act on its report as that file says for `chore`. For a refactoring it's the only independent look at the new structure. An upgrade counts as touching code even when only a version number and the lockfile change: the code now runs on another version. Only a change to text or docs skips the review.
