@@ -37,7 +37,7 @@ Read the repository to fill the project-specific sections. Look, don't guess:
 
 ## 3. Ask
 
-In one short round with a suggested answer for each, ask only what you couldn't find. Always include the integration mode, recommending pull requests merged by the reviewer when the main branch requires an approving review, pull requests when step 2 found other signs for them, and local merge otherwise. When recommending pull requests merged by the reviewer with a squash setting other than `PR_BODY` ("Title and description"), say with it that the main branch's commits would then list every `wip:` checkpoint instead of the verification record, and that it's changed in GitHub's Settings → General → Pull Requests, and one question: "What rule would someone new to this project break without knowing it?" Its answers become Conventions. If there are none, the Conventions section is left out.
+In one short round with a suggested answer for each, ask only what you couldn't find. Always include the integration mode, recommending pull requests merged by the reviewer when the main branch requires an approving review, pull requests when step 2 found other signs for them, and local merge otherwise, and one question: "What rule would someone new to this project break without knowing it?" Its answers become Conventions. If there are none, the Conventions section is left out. When recommending pull requests merged by the reviewer, say with it what step 2 found of the squash setting: if it's `COMMIT_MESSAGES` or `BLANK`, the main branch's commits won't carry the verification record as written; if it's unknown, that it couldn't be read. Either way, it should be "Title and description" (`PR_BODY`), set in GitHub's Settings → General → Pull Requests.
 
 ## 4. Write the draft
 
