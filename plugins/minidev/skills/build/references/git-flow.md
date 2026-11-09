@@ -1,6 +1,6 @@
 # Git flow
 
-How a feature, a fix or a chore (except a chore's short paths, prose and product text, in local merge mode: `chore` skill) gets its own branch and how that branch reaches the main branch. Used by the `build` skill (branch `feature/<short-name>`), the `fix` skill (branch `fix/<short-name>`), the `chore` skill (branch `chore/<short-name>`) and releases in pull request mode (branch `release/<version>`).
+How a feature, a fix or a chore (except a chore's short paths, prose and product text, in local merge mode: `chore` skill) gets its own branch and how that branch reaches the main branch. Used by the `build` skill (branch `feature/<short-name>`), the `fix` skill (branch `fix/<short-name>`), the `chore` skill (branch `chore/<short-name>`) releases in pull request mode (branch `release/<version>`) and, in pull request mode, the `setup` skill's commit (branch `chore/minidev-setup`).
 
 The branch may have as many commits as the work needs; the main branch gets **one squashed commit** per branch, whose message records the verification. So the branch's history is a working log, and the main branch's history is the record.
 
