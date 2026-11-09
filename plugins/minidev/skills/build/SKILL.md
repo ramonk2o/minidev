@@ -17,7 +17,7 @@ First check that the project uses the cycle: its CLAUDE.md (or AGENTS.md) says i
 
 Read `references/git-flow.md` now: the resume, branch, staging, checkpoint and merge steps below follow it.
 
-If the user says a pull request of the cycle was merged, or asks to update after one, whatever its branch (`feature/`, `fix/`, `chore/` or `release/`), don't start a feature: follow `references/git-flow.md` (Merged by the reviewer, step 6) for that pull request, and stop there.
+If the user says a pull request of the cycle was merged, or asks to update after one, whatever its branch (`feature/`, `fix/`, `chore/` or `release/`), don't start a feature: resume it as in `references/git-flow.md` (Resume), which reads the pull request's state and goes on from the merge step for the project's integration mode, and stop there.
 
 The user is asked twice in a feature that goes as planned: once at the start (step 4), for everything the work needs decided, and once at the end (section 7, step 3), for what only they can check. Other stops are for the unexpected: a red suite, a test you believe is wrong, a disagreement with the review, a conflict.
 
