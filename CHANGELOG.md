@@ -13,7 +13,7 @@ applied to how the skills behave.
 
 ### Fixed
 - **setup: its commit carries only its own changes**: it checks where the session stands first, asks the user to commit uncommitted work on a branch of their own or stash it before writing (or stops), and when it can't commit straight on an up-to-date main branch (pull requests, or a session on another branch or in a worktree) it writes on a `chore/minidev-setup` branch started from the main branch, instead of whatever branch the session was on. Brought in by local merge, that branch doesn't push the main branch.
-- **setup: Debt entries from a new SPEC.md** reach the backlog where it lives after the move to issues, approved with the SPEC.md draft, instead of landing in a BACKLOG.md about to be removed or in issues nobody approved. Declining the move to issues at the review redoes the CLAUDE.md and the permissions for BACKLOG.md.
+- **setup: Debt entries from a new SPEC.md** reach the backlog where it lives after the move to issues, approved with the SPEC.md draft, instead of landing in a BACKLOG.md about to be removed or in issues nobody approved. Declining the move to issues at the review redoes the CLAUDE.md and the permissions for BACKLOG.md. The migration also runs when the project already has all three documents.
 
 ## [0.27.0] - 2026-11-09
 
