@@ -8,6 +8,10 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+## [0.28.0] - 2026-11-13
+
+Setup recommends pull requests and issues on GitHub, and its commit carries only its own changes.
+
 ### Changed
 - **setup: pull requests and issues are the recommendation on GitHub**: a project on GitHub with `gh` signed in is recommended pull requests and, with issues on, the backlog in GitHub issues, without needing CI, a protected main branch or more than one author. A project with no remote is offered a GitHub repository (private unless the user says otherwise), created on the user's OK and pushed on another; declining it keeps local merge and BACKLOG.md, as does a remote on another host or a missing `gh`. Projects already set up don't change unless `setup` runs again.
 
@@ -360,7 +364,8 @@ The plugin is renamed to minidev, and work happens on branches.
 ### Changed
 - Plugin and marketplace renamed to `minidev`. Features and fixes are built on their own branches and merged into main once checked.
 
-[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.27.0...HEAD
+[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.28.0...HEAD
+[0.28.0]: https://github.com/ramonk2o/minidev/compare/v0.27.0...v0.28.0
 [0.27.0]: https://github.com/ramonk2o/minidev/compare/v0.26.0...v0.27.0
 [0.26.0]: https://github.com/ramonk2o/minidev/compare/v0.25.3...v0.26.0
 [0.25.3]: https://github.com/ramonk2o/minidev/compare/v0.25.2...v0.25.3
