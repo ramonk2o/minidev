@@ -11,6 +11,10 @@ applied to how the skills behave.
 ### Changed
 - **setup: pull requests and issues are the recommendation on GitHub**: a project on GitHub with `gh` signed in is recommended pull requests and, with issues on, the backlog in GitHub issues, without needing CI, a protected main branch or more than one author. A project with no remote is offered a GitHub repository (private unless the user says otherwise), created on the user's OK and pushed on another; declining it keeps local merge and BACKLOG.md, as does a remote on another host or a missing `gh`. Projects already set up don't change unless `setup` runs again.
 
+### Fixed
+- **setup: its commit carries only its own changes**: it checks where the session stands first, asks the user to commit uncommitted work on a branch of their own or stash it before writing (or stops), and when it can't commit straight on an up-to-date main branch (pull requests, or a session on another branch or in a worktree) it writes on a `chore/minidev-setup` branch started from the main branch, instead of whatever branch the session was on. Brought in by local merge, that branch doesn't push the main branch.
+- **setup: Debt entries from a new SPEC.md** reach the backlog where it lives after the move to issues, approved with the SPEC.md draft, instead of landing in a BACKLOG.md about to be removed or in issues nobody approved. Declining the move to issues at the review redoes the CLAUDE.md and the permissions for BACKLOG.md. The migration also runs when the project already has all three documents.
+
 ## [0.27.0] - 2026-11-09
 
 The backlog can live in GitHub issues, and setup in pull request mode commits through a pull request.

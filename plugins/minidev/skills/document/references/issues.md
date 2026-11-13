@@ -48,7 +48,7 @@ Each operation of `backlog.md` does the same thing, stored this way:
 - **Discard:** only on the user's word, as in `backlog.md`: `gh issue close <number> --reason "not planned" --comment "<why discarded> (<date>)"`. The branch, if any, is handled as `backlog.md` says.
 - **Revert** (`../../build/references/git-flow.md`, When a merged change breaks): GitHub doesn't reopen an issue when its change is reverted. On the revert's branch, as part of the revert, reopen it (`gh issue reopen <number>`), remove the `in progress` label and its assignees, and add what went wrong to its Open questions. The revert's own final message has no `Closes` line: it would close the issue again.
 - **Clean up and reorganize:** as in `backlog.md`, with the plan shown first; moving issues between areas is a change of labels, and the clean-up looks at open issues.
-- **Debt entries from a spec audit or a test pruning** are created as issues, one per area, after the approval those steps already ask for.
+- **Debt entries from a spec audit, a test pruning or a new SPEC.md** are created as issues, one per area, after the approval those steps already ask for (for a new SPEC.md, the OK to its finished draft, which shows them as issues to create, visible to everyone who can see the repository).
 
 ## Migrate from BACKLOG.md
 
