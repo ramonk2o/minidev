@@ -7,8 +7,8 @@ The branch may have as many commits as the work needs; the main branch gets **on
 ## Integration mode
 
 The project's CLAUDE.md says how branches reach the main branch, in its Development cycle section:
-- **Local merge** (the default, when it says nothing): the branch is squashed into the main branch locally, tested there and pushed.
-- **Pull requests:** the branch is pushed, a pull request is opened, and it's squash-merged on GitHub once the user confirms and the checks pass. For repositories with a protected main branch, CI or more than one person. Needs `gh`, signed in (`gh auth status`).
+- **Local merge** (also what a CLAUDE.md that names no mode means): the branch is squashed into the main branch locally, tested there and pushed.
+- **Pull requests:** the branch is pushed, a pull request is opened, and it's squash-merged on GitHub once the user confirms and the checks pass. Needs `gh`, signed in (`gh auth status`).
 - **Pull requests, merged by the reviewer:** as pull requests, but whoever reviews approves and merges on GitHub; the cycle never runs `gh pr merge`. For teams where the author never merges their own pull request. Everything this file says for pull request mode applies to it, except Merge and push steps 5 to 7 (Pull requests), which Merged by the reviewer replaces.
 
 ## The main branch

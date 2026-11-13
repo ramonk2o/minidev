@@ -8,6 +8,9 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+### Changed
+- **setup: pull requests and issues are the recommendation on GitHub**: a project on GitHub with `gh` signed in is recommended pull requests and, with issues on, the backlog in GitHub issues, without needing CI, a protected main branch or more than one author. A project with no remote is offered a GitHub repository (private unless the user says otherwise), created on the user's OK and pushed on another; declining it keeps local merge and BACKLOG.md, as does a remote on another host or a missing `gh`. Projects already set up don't change unless `setup` runs again.
+
 ## [0.27.0] - 2026-11-09
 
 The backlog can live in GitHub issues, and setup in pull request mode commits through a pull request.

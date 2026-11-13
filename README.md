@@ -63,8 +63,8 @@ You don't need to call `grilling`, `document`, `build`, `fix` or `chore` by name
                                    you confirm the tester's assumptions and check by hand what tests can't
                                                   │
                                                   ▼
-        main merged into the branch, test ──► squash into main, push
-                          (or a pull request, squash-merged)
+             pull request, squash-merged once the checks pass
+     (off GitHub: main merged into the branch, test ──► squash into main, push)
 ```
 
 The steps and their rules live in the skills; this is the map. Each step says which file to read for the detail.
@@ -75,11 +75,11 @@ In an empty folder, describe the idea. `brainstorm` interviews you in `grilling`
 
 ### 1. Setup (once per project)
 
-`/minidev:setup` proposes, in one message: git, a `CLAUDE.md` with the project's real commands and conventions and the integration mode (local merge, pull requests, or pull requests merged by the reviewer), `.claude/settings.json` permissions for the commands the cycle repeats (push, resets, installs and deletes keep asking, and so do the git commands run in the main branch's folder when it's checked out in another worktree), and what the cycle leaves orphaned. Then it creates the missing product documents through `document`; for existing code, `SPEC.md` is written rule by rule from the code, and untested rules become `Missing tests` Debt entries. Detail: `plugins/minidev/skills/setup/SKILL.md`.
+`/minidev:setup` proposes, in one message: git, a `CLAUDE.md` with the project's real commands and conventions and the integration mode (pull requests when the project is on GitHub, merged by you or by the reviewer; local merge otherwise), a GitHub repository when the project has no remote (private unless you say otherwise; decline it and the project uses local merge and `BACKLOG.md`), `.claude/settings.json` permissions for the commands the cycle repeats (push, resets, installs and deletes keep asking, and so do the git commands run in the main branch's folder when it's checked out in another worktree), and what the cycle leaves orphaned. Then it creates the missing product documents through `document`; for existing code, `SPEC.md` is written rule by rule from the code, and untested rules become `Missing tests` Debt entries. Detail: `plugins/minidev/skills/setup/SKILL.md`.
 
 ### 2. Idea
 
-A clear idea goes straight into `BACKLOG.md` as an **Idea**; one that leaves behavior open gets a `grilling` interview, whose approved summary is the entry. "Just note it" skips the interview. In a team, the backlog can live in the repository's GitHub issues instead (`setup` asks when it recommends pull requests): each entry is an issue, a feature in progress is labeled and assigned as soon as it starts, and the change's final message closes it (`Closes #<number>`). Detail: `plugins/minidev/skills/document/references/backlog.md` and `issues.md` next to it.
+A clear idea goes straight into `BACKLOG.md` as an **Idea**; one that leaves behavior open gets a `grilling` interview, whose approved summary is the entry. "Just note it" skips the interview. With pull requests, `setup` recommends keeping the backlog in the repository's GitHub issues instead: each entry is an issue, a feature in progress is labeled and assigned as soon as it starts, and the change's final message closes it (`Closes #<number>`). Detail: `plugins/minidev/skills/document/references/backlog.md` and `issues.md` next to it.
 
 ### 3. Build
 
