@@ -21,7 +21,7 @@ applied to how the skills behave.
 
 ### Fixed
 
-- **`guide`: the next step comes with a sentence on what it does**: sending you to `/minidev:setup`, it says that setup prepares the project and shows what it will change first, not only the command. Closes #17.
+- **`guide`: a command you're told to type comes with a sentence on what it changes**: sending you to `/minidev:setup` (or `swarm`, `checkup`, `rethink`), it says what the command will change in your project, e.g. that setup prepares it and shows everything it will change first, not only the command. Closes #17.
 
 ## [0.32.0] - 2026-11-14
 
