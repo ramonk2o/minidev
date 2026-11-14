@@ -23,7 +23,7 @@ Before you start, you need:
 - **git**, the tool that saves the history of your project. Check it with `git --version` in a terminal; if it isn't there, install it from [git-scm.com](https://git-scm.com).
 - **A GitHub account and `gh`**, GitHub's command-line tool (see [cli.github.com](https://cli.github.com)), signed in with `gh auth login`. They're needed for the pull-request mode of the cycle; without them the cycle still works, with changes merged locally.
 
-Then, in each project where you want the cycle, `/minidev:guide` will tell you to run `/minidev:setup` once (if you already know the cycle, run it yourself).
+Then, in each project where you want the cycle, `/minidev:guide` will tell you to run `/minidev:setup` once (if you already know the cycle, run it yourself). If its questions (pull requests, where the backlog lives…) don't mean anything to you yet, answer "choose for me": it takes the safe default for each, explains it in a sentence, and tells you at the end how to change any of them.
 
 ## What's inside
 
@@ -83,7 +83,7 @@ In an empty folder, describe the idea. `brainstorm` interviews you with the `int
 
 ### 1. Setup (once per project)
 
-`/minidev:setup` proposes, in one message: git, a `CLAUDE.md` with the project's real commands and conventions and the integration mode (pull requests when the project is on GitHub, merged by you or by the reviewer; local merge otherwise), a GitHub repository when the project has no remote (private unless you say otherwise; decline it and the project uses local merge and `BACKLOG.md`), `.claude/settings.json` permissions for the commands the cycle repeats (push, resets, installs and deletes keep asking, and so do the git commands run in the main branch's folder when it's checked out in another worktree), and what the cycle leaves orphaned. Then it creates the missing product documents through `document`; for existing code, `SPEC.md` is written rule by rule from the code, and untested rules become `Missing tests` Debt entries. Detail: `plugins/minidev/skills/setup/SKILL.md`.
+`/minidev:setup` proposes, in one message: git, a `CLAUDE.md` with the project's real commands and conventions and the integration mode (pull requests when the project is on GitHub, merged by you or by the reviewer; local merge otherwise), a GitHub repository when the project has no remote (private unless you say otherwise; decline it and the project uses local merge and `BACKLOG.md`), `.claude/settings.json` permissions for the commands the cycle repeats (push, resets, installs and deletes keep asking, and so do the git commands run in the main branch's folder when it's checked out in another worktree), and what the cycle leaves orphaned. Answer "choose for me" (or pass it as the argument) if you don't know git or GitHub: it takes its own recommendations, skips the questions only someone who knows the project can answer, says plainly what's lost when `gh` isn't signed in, and lists what it chose for you (`plugins/minidev/skills/setup/references/choose-for-me.md`). Then it creates the missing product documents through `document`; for existing code, `SPEC.md` is written rule by rule from the code, and untested rules become `Missing tests` Debt entries. Detail: `plugins/minidev/skills/setup/SKILL.md`.
 
 ### 2. Idea
 
