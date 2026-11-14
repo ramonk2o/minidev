@@ -50,12 +50,12 @@ Look for:
 
 Whether the documents still describe what exists, and whether the tests and dependencies still make changing it safe. This is a sample, not a full audit: its job is to say whether a full one is due.
 
-- **SPEC.md.** Take the areas whose code changed most (from the numbers), up to about 15 rules. Check each rule as the spec audit does (the first file whose path you were given, Each rule): the code that does it, and a test that would fail if it broke. Then, for each area:
+- **SPEC.md.** Take the areas whose code changed most (from the numbers), up to about 15 rules. Check each rule as the spec audit does (its Each rule section, copied below this brief): the code that does it, and a test that would fail if it broke. Then, for each area:
   - three or more sampled rules fail, in any way: one finding with those rules as its evidence; its way out is a spec audit of the area;
   - otherwise, a rule the code contradicts, or that no code does: a finding of its own; its way out is settling which is right, the code or SPEC.md;
   - otherwise, a rule with no test: one finding for the area; its way out is a Missing tests entry.
 
   Say in Checked how many rules you sampled and how many held.
 - **The project's instructions.** The commands CLAUDE.md names exist, the paths it names exist, and the last changes follow its Conventions.
-- **Tests.** From the numbers: skipped tests and why each is skipped, and how long the suite takes against the last check-up. In the modules that change most: tests that fit the useless patterns (the second file whose path you were given), above all tests tied to how the code is written, which had to be rewritten along with it (`git log` of the test files).
+- **Tests.** From the numbers: skipped tests and why each is skipped (read them; don't enable one to see), and how long the suite takes against the last check-up. In the modules that change most: tests that fit the patterns of useless tests (copied below this brief), above all tests tied to how the code is written, which had to be rewritten along with it (`git log` of the test files).
 - **Dependencies.** From the numbers: major versions behind, known vulnerabilities, packages no longer maintained. A finding only where waiting has a cost: a vulnerability in a path the product uses, a version whose support ends, an upgrade another one is waiting for.

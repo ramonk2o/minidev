@@ -71,6 +71,6 @@ Leave out a section with nothing in it, except Verdicts. A number that wasn't co
 The next check-up takes from it:
 - **Commit**, for the history script's `--since`, and to count the changes since;
 - **Verdicts** and **Numbers**, to show beside the new ones;
-- **Findings** and **Refuted**, given to each area's auditor so it doesn't raise them again unless the evidence changed. A finding that was Recorded and whose entry is still open in the backlog is debt waiting, not a new finding: it counts in its area's verdict. A Handed over one has no entry holding it, so the auditor raises it again when it's still true.
+- **Findings** and **Refuted**, given to every auditor, whatever the area, so none raises them again unless the evidence changed. A finding that was Recorded and whose entry is still open in the backlog is debt waiting, not a new finding: it counts in its area's verdict. A Handed over one has no entry holding it, so the auditor raises it again when it's still true.
 
 A CHECKUP.md that doesn't follow this format (edited by hand, or from an older version) is read for what it has; what's missing counts as "first check-up".
