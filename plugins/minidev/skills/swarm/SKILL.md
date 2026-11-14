@@ -34,10 +34,10 @@ Talk to the user in the language of the conversation. Everything written to the 
 
 1. The project uses the cycle, as `build` checks it (`../build/SKILL.md`, 1. Start). If not, offer `/minidev:setup` and stop.
 2. From its CLAUDE.md, note: where the backlog is (`BACKLOG.md`, or GitHub issues with `Backlog: GitHub issues`), the integration mode (`../build/references/git-flow.md`, Integration mode), the install, test, build and lint commands, and any setup a fresh checkout needs (environment files, a test database).
-3. In pull request mode, whether the main branch requires a review (`gh api repos/{owner}/{repo}/branches/<main branch>/protection --jq .required_pull_request_reviews`, or a pull request's `reviewDecision`): if it does, treat the project as merged by the reviewer here (step 3, Merge).
+3. In pull request mode, whether the main branch requires a review (`gh api repos/{owner}/{repo}/branches/<main branch>/protection --jq .required_pull_request_reviews`, or a pull request's `reviewDecision`): if it does, or the query fails (no admin rights), treat the project as merged by the reviewer here (step 3, Merge).
 4. How workers run: a separate session per item, each in its own worktree, where the environment can start one (in the Claude desktop app); otherwise a background subagent per item with `isolation: worktree`. If neither is available, say so and stop: the items run one after another with their own skill instead.
 5. The main branch is clean and up to date (`../build/references/git-flow.md`, The main branch). Uncommitted changes there: stop and ask.
-6. If work branches of an earlier batch are left (`feature/`, `fix/` or `chore/` branches and their worktrees, found as `../build/references/git-flow.md` says in Resume), this is a resume: those items are the batch. Each one goes back to its worker when that session still exists (a message to it); otherwise a new worker resumes it as its skill's Resume says, after its old worktree is removed (`git worktree remove`, only when it's clean; one with uncommitted changes is someone's work: leave the item out and say so). Go to step 3 with them; at step 4, a resumed item skips 4.1 (its Decisions and status are already written) and gets the brief's resume line.
+6. If work branches of an earlier batch are left (`feature/`, `fix/` or `chore/` branches and their worktrees, found as `../build/references/git-flow.md` says in Resume), they may be an earlier batch or someone's own work, so don't guess: the start message lists them and asks whether to resume them, with the ones whose worktree's session no longer exists checked by default. The ones the user keeps are the batch. Each one goes back to its worker when that session still exists (a message to it); otherwise a new worker resumes it as its skill's Resume says, after its old worktree is removed (`git worktree remove`, only when it's clean; one with uncommitted changes is someone's work: leave the item out and say so). Go to step 3 with them; at step 4, a resumed item skips 4.1 (its Decisions and status are already written) and gets the brief's resume line.
 
 ## 2. Pick the batch
 
@@ -49,7 +49,7 @@ Pick up to the batch size, by priority, by what the current version needs, and b
 - items with a work branch or In progress outside a resume (someone's work), and ideas whose key behavior is undecided across several connected decisions (they need a `grilling` interview, not a decision taken here).
 
 For each picked item, prepare:
-- **Skill:** `build` for an Idea, `fix` for a Bug, `chore` for Debt or a behavior-preserving change.
+- **Skill:** `build` for an Idea, `fix` for a Bug, `chore` for Debt or a behavior-preserving change (always its full path, on a branch: its short paths act on the main branch, which only the merge cue may touch).
 - **Decisions:** every open point the item's skill would ask at its start, each answered with the recommendation that skill would give.
 - **Files:** the ones it may change, and the ones it must avoid (the other items' files).
 - **Model:** Haiku for a chore or a fix of a few lines; Sonnet for the rest; Opus only if the user asks.
@@ -63,7 +63,7 @@ The batch's one stop. Show, in one message:
 - in the desktop app, that the workers' git commands on the main branch's folder ask for permission unless the session's permission mode allows them (`setup` leaves them asking).
 
 Then ask, with the question tool when there is one (recommended option first), otherwise as a numbered list with the defaults filled in, where "OK" accepts them all:
-1. **Batch:** as shown / only the first item / other items (numbers).
+1. **Batch:** as shown / only the first item / other items (numbers). On a resume: the branches found, which to resume.
 2. **Models:** by difficulty, as shown / all on Sonnet.
 3. **Merge:** I bring each one in, one at a time / leave each ready for you (open pull requests, or verified branches in local merge). In a project whose pull requests are merged by the reviewer, there's no question: the batch ends with the pull requests open.
 4. **Updates:** at every milestone / only problems and the end.
@@ -85,7 +85,7 @@ The answer is the OK for the whole batch. It stands in for every stop the worker
 
 - Pass each worker's milestone to the user in a line (unless the user chose only problems).
 - A worker that's blocked, or reports a conflict, a red suite it can't fix or a plan that can't hold: decide the safest way out from its report. When the way out is bigger than the item (a redesign, a change to another item's files), drop the item: the worker commits a checkpoint and stops, its entry goes back to its status with a line on why, and the final summary names it.
-- A finding outside an item (a bug, debt, a decision for later) becomes a new backlog entry or issue with the `document` skill, never a fix in that item.
+- A finding outside an item (a bug, debt, a decision for later) becomes a new backlog entry or issue with the `document` skill, never a fix in that item. Write to the main branch's folder only while no worker is merging (right after the cued worker's report), so your commit never meets its squash.
 - Before starting a worker or cueing a merge, check the usage when the environment shows it. Close to the limit, start nothing new: let the running workers reach a checkpoint, then go to step 7. Running `/minidev:swarm` again resumes (step 1.6).
 
 ## 6. Bring them in, one at a time
