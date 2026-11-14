@@ -8,6 +8,10 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+## [0.32.0] - 2026-11-14
+
+A `setup` path for people who don't know git or GitHub, and `swarm` workers that make their own worktree when the environment can't.
+
 ### Added
 
 - **`setup`: a "choose for me" path for people who don't know git or GitHub**: answering "choose for me" (or passing it as the argument of `/minidev:setup`) takes every recommendation of the questions round without asking, says each choice in one plain sentence with what it changes day to day, and skips the question only someone who knows the project can answer (the rules a newcomer would break; Conventions is left out). Questions that protect the user's work (uncommitted changes) are still asked, in plain words. When `gh` is missing or signed out it says what is lost (no review step, no backlog in issues) and how to get it, then continues with local merge. At the end it lists what it chose and how to change it by running `/minidev:setup` again. Closes #3.
