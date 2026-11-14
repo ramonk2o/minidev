@@ -1,6 +1,6 @@
 # Choose for me
 
-For someone who doesn't know git or GitHub and can't judge step 3's questions. It replaces the rest of step 3's round; steps 1, 2 and 4 to 9 run as they are, and step 8 still shows everything for one OK. The user triggers it by saying "choose for me" (in any language) or by giving it as the command's argument, or you offer it when their answers show the terms mean nothing to them.
+For someone who doesn't know git or GitHub and can't judge step 3's questions. It replaces the rest of step 3's round; steps 1, 2 and 4 to 9 run as they are, and step 8 still shows everything for one OK. The user triggers it by saying "choose for me" (in any language) or by giving it as the command's argument; step 3 says when to offer it. Say the sentences quoted below in the user's language.
 
 ## What it means
 
@@ -14,9 +14,9 @@ Take every recommendation step 3 would make (integration mode, where the backlog
 
 - **Uncommitted changes and the session's branch,** when step 2 found either: the questions in `references/commit.md` (Before writing), in plain words ("There is unsaved work in this folder. Save it as its own commit, or set it aside, before I continue"), with its recommendation. They protect the user's work, so choose-for-me doesn't skip them.
 
-## When `gh` is missing or signed out
+## When step 3 would pick local merge
 
-Say what is lost and how to get it, in plain words: "GitHub isn't connected on this computer, so changes will join the project directly, with no review step and no list of ideas on GitHub. To get those, install `gh` if needed, sign in with `gh auth login` and run `/minidev:setup` again." Then continue with local merge and BACKLOG.md, unless the user says they want to sign in now: then stop and let them run setup again once they have.
+Say what is lost and how to get it, in plain words. When `gh` is missing or signed out: "GitHub isn't connected on this computer, so changes will join the project directly, with no review step, no copy of the project on GitHub and no list of ideas there. To get those, install `gh` if needed, sign in with `gh auth login` and run `/minidev:setup` again. If you'd rather do that now, tell me and I'll stop here." When the remote is on another host, say instead that the project lives somewhere other than GitHub, so changes join it directly, with no review step. Then continue with local merge and BACKLOG.md, unless the user asks to stop and sign in: then stop and let them run setup again once they have.
 
 ## The squash setting
 

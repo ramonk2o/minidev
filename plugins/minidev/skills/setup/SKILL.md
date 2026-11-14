@@ -39,7 +39,7 @@ Read the repository to fill the project-specific sections. Look, don't guess:
 
 ## 3. Ask
 
-If the user says "choose for me" (in any language), gives it as the command's argument, or their answers show they don't know git or GitHub, follow `references/choose-for-me.md` in place of the rest of this step.
+If the user says "choose for me" (in any language) or gives it as the command's argument, follow `references/choose-for-me.md` in place of the rest of this step. If their messages so far show they don't know git or GitHub, offer it in one sentence first and follow it on a yes.
 
 In one short round with a suggested answer for each, ask only what you couldn't find. Always include:
 
