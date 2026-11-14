@@ -1,13 +1,13 @@
 ---
 name: rethink
-description: Take everything that bothers the user about a product already in use, as loose and unfinished as it comes, and turn it into backlog changes they approve. It reads the backlog and SPEC.md first, plays the points back by subject with the earlier decisions they collide with, questions them in rounds (the user's answers too) and ends in one plan of entries to create, change and discard, which an independent auditor checks before anything is written through document. It changes no code and may leave points open. Run only when the user invokes it, optionally with the text (e.g. "/minidev:rethink", "/minidev:rethink the home is too crowded and…").
+description: Take everything that bothers the user about a product already in use, as loose and unfinished as it comes, and turn it into backlog changes they approve. It reads the backlog and SPEC.md first, plays the points back by subject with the earlier decisions they collide with, questions them in rounds (the user's answers too) and ends in one plan of entries to create, change and discard, which an independent auditor checks, when it holds more than one, before anything is written through document. It changes no code and may leave points open. Run only when the user invokes it, optionally with the text (e.g. "/minidev:rethink", "/minidev:rethink the home is too crowded and…").
 disable-model-invocation: true
 argument-hint: "[what bothers you]"
 ---
 
 # Rethink
 
-Turns loose discontent with a product in use into backlog changes. The other ways into the backlog each take one thing the user can already name: an idea (`document`, with `interview` when behavior is open), a bug (`fix`), a finding about the code's health (`checkup`). This one takes many at once, in the state they come: "this bothers me", "this looks odd", no solution yet. It ends in one plan (entries to create, change and discard) that an independent reader checks before `document` writes it. It changes no code, and it doesn't have to settle everything: what the session can't decide is recorded as open.
+Turns loose discontent with a product in use into backlog changes. The other ways into the backlog each take one thing the user can already name: an idea (`document`, with `interview` when behavior is open), a bug (`fix`), a finding about the code's health (`checkup`). This one takes many at once, in the state they come: "this bothers me", "this looks odd", no solution yet. It ends in one plan (entries to create, change and discard) that an independent reader checks, when it holds more than one write, before `document` writes it. It changes no code, and it doesn't have to settle everything: what the session can't decide is recorded as open.
 
 Talk to the user in the language of the conversation.
 
@@ -55,11 +55,12 @@ Judge each point by what the product is for (SPEC.md's Goal), not by what the us
 
 ## 4. Rounds
 
-Load the `minidev:interview` skill and ask with its method: rounds of numbered questions, each with your recommended answer, only what can be decided now. Three things differ here:
+Load the `minidev:interview` skill and ask with its method: rounds of numbered questions, each with your recommended answer, only what can be decided now. Four things differ here:
 
 - **Many roots.** Ask across all the points in the same round. A model or rule that several points depend on goes first.
 - **A fact only the user has** (a number from outside the repository, how the team works) gets no recommended answer: say what it decides.
 - **Points may stay open.** Stop a point when its next question needs something the user doesn't know yet (a trial, a design, someone else's answer): it's recorded as an open question. Stop the rounds when what's left wouldn't change which entries exist or what they wait for.
+- **The plan is the confirmation.** `interview` ends by asking the user to confirm a shared understanding. Here the plan's approval (step 7) is that confirmation: don't ask for it apart.
 
 Judge the answers too. When an answer can't hold against the data, a SPEC.md rule or another answer, say so before the plan, with the evidence.
 
@@ -67,9 +68,9 @@ Judge the answers too. When an answer can't hold against the data, a SPEC.md rul
 
 Draft every entry in `document`'s format (`../document/references/backlog.md`, Entry format), then build the plan from the drafts:
 
-- **New entries,** in the order they'll be created: name, type, a line or two, its Decisions and Open questions, and what it Needs.
+- **New entries,** in the order they'll be created: name, type, its area (marked when the area is new), a line or two, its Decisions and Open questions, and what it Needs.
 - **Entries that change:** what changes in each (a Decision replaced, scope moved to another entry, an Open question answered).
-- **Entries discarded,** each with the reason.
+- **Entries discarded,** each with the reason and, for every entry that Needs it, whether that need is dropped or that entry is discarded too.
 - **Dropped:** the points that led to no entry, each with the reason.
 - **A doubt that still decides an entry's text,** with the answer you'll use if they approve without answering.
 
@@ -83,7 +84,7 @@ The plan shows each entry in short, so the full drafts add no decision the plan 
 
 ## 6. The check
 
-Whoever led the conversation wrote every draft with the same picture in mind, so two drafts that can't both be built look fine to them. When the plan writes two or more entries, have it checked before showing it. Say you're doing so, and start the `auditor` agent (agent type `minidev:auditor`; on Sonnet when the environment lets you choose a model) with this prompt, filled in and nothing added:
+Whoever led the conversation wrote every draft with the same picture in mind, so two drafts that can't both be built look fine to them. When the plan holds two or more writes (entries created, changed or discarded, counted together), have it checked before showing it. Say you're doing so, and start the `auditor` agent (agent type `minidev:auditor`; on Sonnet when the environment lets you choose a model) with this prompt, filled in and nothing added:
 
 ```
 Area brief: a plan of backlog changes, not written yet
@@ -101,17 +102,17 @@ Leave out problems in entries the plan doesn't touch, and whether the ideas are 
 Plan:
 <each new entry's draft in full, each change to an existing entry, each discard>
 
-Backlog: <"BACKLOG.md", or "GitHub issues: gh issue list --state open --limit 200 --json number,title,labels,body">
+Backlog: <"BACKLOG.md", or "GitHub issues: gh issue list --state open --limit 200 --json number,title,labels,body,blockedBy">
 Code graph: <its path, when the project already has one (a `graphify-out/` folder, for example), or "none">
 Numbers: none
 Earlier check-ups: none
 ```
 
-Don't pass the conversation or your own doubts: an auditor told what to find finds it. If the session can't start agents, the plan says it went unchecked.
+Don't pass the conversation or your own doubts: an auditor told what to find finds it. A plan that wasn't checked (a single write, or a session that can't start agents) says so.
 
 ## 7. Approve and record
 
-Show the plan, then the auditor's report whole, then what you'd change in the plan for each finding (recommended). Ask for the OK; the user may approve parts. A plan reshaped after the check (entries added or merged) is checked again; an answer or a cut isn't.
+Show the plan, then the auditor's report whole when the check ran, then what you'd change in the plan for each finding (recommended). Ask for the OK; the user may approve parts. A plan reshaped after the check (entries added, split or merged) is checked again, and what changed is shown with the new report for one more OK: the redrafted entries weren't seen yet. An answer or a cut needs neither.
 
 On the OK, write it with the `document` skill: the new entries in the order of their Needs, so each can name the ones it waits for, then the changes, then the discards. The approved plan is the OK for these writes (`../document/SKILL.md`, Confirmation). Each entry written says where it came from in its Notes ("from the rethink of <date>").
 
