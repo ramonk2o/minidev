@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: checkup-flow
+tags: [behavior]
+context:
+  scaffold_script: scaffold.sh

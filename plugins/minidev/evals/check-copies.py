@@ -13,6 +13,8 @@ source doesn't leave stale copies behind.
   three, up to its last clause (what to do instead, which is each skill's own).
 - Graders with the same file name are the same in every case that has one; a
   case that needs a different check gives it another name.
+- The weight scale of a check-up's findings (high, medium, low) is the same in
+  agents/auditor.md and agents/refuter.md.
 
 Run from plugins/minidev: python3 evals/check-copies.py
 """
@@ -107,6 +109,14 @@ for name, versions in graders.items():
     if len(versions) > 1:
         problems.append(f"grader {name} differs between cases (give a different version its own name):\n" + "\n".join(
             f"  {', '.join(paths)}" for paths in versions.values()))
+
+weights = {}
+for agent in ("auditor", "refuter"):
+    scale = tuple(re.findall(r"^\s*- \*\*(?:high|medium|low):\*\* .*$", open(f"{ROOT}/agents/{agent}.md").read(), re.M))
+    weights.setdefault(tuple(l.strip() for l in scale), []).append(agent)
+if len(weights) > 1 or any(len(scale) != 3 for scale in weights):
+    problems.append("the check-up's weight scale differs between agents/auditor.md and agents/refuter.md (or isn't three lines):\n" + "\n".join(
+        f"  {', '.join(agents)}: {' / '.join(scale)}" for scale, agents in weights.items()))
 
 if problems:
     print("\n".join(problems))
