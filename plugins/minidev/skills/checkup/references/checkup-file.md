@@ -2,7 +2,7 @@
 
 `CHECKUP.md`, at the project's root, holds the last check-up: what the next one compares itself with, and what it must not raise again. It's replaced whole at each check-up; git keeps the earlier ones (`git log -p -- CHECKUP.md`). Only a full check-up writes it, after the user's OK to the report.
 
-It isn't a product document: BACKLOG.md, SPEC.md and CHANGELOG.md stay with the `document` skill, and a finding the user approves lives in the backlog, where it's worked on. This file keeps only where each finding went.
+It isn't a product document: BACKLOG.md, SPEC.md and CHANGELOG.md stay with the `document` skill, and a finding the user approves lives in the backlog, where it's worked on. This file keeps only where each finding went: recorded in the backlog, handed over to the skill that owns the work, or declined.
 
 Write it in the project's documents language (its CLAUDE.md, `Documents:`).
 
@@ -15,7 +15,7 @@ The last health check-up of this project, written by `/minidev:checkup` and repl
 
 - **Date:** <YYYY-MM-DD>
 - **Commit:** <the main branch's commit the check-up read, full hash>
-- **Changes since the last one:** <number, or "first check-up">
+- **Changes since the last one:** <number, counted as the skill's When to run says, or "first check-up">
 - **Cost:** <each agent's model and tokens, when the environment reported them; otherwise "not reported">
 
 ## Verdicts
@@ -50,7 +50,7 @@ Files that change together: <the pairs, or "none">
 - **Evidence:** <as reported>
 - **Cost of waiting:** <as reported>
 - **When:** <as reported>
-- **Status:** <Recorded: <the backlog entry's name or the issue's number> | Declined: <the user's reason>>
+- **Status:** <Recorded: <the backlog entry's name or the issue's number> | Handed over: <spec audit, test prune or backlog clean-up> | Declined: <the user's reason>>
 
 ## Refuted
 
@@ -64,6 +64,6 @@ Leave out a section with nothing in it, except Verdicts. A number that wasn't co
 The next check-up takes from it:
 - **Commit**, for the history script's `--since`, and to count the changes since;
 - **Verdicts** and **Numbers**, to show beside the new ones;
-- **Findings** and **Refuted**, given to each area's auditor so it doesn't raise them again unless the evidence changed. A finding that was Recorded and whose entry is still open in the backlog is debt waiting, not a new finding.
+- **Findings** and **Refuted**, given to each area's auditor so it doesn't raise them again unless the evidence changed. A finding that was Recorded and whose entry is still open in the backlog is debt waiting, not a new finding. A Handed over one has no entry holding it, so the auditor raises it again when it's still true.
 
 A CHECKUP.md that doesn't follow this format (edited by hand, or from an older version) is read for what it has; what's missing counts as "first check-up".

@@ -17,12 +17,12 @@ Talk to the user in the language of the conversation.
 
 ## When to run
 
-A check-up is due when about ten changes reached the main branch since the last one (`git rev-list --count --first-parent <CHECKUP.md's Commit>..<main branch>`; with no CHECKUP.md, every change counts), or before a release that others will build on.
+A check-up is due when about ten changes reached the main branch since the last one, or before a release that others will build on. A change is a commit that touches something other than a Markdown file, so the cycle's document commits (an idea noted, a feature set In progress, the check-up's own record) don't count: `git rev-list --count --first-parent <CHECKUP.md's Commit>..<main branch> -- . ':(exclude)*.md'` (with no CHECKUP.md, leave out the commit and `..`).
 
 ## 1. Check
 
 1. The project uses the cycle, as `build` checks it (`../build/SKILL.md`, 1. Start). If not, offer `/minidev:setup` and stop.
-2. The session is on the main branch (`../build/references/git-flow.md`, The main branch) with a clean working tree. On a work branch, or with uncommitted changes, say so and stop: a half-done change would be judged as if it were the product.
+2. The check-up reads the main branch, clean and up to date (`../build/references/git-flow.md`, The main branch). With uncommitted changes, or on a branch with commits of its own, say so and stop: a half-done change would be judged as if it were the product. A session branch with no commits beyond the main branch (a worktree the app made) holds the same code: bring it level with the main branch (`git merge --ff-only <main branch>`) and go on there; step 7 then writes in the main branch's own folder.
 3. From the project's CLAUDE.md, note the test, lint and type-check commands, and where the backlog is: `BACKLOG.md`, or GitHub issues (`Backlog: GitHub issues`). With issues, `gh` must be signed in (`gh auth status`); if it isn't, the Backlog area can't run, and the start message says so.
 4. If the project has a `CHECKUP.md`, read it as `references/checkup-file.md` says (Reading it): it's the last check-up.
 5. If the session can't start agents, only the numbers run: the start message says so.
@@ -31,7 +31,7 @@ A check-up is due when about ten changes reached the main branch since the last 
 
 These need no judgment: run, copy the output and set it beside the last check-up's.
 
-- **Change history:** from the project's root, `python3 "${CLAUDE_PLUGIN_ROOT}/skills/checkup/scripts/history.py" --since <CHECKUP.md's Commit>` (no `--since` on a first check-up). It only reads git, and prints the project's size, the files that change most, the folders where fixes concentrate and the files in different folders that change together. Without Python 3, skip it and say so: the auditors still run, with no history to start from.
+- **Change history:** from the project's root, `python3 "${CLAUDE_PLUGIN_ROOT}/skills/checkup/scripts/history.py" --since <CHECKUP.md's Commit>` (no `--since` on a first check-up). It only reads git, counts changes as When to run does, and prints the project's size, the files that change most, the folders where fixes concentrate and the files in different folders that change together. Without Python 3, skip it and say so: the auditors still run, with no history to start from.
 - **Test suite:** run the test command once; note how long it took and the runner's counts, skipped tests included. If it fails, stop and show the user: a main branch that doesn't pass is `fix`'s work, and it comes before a check-up.
 - **Dependencies:** the stack's own commands that list outdated packages and known vulnerabilities (`npm outdated` and `npm audit`, `pip list --outdated`, `cargo outdated`…), only the ones that read. One that isn't installed, or fails, is skipped and named.
 - **Code graph:** if the project already has one (a `graphify-out/` folder, for example), note its path for the auditors. Don't build one.
@@ -79,11 +79,11 @@ Last check-up (<its date, or "none">), this area:
 
 Don't pass the conversation or your own view of what's wrong: an auditor told what to find finds it. Wait for the reports, which arrive on their own. When the environment shows each agent's tokens as it returns, note them for the Cost.
 
+When they have all returned, check that they left nothing behind: `git rev-parse HEAD` and `git status --short` are as noted. They're told to change nothing, but they have a shell; if something changed, show the user and put it back as `../build/references/git-flow.md` says (Check after an agent).
+
 ## 5. The refuter
 
-Auditors asked to find problems tend to find some, so every finding is challenged before it reaches the user. With no finding at all, skip this step. Otherwise start one `refuter` agent (agent type `minidev:refuter`) on Sonnet, with every finding exactly as its auditor wrote it, under its area's name, and nothing else: not the numbers, not the Checked sections, not your opinion of any.
-
-When it returns, check that the agents left nothing behind: `git rev-parse HEAD` and `git status --short` are as noted. They're told to change nothing, but they have a shell; if something changed, show the user and put it back as `../build/references/git-flow.md` says (Check after an agent).
+Auditors asked to find problems tend to find some, so every finding is challenged before it reaches the user. With no finding at all, skip the refuter. Otherwise start one `refuter` agent (agent type `minidev:refuter`) on Sonnet, with every finding exactly as its auditor wrote it, the `Backlog:` line of the auditors' prompt (so it can open an entry a finding cites), and nothing else: not the numbers, not the Checked sections, not your opinion of any. When it returns, check the repository again, as after the auditors.
 
 Don't filter either report. Every finding reaches the user as written, with the refuter's verdict on it; a refuted one is shown too, in its own list, so the user can bring it back.
 
@@ -96,6 +96,8 @@ One message, in this order:
    - **Solid:** no finding stands.
    - **With caveats:** findings stand, none of high weight.
    - **At risk:** a finding of high weight stands.
+
+   The weights are the auditor's (`agents/auditor.md`, What counts as a finding).
 3. **The findings that stand,** highest weight first: each one's evidence, cost of waiting, what makes it come due, and where it would go (the table below).
 4. **Refuted,** a line each with the refuter's reason.
 5. **The numbers that moved** since the last check-up.
@@ -103,19 +105,24 @@ One message, in this order:
 
 | Finding | Where it goes |
 |---|---|
-| Code to change while keeping the behavior: a structure to fix, two solutions to merge, a dependency to upgrade, a migration | A Debt entry, for `chore` |
-| Behavior that's wrong: the code contradicts SPEC.md, a vulnerability in a path in use | A Bug entry, for `fix` |
+| Code to change while keeping the behavior: a structure to fix, two solutions to merge, a migration, a dependency to upgrade (one with a known vulnerability included) | A Debt entry, for `chore` |
+| Behavior that's wrong: the code contradicts SPEC.md, a vulnerability in the product's own code | A Bug entry, for `fix` |
 | A decision to take again, with more than one way out | A Debt entry with the options as its open questions, and the offer of an `interview` session to settle it |
-| SPEC.md drifted in an area | The spec audit of that area with `document`, now, or a Debt entry `Spec audit: <area>` |
-| Rules with no test, or tests that prove nothing | A Debt entry: `Missing tests: <area>`, in the format the spec audit uses, or `Prune tests: <area>` |
-| Backlog entries to merge, close or correct | A backlog clean-up with `document`, which shows its own plan |
+| Rules with no test | A Debt entry `Missing tests: <area>`, as the spec audit writes it (`../document/references/spec-audit.md`, Each rule) |
+| SPEC.md drifted in an area | No entry: the spec audit of that area, with `document` |
+| Tests that prove nothing | No entry: a test prune of those modules, with `chore` |
+| Backlog entries to merge, close or correct | No entry: a backlog clean-up, with `document` |
+
+The last three are handed over, not recorded: their owner does them whole, and an entry would only repeat the request. Offer to start each right after step 7 (recommended) or leave it; either way CHECKUP.md keeps it as handed over, and the next check-up raises it again if it's still true.
 
 Ask which findings to record: all of them (recommended), some, or none; the user may decline any one, with a reason. Say that the answer also approves writing CHECKUP.md, and wait for it.
 
 ## 7. Record
 
-1. With the `document` skill, record each approved finding (its Record a bug or debt for later; as issues when the backlog lives there). The entry's Description holds the evidence, the cost of waiting and what makes it come due, and says it came from the check-up of this date.
-2. Write `CHECKUP.md` as `references/checkup-file.md` says: the verdicts, the numbers, every finding with where it went or why the user declined it, the refuted ones and the cost.
+When the main branch is checked out in another worktree, do this step from that folder (`../build/references/git-flow.md`, Worktrees); if it has uncommitted changes, stop and ask.
+
+1. With the `document` skill, record each approved finding that gets an entry (its Record a bug or debt for later; as issues when the backlog lives there). The entry's Motivation holds the cost of waiting and what makes it come due; its Description holds what's owed, the evidence, and that it came from the check-up of this date.
+2. Write `CHECKUP.md` as `references/checkup-file.md` says: the verdicts, the numbers, every finding with its Status (recorded, handed over or declined), the refuted ones and the cost.
 3. Commit CHECKUP.md alone on the main branch ("Check-up: <date>, <the verdicts in a few words>"). Like `document`'s commits, it isn't pushed on its own: it goes out with the next change (`../document/SKILL.md`, Commits).
 
-End with one line: what was recorded and the step you'd take first (the highest-weight finding, with its skill). A spec audit, an interview or a backlog clean-up the user accepted starts after this step, with its own skill.
+End with one line: what was recorded and the step you'd take first (the highest-weight finding, with its skill). A spec audit, a test prune, a backlog clean-up or an interview the user accepted starts now, with its own skill.

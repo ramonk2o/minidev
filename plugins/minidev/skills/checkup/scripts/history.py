@@ -6,8 +6,10 @@ Run from the project's root:
     python3 history.py [--since <commit>] [--last 200] [--top 10]
                        [--ref <branch>] [--git <path>]
 
-It reads the first-parent history of the branch (in the minidev cycle, one
-commit per change) and prints:
+It reads the first-parent history of the branch. A change is a commit there
+that touches something other than a Markdown file: the cycle's document
+commits (an idea noted, a feature set In progress, the check-up's own record)
+aren't changes. It prints:
 
 - the project's size: code and test files, and their lines;
 - how many changes and fixes the history has, in all and since --since;
@@ -54,6 +56,7 @@ MAX_FILES_FOR_PAIRS = 30  # a change that touches more is a sweep, not coupling
 MIN_TOGETHER = 3
 MIN_SHARE = 0.5
 FEW_CHANGES = 20
+CHANGE_PATHS = ["--", ".", ":(exclude)*.md"]  # what makes a commit a change
 
 GIT = "git"
 
@@ -102,7 +105,7 @@ def read_changes(ref, last=None, names=True):
         args += ["-m", "--name-only"]
     if last:
         args += ["-n", str(last)]
-    out = git(*args, ref)
+    out = git(*args, ref, *CHANGE_PATHS)
     changes = []
     for record in out.split("\x1e")[1:]:
         header, _, rest = record.partition("\x1d")
@@ -158,7 +161,7 @@ def main():
         return 1
 
     changes = read_changes(args.ref, last=args.last)
-    total = int(git("rev-list", "--count", "--first-parent", args.ref).strip())
+    total = int(git("rev-list", "--count", "--first-parent", args.ref, *CHANGE_PATHS).strip())
     fixes = sum(1 for c in changes if c[3])
 
     # Size
