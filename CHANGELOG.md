@@ -8,6 +8,10 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+## [0.31.0] - 2026-11-14
+
+A new `guide` skill tells newcomers where their project stands and what to do next, `swarm` offers to delegate everything in one click, and it no longer mistakes an unprotected main branch for one that requires a review.
+
 ### Added
 - **`guide`: where the project stands and what to do next, in plain words**: `/minidev:guide` (run only by the user, so it never competes with the other skills) reads the folder, git, the CLAUDE.md, the backlog, the branch, uncommitted changes and open pull requests, and says in a few sentences where the project is, the one next step and the words or command that take it: `brainstorm` for an empty folder, `/minidev:setup` for a project that doesn't use the cycle yet, "continue X" or the first backlog entry for one that does. It explains a term of the cycle (pull request, branch, test-first, spec, backlog) in one sentence when asked. It writes nothing. The README's new "First use" section tells newcomers to start with it and to come back whenever they're stuck, and lists what to have installed (Claude Code, git, `gh` and a GitHub login). `brainstorm` and `setup` end by pointing to it.
 
@@ -390,7 +394,8 @@ The plugin is renamed to minidev, and work happens on branches.
 ### Changed
 - Plugin and marketplace renamed to `minidev`. Features and fixes are built on their own branches and merged into main once checked.
 
-[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.30.0...HEAD
+[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.31.0...HEAD
+[0.31.0]: https://github.com/ramonk2o/minidev/compare/v0.30.0...v0.31.0
 [0.30.0]: https://github.com/ramonk2o/minidev/compare/v0.29.0...v0.30.0
 [0.29.0]: https://github.com/ramonk2o/minidev/compare/v0.28.0...v0.29.0
 [0.28.0]: https://github.com/ramonk2o/minidev/compare/v0.27.0...v0.28.0
