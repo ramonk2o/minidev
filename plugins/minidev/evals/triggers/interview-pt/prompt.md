@@ -1,5 +1,5 @@
 ---
-description: fires grilling
+description: fires interview
 tags: [trigger]
 max_turns: 6
 allowed_tools: [Skill]

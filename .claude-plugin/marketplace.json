@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "minidev",
-      "description": "A fixed development cycle: plan and scaffold new projects (brainstorm), interview ideas (grilling), keep BACKLOG/SPEC/CHANGELOG (document), build features test-first with an independent tester and reviewer (build), fix bugs test-first (fix), make behavior-preserving changes like refactors, upgrades and test pruning with the suite green before and after (chore), run a few backlog items in parallel to the main branch (swarm), and set up any project for it (setup).",
+      "description": "A fixed development cycle: plan and scaffold new projects (brainstorm), interview ideas until nothing is left open (interview), keep BACKLOG/SPEC/CHANGELOG (document), build features test-first with an independent tester and reviewer (build), fix bugs test-first (fix), make behavior-preserving changes like refactors, upgrades and test pruning with the suite green before and after (chore), run a few backlog items in parallel to the main branch (swarm), and set up any project for it (setup).",
       "source": "./plugins/minidev"
     }
   ]

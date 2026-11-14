@@ -46,7 +46,7 @@ Read the open items: `BACKLOG.md`, or `gh issue list --state open --limit 100 --
 Pick up to the batch size, by priority, by what the current version needs, and by dependencies (an item that needs another waits for a later batch). Leave out:
 - items whose files overlap a picked one: estimate each item's files from its entry and a search of the code (`git grep`); two items in the same module don't go in one batch;
 - a second item that adds a database migration or changes a schema: at most one per batch;
-- items with a work branch or In progress outside a resume (someone's work), and ideas whose key behavior is undecided across several connected decisions (they need a `grilling` interview, not a decision taken here).
+- items with a work branch or In progress outside a resume (someone's work), and ideas whose key behavior is undecided across several connected decisions (they need an `interview` session, not a decision taken here).
 
 For each picked item, prepare:
 - **Skill:** `build` for an Idea, `fix` for a Bug, `chore` for Debt or a behavior-preserving change (always its full path, on a branch: its short paths act on the main branch, which only the merge cue may touch).

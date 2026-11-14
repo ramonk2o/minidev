@@ -106,7 +106,7 @@ When the user wants to leave a bug or a chore for later ("note this bug, I'll fi
 When the user states an idea:
 - **Clear:** record it right away and tell them what was written.
 - **Vague:** ask 2 or 3 short questions first (what problem does it solve? how do they picture it working?).
-- **Leaves behavior open** (several connected decisions that would change what gets built): load the `minidev:grilling` skill and interview the user with it. Write its final summary in this entry format, so approving the summary approves the text that will be recorded (see Capture).
+- **Leaves behavior open** (several connected decisions that would change what gets built): load the `minidev:interview` skill and interview the user with it. Write its final summary in this entry format, so approving the summary approves the text that will be recorded (see Capture).
 
 "Just note it" (or the same in the user's language) always skips the questions and the interview: record what was said, with anything undecided as Open questions.
 

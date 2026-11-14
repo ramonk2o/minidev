@@ -1,12 +1,12 @@
 ---
 name: setup
-description: Set up a software project for the minidev development cycle (grilling, document, build, fix and chore skills, tester and reviewer agents) by making it a git repository if needed, writing or updating its CLAUDE.md, allowing its test and build commands in the project's permissions, creating the product documents, and pointing out what adopting the cycle left orphaned or redundant. Run only when the user invokes it.
+description: Set up a software project for the minidev development cycle (interview, document, build, fix and chore skills, tester and reviewer agents) by making it a git repository if needed, writing or updating its CLAUDE.md, allowing its test and build commands in the project's permissions, creating the product documents, and pointing out what adopting the cycle left orphaned or redundant. Run only when the user invokes it.
 disable-model-invocation: true
 ---
 
 # Setup
 
-Prepares a project so it works with the development cycle of the `minidev` plugin: the `grilling`, `document`, `build`, `fix` and `chore` skills and the `tester` and `reviewer` agents, which come with this plugin. The cycle's steps live in those skills; the CLAUDE.md only holds the project's facts and says which skill handles each step, so updating the plugin updates every project. The cycle is the same in every project; what changes is the project's own facts (commands, conventions, how tests are written), so the CLAUDE.md has a fixed part, copied from the template below, and a discovered part, found in the repository or asked.
+Prepares a project so it works with the development cycle of the `minidev` plugin: the `interview`, `document`, `build`, `fix` and `chore` skills and the `tester` and `reviewer` agents, which come with this plugin. The cycle's steps live in those skills; the CLAUDE.md only holds the project's facts and says which skill handles each step, so updating the plugin updates every project. The cycle is the same in every project; what changes is the project's own facts (commands, conventions, how tests are written), so the CLAUDE.md has a fixed part, copied from the template below, and a discovered part, found in the repository or asked.
 
 Talk to the user in the language of the conversation. Write the CLAUDE.md in English.
 
@@ -123,7 +123,7 @@ Check only what adopting the cycle leaves behind. This is not a general cleanup:
 - **Old documents** that now overlap BACKLOG, SPEC or CHANGELOG (`TODO.md`, `FEATURES.md`, `ROADMAP.md`, `HISTORY.md`…). Don't convert them: point them out; aligning them is the `document` skill's job (step 9).
 - **Sections of the old CLAUDE.md** that the new text replaces: an older workflow, backlog or test rules that the skills now own, the longer Development cycle section written by earlier versions of this skill (idea, build, bug and release steps spelled out), or a line saying the cycle is installed globally in `~/.claude/`.
 - **Local skills, agents and commands** (`.claude/skills/`, `.claude/agents/`, `.claude/commands/`) that overlap the cycle: a local build, backlog or tester, or an old copy of one of this plugin's skills. If one has something project-specific the plugin's doesn't cover, propose moving that part into the CLAUDE.md before removing it. Other local skills are just listed.
-- **Global copies of the cycle** in `~/.claude/skills/` (`grilling`, `document`, `build`, `fix`, `chore`, `brainstorm`, `bootstrap`) or `~/.claude/agents/` (`tester.md`, `reviewer.md`): they duplicate this plugin and may be older versions. Point them out and suggest removing them; they're outside the project, so this always needs its own explicit OK.
+- **Global copies of the cycle** in `~/.claude/skills/` (`grilling`, `interview`, `document`, `build`, `fix`, `chore`, `brainstorm`, `bootstrap`) or `~/.claude/agents/` (`tester.md`, `reviewer.md`): they duplicate this plugin and may be older versions. Point them out and suggest removing them; they're outside the project, so this always needs its own explicit OK.
 - **Broken references:** the CLAUDE.md (old or new) pointing to a file, script or command that doesn't exist.
 
 For each item, say what it is, why it's orphaned or redundant, and what you suggest (remove, move a part to the CLAUDE.md, leave).
