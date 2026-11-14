@@ -120,7 +120,7 @@ The main branch gets the **final message**: the verification message (`git log -
 
 ## Merge and push
 
-Once the user confirms everything works (or right after the verification commit, if there's nothing to check by hand and no assumption to confirm), follow the project's integration mode. With the backlog in GitHub issues and a `Main branch:` line, GitHub doesn't close the issue: once the change is on the remote's main branch, close it as `../../document/references/issues.md` says (Finish a feature).
+Once the user confirms everything works (or right after the verification commit, if there's nothing to check by hand and no assumption to confirm), follow the project's integration mode. With the backlog in GitHub issues, once the change is on the main branch take the feature's `in progress` label off; and with a `Main branch:` line, where GitHub doesn't close the issue, close it once the change is on the remote's main branch. Both as `../../document/references/issues.md` says (Finish a feature).
 
 **Local merge:** the main branch only ever receives code that was already tested combined with it, so a failure is fixed on the branch, never on the main branch.
 1. If the repository has a remote, bring the main branch up to date: `git switch <main branch>`, update it as in The main branch, `git switch <branch>`.

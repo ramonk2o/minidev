@@ -12,6 +12,11 @@ applied to how the skills behave.
 
 - **`checkup`: a health check-up of the whole project, for what no single change's review sees** (debt that piled up, architecture decisions that turned out wrong): `/minidev:checkup` collects numbers that need no model (a script reads git for the files that change most, where fixes concentrate and which files in different folders change together; the suite's time and skipped tests; outdated and vulnerable dependencies), shows them with what will run and what the last check-up cost, and on your OK starts independent `auditor` agents (architecture, decisions and growth, the backlog, documents and tests) and a `refuter` that tries to knock each finding down. You get a verdict per area beside the last check-up's (a problem several auditors report counts once) and the refuted findings apart; the ones you approve become backlog entries, and `CHECKUP.md` keeps the result for the next one. It changes no code. `guide` says when a check-up is due.
 
+### Changed
+
+- **`document`, `swarm`, `brainstorm` and `guide`: a backlog entry says what it touches, when it's planned and what it waits for**: an area is the part of the product an entry changes, never a phase like "Later"; the version it's planned for is its own field (`Version`, the milestone in GitHub issues) and the entries that must be built first are its `Needs` (GitHub's "blocked by" relation), which `document` keeps true as entries are added, finished, discarded or renamed. `brainstorm` writes the first version and its dependencies that way, `guide` proposes the current version's first entry that isn't waiting, and `swarm` reads the backlog without the bodies, shortlists from the current version and opens only the shortlist.
+- **`document`: relabeling the issues is a reorganization, shown as a plan first**: features get GitHub's `enhancement` label, area labels are created with a description, a request to relabel or classify the issues lists what each open issue gains and loses before anything is written, and `in progress` comes off an issue once its change reaches the main branch. A release asks where the entries still planned for it go, and closes its milestone.
+
 ## [0.32.0] - 2026-11-14
 
 A `setup` path for people who don't know git or GitHub, and `swarm` workers that make their own worktree when the environment can't.
