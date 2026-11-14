@@ -37,7 +37,7 @@ Talk to the user in the language of the conversation. Everything written to the 
 3. In pull request mode, whether the main branch requires a review (`gh api repos/{owner}/{repo}/branches/<main branch>/protection --jq .required_pull_request_reviews`, or a pull request's `reviewDecision`): if it does, treat the project as merged by the reviewer here (step 3, Merge).
 4. How workers run: a separate session per item, each in its own worktree, where the environment can start one (in the Claude desktop app); otherwise a background subagent per item with `isolation: worktree`. If neither is available, say so and stop: the items run one after another with their own skill instead.
 5. The main branch is clean and up to date (`../build/references/git-flow.md`, The main branch). Uncommitted changes there: stop and ask.
-6. If work branches of an earlier batch are left (`feature/`, `fix/` or `chore/` branches and their worktrees, found as `../build/references/git-flow.md` says in Resume), this is a resume: those items are the batch. Each one goes back to its worker when that session still exists (a message to it); otherwise a new worker resumes it as its skill's Resume says, after its old worktree is removed (`git worktree remove`, only when it's clean; one with uncommitted changes is someone's work: leave the item out and say so). Go to step 3 with them.
+6. If work branches of an earlier batch are left (`feature/`, `fix/` or `chore/` branches and their worktrees, found as `../build/references/git-flow.md` says in Resume), this is a resume: those items are the batch. Each one goes back to its worker when that session still exists (a message to it); otherwise a new worker resumes it as its skill's Resume says, after its old worktree is removed (`git worktree remove`, only when it's clean; one with uncommitted changes is someone's work: leave the item out and say so). Go to step 3 with them; at step 4, a resumed item skips 4.1 (its Decisions and status are already written) and gets the brief's resume line.
 
 ## 2. Pick the batch
 
@@ -73,7 +73,7 @@ The answer is the OK for the whole batch. It stands in for every stop the worker
 **Limits,** for the orchestrator and every worker, whatever the user approves:
 - no migration run against the development database or any database the worktrees share (`db:migrate` and the like), and no development server started in a worktree; a worker may create and migrate its own test database, named after its branch;
 - no push to the main branch (with local merge, the main branch stays local until the user pushes it), no force-push;
-- nothing destructive outside the worker's own worktree and branch;
+- nothing destructive outside the worker's own worktree and branch, except the steps its skill's Merge and push runs on the main branch for the project's mode;
 - the project's own rules in its CLAUDE.md.
 
 ## 4. Start the workers
@@ -96,7 +96,7 @@ Take the workers ready to merge in the order they got ready, except that an item
 
 ## 7. Final check and summary
 
-If anything reached the main branch, bring the local main branch up to date (`../build/references/git-flow.md`, The main branch) and run the tests, build and lint once there. A failure is a broken merged change. Find the squashed commit that broke it and undo it with `git revert <commit>` (a new commit, never a rewrite; in pull request mode, on a branch with its own pull request, merged the same way), run the checks again, put the item back to its status before the batch, record a Bug entry for what failed with the `document` skill, and say so in the summary.
+If anything reached the main branch, bring the local main branch up to date (`../build/references/git-flow.md`, The main branch) and run the tests, build and lint once there. A failure is a broken merged change. Revert the squashed commit that broke it, as `../build/references/git-flow.md` says (When a merged change breaks, Revert), without asking the user: the batch's OK covers it. Say so in the summary.
 
 Then, in one message:
 - what reached the main branch (each item, its pull request or commit);

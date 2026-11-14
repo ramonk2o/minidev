@@ -4,7 +4,7 @@ The message that starts each worker (`../SKILL.md`, 4. Start the workers). Fill 
 
 ```
 You are one worker of a minidev swarm; another session (the orchestrator) coordinates it.
-Work on <item: #number or the BACKLOG.md entry's title> with the minidev `<build | fix | chore>` skill, in this worktree only, on the branch `<branch>`. <a feature, in BACKLOG.md: The item is already In progress on the main branch, naming that branch; the orchestrator set it.> Create that branch, or rename this worktree's branch to it, start the work fresh, and don't set the item's status again.
+Work on <item: #number or the BACKLOG.md entry's title> with the minidev `<build | fix | chore>` skill, in this worktree only, on the branch `<branch>`. <a feature, in BACKLOG.md: The item is already In progress on the main branch, naming that branch; the orchestrator set it.> <new item: Create that branch, or rename this worktree's branch to it, start the work fresh, and don't set the item's status again. | resumed item: The branch exists from an earlier batch, with its checkpoints: check it out and resume as your skill's Resume says; don't start over.>
 
 Your skill's tester and reviewer run as usual. If you can't start them, stop and report: don't imitate them.
 
@@ -16,7 +16,7 @@ Files you may change: <paths>. Avoid: <paths: the other items' files>. If the wo
 
 Setup before the first test run: <install command>; <environment file: copy from where>; <test database: its own, named after the branch, created how>.
 
-Never: run migrations (<the project's migrate command>) against the development database or one the worktrees share, or start the development server; you may create and migrate your own test database; push the main branch or force-push; delete or rewrite anything outside this worktree and branch. <The item's own limits, if any.>
+Never: run migrations (<the project's migrate command>) against the development database or one the worktrees share, or start the development server; you may create and migrate your own test database; push the main branch or force-push; delete or rewrite anything outside this worktree and branch, except what your skill's Merge and push runs on the main branch. <The item's own limits, if any.>
 
 <Session: Report to the orchestrator, as a message of at most three lines, when: the tests are written, the implementation is done, the review is done, and the work is ready to merge (with the pull request's link, or the branch in local merge). Report at once when you're blocked. | Subagent: Your final message is your report, in at most three lines: end your run when the work is ready to merge (with the pull request's link, or the branch in local merge), or at once when you're blocked. The orchestrator continues you with its answer or the merge cue.> A bug, debt or question outside this item: one line in your next report; don't fix it.
 
