@@ -22,7 +22,7 @@ A check-up is due when about ten changes reached the main branch since the last 
 ## 1. Check
 
 1. The project uses the cycle, as `build` checks it (`../build/SKILL.md`, 1. Start). If not, offer `/minidev:setup` and stop.
-2. The check-up reads the main branch, clean and up to date (`../build/references/git-flow.md`, The main branch). With uncommitted changes, or on a branch with commits of its own, say so and stop: a half-done change would be judged as if it were the product. A session branch with no commits beyond the main branch (a worktree the app made, with the main branch checked out in another folder) holds the same code. Bring the main branch up to date in its own folder (`git -C <its path>`; if that folder has uncommitted changes, stop and ask, since step 7 writes there), bring the session branch level with it (`git merge --ff-only <main branch>`) and go on.
+2. The check-up reads the main branch, clean and up to date (`../build/references/git-flow.md`, The main branch). With uncommitted changes, or on a branch with commits of its own, say so and stop: a half-done change would be judged as if it were the product. A session branch with no commits beyond the main branch, or the detached HEAD a finished piece of work leaves (a worktree the app made, with the main branch checked out in another folder), holds the same code. Bring the main branch up to date in its own folder (`git -C <its path>`; if that folder has uncommitted changes, stop and ask, since step 7 writes there), bring the session branch level with it (`git merge --ff-only <main branch>`) and go on.
 3. From the project's CLAUDE.md, note the test command and where the backlog is: `BACKLOG.md`, or GitHub issues (`Backlog: GitHub issues`). With issues, `gh` must be signed in (`gh auth status`); if it isn't, the Backlog area can't run, and the start message says so.
 4. If the project has a `CHECKUP.md`, read it as `references/checkup-file.md` says (Reading it): it's the last check-up. For each finding it has as Recorded, see whether its entry is still open (in BACKLOG.md, or `gh issue view <number> --json state`).
 5. If the session can't start agents, only the numbers run: the start message says so.
@@ -120,7 +120,7 @@ Ask which findings to record: all of them (recommended), some, or none. The user
 
 ## 7. Record
 
-When the main branch is checked out in another worktree, do this step from that folder (`../build/references/git-flow.md`, Worktrees); if it has uncommitted changes, stop and ask.
+When the main branch is checked out in another worktree, do this step from that folder, as `../build/references/git-flow.md` says (Worktrees, A direct change to the product documents).
 
 1. With the `document` skill, record each approved finding that gets an entry (its Record a bug or debt for later; as issues when the backlog lives there). The entry's Motivation holds the cost of waiting and what makes it come due; its Description holds what's owed, the evidence, and that it came from the check-up of this date.
 2. Write `CHECKUP.md` as `references/checkup-file.md` says: the verdicts, the numbers, the cost, this check-up's findings with their Status and refuted ones, and what it carries over from the last file.
