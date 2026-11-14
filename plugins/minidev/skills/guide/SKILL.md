@@ -7,7 +7,7 @@ argument-hint: "[what you're stuck on]"
 
 # Guide
 
-Orients someone who doesn't know the `minidev` cycle: where the project stands, what the next step is and who does it. It only looks and says; the work belongs to `brainstorm`, `setup`, `document`, `interview`, `build`, `fix`, `chore`, `swarm` and `checkup`, and this skill leaves it to them. It changes no file, branch or commit.
+Orients someone who doesn't know the `minidev` cycle: where the project stands, what the next step is and who does it. It only looks and says; the work belongs to `brainstorm`, `setup`, `document`, `interview`, `build`, `fix`, `chore`, `swarm`, `checkup` and `rethink`, and this skill leaves it to them. It changes no file, branch or commit.
 
 Talk to the user in the language of the conversation, in plain words. A term of the cycle gets one short sentence the first time it comes up (see 3).
 
@@ -27,7 +27,7 @@ Look before asking. Use only commands that read (`git status`, `git branch`, `gi
 
 **A check-up that's due.** When the project uses the cycle, nothing is in progress and a check-up is due (`../checkup/SKILL.md`, When to run), add one sentence after the next step: enough changes went in that it's worth checking the project's health as a whole, with `/minidev:checkup`, which the user types. It's a suggestion beside the next step, never instead of it.
 
-**What the user wants.** When the user says what they want or what they're stuck on, whatever the backlog holds, answer that first, after checking that no backlog entry already is it (if one is, propose building that entry), and route it: a new idea goes to `document` when it's clear and to `interview` first when it leaves behavior open (then `build`), something broken to `fix`, a cleanup that changes no behavior to `chore`, a version to publish to `document`. Then give the next step. When the state doesn't settle the next step, ask one short question instead of guessing.
+**What the user wants.** When the user says what they want or what they're stuck on, whatever the backlog holds, answer that first, after checking that no backlog entry already is it (if one is, propose building that entry), and route it: a new idea goes to `document` when it's clear and to `interview` first when it leaves behavior open (then `build`), something broken to `fix`, a cleanup that changes no behavior to `chore`, a version to publish to `document`, several things that bother them about the product, with no clear solution yet, to `/minidev:rethink`. Then give the next step. When the state doesn't settle the next step, ask one short question instead of guessing.
 
 ## 2. Say it
 
@@ -35,7 +35,7 @@ Short, at most five or six sentences: one sentence on where the project stands, 
 
 Keep out what the user didn't ask for and the next skill will say when it starts: the names of files and tools (say "the project isn't set up yet", not that its CLAUDE.md lacks a line or that it's a git repository), the project's files and what's in them, a backlog entry's details, and how the next step works inside (its tests, reviews, branches). Don't recite the cycle or list every skill. Use the cycle's words (repository, branch, backlog, spec, pull request) only when the step needs them, each with a few words of explanation the first time; otherwise say it in everyday words. The first time, call the cycle "minidev's way of working" and say what it is in one short sentence (a fixed order of steps for planning, building and checking), without listing the steps, instead of "the cycle".
 
-`setup`, `swarm` and `checkup` run only when the user types their command, so give the command. For the others, offer to start the step and, on a yes, hand over to that skill without doing its work here. Then stop.
+`setup`, `swarm`, `checkup` and `rethink` run only when the user types their command, so give the command. For the others, offer to start the step and, on a yes, hand over to that skill without doing its work here. Then stop.
 
 ## 3. Terms
 

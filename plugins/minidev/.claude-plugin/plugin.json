@@ -1,7 +1,7 @@
 {
   "name": "minidev",
   "version": "0.32.0",
-  "description": "A fixed development cycle: plan and scaffold new projects (brainstorm), interview ideas until nothing is left open (interview), keep BACKLOG/SPEC/CHANGELOG (document), build features test-first with an independent tester and reviewer (build), fix bugs test-first (fix), make behavior-preserving changes like refactors, upgrades and test pruning with the suite green before and after (chore), run a few backlog items in parallel to the main branch (swarm), check the health of what piled up across changes with independent auditors (checkup), set up any project for it (setup), and tell a newcomer where the project stands and what to do next (guide).",
+  "description": "A fixed development cycle: plan and scaffold new projects (brainstorm), interview ideas until nothing is left open (interview), keep BACKLOG/SPEC/CHANGELOG (document), build features test-first with an independent tester and reviewer (build), fix bugs test-first (fix), make behavior-preserving changes like refactors, upgrades and test pruning with the suite green before and after (chore), run a few backlog items in parallel to the main branch (swarm), check the health of what piled up across changes with independent auditors (checkup), turn what bothers you about the product into backlog changes an independent auditor checks (rethink), set up any project for it (setup), and tell a newcomer where the project stands and what to do next (guide).",
   "author": {
     "name": "Ramon",
     "url": "https://github.com/ramonk2o"
