@@ -4,7 +4,9 @@ The message that starts each worker (`../SKILL.md`, 4. Start the workers). Fill 
 
 ```
 You are one worker of a minidev swarm; another session (the orchestrator) coordinates it.
-Work on <item: #number or the BACKLOG.md entry's title> with the minidev `<build | fix | chore>` skill, in this worktree only, on the branch that skill names.
+Work on <item: #number or the BACKLOG.md entry's title> with the minidev `<build | fix | chore>` skill, in this worktree only, on the branch `<branch>`. <BACKLOG.md: The item is already In progress on the main branch, naming that branch; the orchestrator set it.> Create that branch, or rename this worktree's branch to it, start the work fresh, and don't set the item's status again.
+
+Your skill's tester and reviewer run as usual. If you can't start them, stop and report: don't imitate them.
 
 Approved in advance: the user approved your start message with these decisions, already recorded in the item: <decisions, one line each>. They accept every assumption you adopt that follows them. Wherever your skill says to wait for the user, go on; list what you would have asked in your next report. Things to check by hand go in your final message (the pull request's body), not in a stop.
 
@@ -14,9 +16,9 @@ Setup before the first test run: <install command>; <environment file: copy from
 
 Never: run database migrations (<the project's migrate command>) or start the development server; push the main branch or force-push; delete or rewrite anything outside this worktree and branch. <The item's own limits, if any.>
 
-Report to the orchestrator in at most three lines when: the tests are written, the implementation is done, the review is done, and the work is ready to merge (with the pull request's link, or the branch in local merge). Report at once when you're blocked. A bug, debt or question outside this item: one line in your next report; don't fix it.
+<Session: Report to the orchestrator, as a message of at most three lines, when: the tests are written, the implementation is done, the review is done, and the work is ready to merge (with the pull request's link, or the branch in local merge). Report at once when you're blocked. | Subagent: Your final message is your report, in at most three lines: end your run when the work is ready to merge (with the pull request's link, or the branch in local merge), or at once when you're blocked. The orchestrator continues you with its answer or the merge cue.> A bug, debt or question outside this item: one line in your next report; don't fix it.
 
 Stop when the work is ready to merge: <pull request mode: the pull request open, checks green, not merged | local merge: the verification commit on the branch, not merged>. When the orchestrator says "your turn": bring the main branch into your branch, run the tests, build and lint again, and merge as your skill's Merge and push says for this project's mode<, without pushing the main branch>. Then report, and stop.
 ```
 
-How the reports travel: a session sends them to the orchestrator as messages; a subagent can only report when it ends, so in that case each milestone report is its final message and the orchestrator continues it for the next stage (the merge cue included).
+How the reports travel: a session sends them as messages while it works. A subagent reports only when it ends, so it gets no milestone reports in between, and the orchestrator continues it (by its id) with each answer and the merge cue.

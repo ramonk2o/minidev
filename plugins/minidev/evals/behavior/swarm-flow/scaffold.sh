@@ -17,5 +17,10 @@ cat >> BACKLOG.md <<'ENTRY'
 - **Constraints:**
   - No new dependencies.
 ENTRY
-git add BACKLOG.md
+# Workers run in worktrees that don't have the untracked .tools/, so they
+# get git by its absolute path.
+sed -i.bak "s#run it as \`./.tools/git\` from the project folder#run it as \`$PWD/.tools/git\`, from any folder of the project or its worktrees#" CLAUDE.md
+rm CLAUDE.md.bak
+grep -q "$PWD/.tools/git" CLAUDE.md
+git add BACKLOG.md CLAUDE.md
 git commit -qm "Backlog: Word count"
