@@ -23,6 +23,7 @@ applied to how the skills behave.
 
 - **`guide`: a command you're told to type comes with a sentence on what it changes**: sending you to `/minidev:setup` (or `swarm`, `checkup`, `rethink`), it says what the command will change in your project, e.g. that setup prepares it and shows everything it will change first, not only the command. Closes #17.
 - **`document`: a note asked in a session's worktree reaches the main branch**: when the session's branch has no commits of its own (or the session is left detached after finishing a piece of work) and the main branch is open in another folder, the change is written and committed there and the session's branch catches up, instead of staying on a branch nothing merges. Closes #12.
+- Behavior evals: graders that look for a git command also match git called through a variable (`$G merge --squash`) or with `-C <folder>`, and the fixture's copy of git works for `git worktree add`, so `swarm-flow` no longer fails on a batch that went right. Closes #16.
 
 ## [0.32.0] - 2026-11-14
 

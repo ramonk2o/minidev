@@ -125,7 +125,16 @@ git config commit.gpgsign false
 git add -A
 git commit -qm "Notes 1.0.0"
 # The eval sandbox blocks the system git (Xcode's shim and its folder), so the
-# run gets its own copy; the case prompt tells Claude to call it.
-mkdir -p .tools
-cp "$(xcrun --find git 2>/dev/null || command -v git)" .tools/git
+# run gets its own copy; the case prompt tells Claude to call it. Some commands
+# run git again in a child process (`git worktree add` runs `git branch`),
+# which a copy looks for in the system's folder and then on the PATH, so
+# .tools/git is a script that puts the copy in .tools/bin/ first on the PATH.
+mkdir -p .tools/bin
+cp "$(xcrun --find git 2>/dev/null || command -v git)" .tools/bin/git
+cat > .tools/git <<'EOF'
+#!/bin/sh
+d=$(cd "${0%/*}" && pwd)/bin
+PATH="$d:$PATH" exec "$d/git" "$@"
+EOF
+chmod +x .tools/git
 echo ".tools/" >> .git/info/exclude
