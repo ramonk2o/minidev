@@ -14,7 +14,7 @@ Write it in the project's documents language (its CLAUDE.md, `Documents:`).
 The last health check-up of this project, written by `/minidev:checkup` and replaced at each one. Earlier ones: `git log -p -- CHECKUP.md`.
 
 - **Date:** <YYYY-MM-DD>
-- **Commit:** <the main branch's commit the check-up read, full hash>
+- **Commit:** <the last change the check-up read: the history script's Last change line, full hash>
 - **Changes since the last one:** <number, counted as the skill's When to run says, or "first check-up">
 - **Cost:** <each agent's model and tokens, when the environment reported them; otherwise "not reported">
 
@@ -45,17 +45,24 @@ Files that change together: <the pairs, or "none">
 ## Findings
 
 ### <title>
+- **Found:** <the date of the check-up that found it>
 - **Area:** <area>
 - **Weight:** <high, medium or low>
 - **Evidence:** <as reported>
 - **Cost of waiting:** <as reported>
 - **When:** <as reported>
-- **Status:** <Recorded: <the backlog entry's name or the issue's number> | Handed over: <spec audit, test prune or backlog clean-up> | Declined: <the user's reason>>
+- **Status:** <Recorded: <the backlog entry's name or the issue's number> | Handed over: <a spec audit, a test prune, a backlog clean-up or a SPEC.md correction> | Declined: <the user's reason, or "no reason given">>
 
 ## Refuted
 
-- <title> (<area>): <the refuter's reason, in a line>
+- <title> (<area>, <the date it was refuted>): <the refuter's reason, in a line>
 ```
+
+A finding the refuter weakened is written as it left it: its weight, and the part that held. What the agents reported in English is translated when the documents are in another language.
+
+**Commit** is the last change, not HEAD: a document commit on top of it (an idea noted, this file's own) may still be rewritten before it's pushed, and a commit that no longer exists can't be counted from. Without the script, it's `git rev-list -1 --first-parent HEAD -- . ':(exclude)*.md'`.
+
+**Carried over.** The file is what the next check-up must not raise again, so it keeps more than this check-up's findings. From the last file, copy as they are: every finding Recorded whose entry is still open, every Declined one, and the Refuted lines. Leave behind a Recorded finding whose entry is closed or gone (if the problem is still there, an auditor finds it again) and a Handed over one (it's raised again while it's true).
 
 Leave out a section with nothing in it, except Verdicts. A number that wasn't collected (no Python, a command that isn't installed) is written as "not collected", so the next check-up doesn't read it as zero.
 
@@ -64,6 +71,6 @@ Leave out a section with nothing in it, except Verdicts. A number that wasn't co
 The next check-up takes from it:
 - **Commit**, for the history script's `--since`, and to count the changes since;
 - **Verdicts** and **Numbers**, to show beside the new ones;
-- **Findings** and **Refuted**, given to each area's auditor so it doesn't raise them again unless the evidence changed. A finding that was Recorded and whose entry is still open in the backlog is debt waiting, not a new finding. A Handed over one has no entry holding it, so the auditor raises it again when it's still true.
+- **Findings** and **Refuted**, given to each area's auditor so it doesn't raise them again unless the evidence changed. A finding that was Recorded and whose entry is still open in the backlog is debt waiting, not a new finding: it counts in its area's verdict. A Handed over one has no entry holding it, so the auditor raises it again when it's still true.
 
 A CHECKUP.md that doesn't follow this format (edited by hand, or from an older version) is read for what it has; what's missing counts as "first check-up".

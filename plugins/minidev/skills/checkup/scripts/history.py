@@ -12,16 +12,17 @@ commits (an idea noted, a feature set In progress, the check-up's own record)
 aren't changes. It prints:
 
 - the project's size: code and test files, and their lines;
-- how many changes and fixes the history has, in all and since --since;
+- how many changes and fixes the history has, in all and since --since, and
+  the last change's hash (what CHECKUP.md records as its Commit);
 - the code files that change most, with how many of those changes were fixes;
 - the folders where fixes concentrate;
 - code files in different folders that change together.
 
 Code files are the tracked text files that aren't documents, data, config or
 lock files. A change counts as a fix when its subject starts with fix, bugfix,
-hotfix or revert, or when its message has a "Regression tests:" block with
-entries and no "Critical tests:" block with entries (the commit a fix leaves
-on the main branch in the minidev cycle).
+hotfix or revert, or when its message has a "Regression tests:" block and no
+"Critical tests:" block (in the minidev cycle a fix's commit has the first, a
+feature's has both and a chore's has neither).
 
 Python 3.8+, standard library only.
 """
@@ -83,18 +84,10 @@ def folder(path, depth=2):
     return "/".join(parts[:depth]) if parts else "(root)"
 
 
-def block_has_entries(body, name):
-    m = re.search(r"^" + re.escape(name) + r"[ \t]*\n((?:.+\n?)*)", body, re.M)
-    if not m:
-        return False
-    lines = [line.strip() for line in m.group(1).splitlines() if line.strip()]
-    return any(line.lower() != "(none)" for line in lines)
-
-
 def is_fix(subject, body):
     if FIX_SUBJECT.match(subject):
         return True
-    return block_has_entries(body, "Regression tests:") and not block_has_entries(body, "Critical tests:")
+    return bool(re.search(r"^Regression tests:", body, re.M)) and not re.search(r"^Critical tests:", body, re.M)
 
 
 def read_changes(ref, last=None, names=True):
@@ -179,6 +172,7 @@ def main():
     if changes:
         print(f"Read: the latest {n(len(changes))} of {n(total)} changes ({changes[-1][1]} to {changes[0][1]}), "
               f"{n(fixes)} of them fixes.")
+        print(f"Last change: {changes[0][0]}")
     if args.since:
         try:
             git("merge-base", "--is-ancestor", args.since, args.ref)
