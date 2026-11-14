@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Start a new software project from an idea, before any code exists. Interviews the user about the product and its first version, decides the architecture and stack with them, picks where to start, then scaffolds a project whose tests and build already run and records the plan in BACKLOG.md and SPEC.md, ready for the minidev cycle. Use it when the user wants to start, plan or kick off a new project or app, think through its architecture or decide where to begin, in any language (e.g. "I want to build an app that…", "quero começar um projeto novo", "how should I structure this new project?"). Not for adding a feature to an existing project: that's setup if it doesn't use the cycle yet, then document (with grilling when the idea is open) and build.
+description: Start a new software project from an idea, before any code exists. Interviews the user about the product and its first version, decides the architecture and stack with them, picks where to start, then scaffolds a project whose tests and build already run and records the plan in BACKLOG.md and SPEC.md, ready for the minidev cycle. Use it when the user wants to start, plan or kick off a new project or app, think through its architecture or decide where to begin, in any language (e.g. "I want to build an app that…", "quero começar um projeto novo", "how should I structure this new project?"). Not for adding a feature to an existing project: that's setup if it doesn't use the cycle yet, then document (with interview when the idea is open) and build.
 ---
 
 # Brainstorm
@@ -18,12 +18,12 @@ Nothing is created before the user's OK on the plan (step 5).
 This skill is for a project that doesn't exist yet. Look at the working folder:
 
 - **Empty, or only notes** (a README, a sketch, a `.git` with no code): go on. Read any notes first; what they already decide isn't asked again.
-- **Already has code:** this isn't a new project. Say so and point to `/minidev:setup` to adopt the cycle, and to `grilling` to think through a change. Stop.
+- **Already has code:** this isn't a new project. Say so and point to `/minidev:setup` to adopt the cycle, and to `interview` to think through a change. Stop.
 - **The user is in an unrelated folder** (their home, another project): ask where the new project should live, and work there.
 
 ## 2. Product
 
-Load the `minidev:grilling` skill and interview with its method: rounds of numbered questions, each with your recommended answer, asking only what can be decided now. The design tree for a new product usually covers:
+Load the `minidev:interview` skill and interview with its method: rounds of numbered questions, each with your recommended answer, asking only what can be decided now. The design tree for a new product usually covers:
 
 - **Problem and people:** what's painful today, for whom, and how they cope without the product.
 - **First version:** the smallest thing that's already useful to someone. Push for small: everything else is a later idea, not part of the start.

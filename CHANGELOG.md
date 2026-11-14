@@ -8,6 +8,9 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+### Changed
+- **`grilling` is now `interview`**: the skill has the name the rest of the plugin already uses for what it does, and a description that says what it does (rounds of numbered questions with a recommended answer, until nothing is left open) and what it isn't for (a new project is `brainstorm`, just noting an idea is `document`). "Grill me" and "me sabatina" still trigger it. `/minidev:grilling` no longer exists: use `/minidev:interview`. Projects set up with `setup` don't name the skill in their CLAUDE.md, so they keep working.
+
 ## [0.29.0] - 2026-11-13
 
 Swarm runs a few backlog items in parallel, from one start message to the main branch.

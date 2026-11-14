@@ -25,7 +25,7 @@ To get new versions later: `/plugin marketplace update minidev`.
 |---|---|
 | `brainstorm` skill | Starts a new project from an idea: interviews you about the product, decides the architecture and stack with you, picks the first feature, then scaffolds a project whose tests and build already run. |
 | `setup` skill | Prepares a project for the cycle: git, CLAUDE.md, permissions, product documents. Runs only when you call `/minidev:setup`. |
-| `grilling` skill | Interviews you about an idea, a round of questions at a time, until nothing is left open. |
+| `interview` skill | Interviews you about an idea, a round of questions at a time, until nothing is left open. |
 | `document` skill | The only writer of `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`. |
 | `build` skill | Builds a backlog feature test-first, then has it checked by the `tester` agent and reviewed by the `reviewer` agent before committing. |
 | `fix` skill | Fixes a bug on its own branch, test-first when it can be reproduced, and records it in the changelog when users could see it. |
@@ -34,12 +34,12 @@ To get new versions later: `/plugin marketplace update minidev`.
 | `tester` agent | Independent tester: runs the suite, checks every rule is covered, tries to break the feature. Never fixes code. |
 | `reviewer` agent | Independent code reviewer: reads the diff for what tests don't catch (risky logic, errors, security, design, leftovers) and checks the change's tests, the product's constraints and that SPEC/CHANGELOG match the code; reports blocking findings and suggestions. Told never to edit. |
 
-You don't need to call `grilling`, `document`, `build`, `fix` or `chore` by name. Just talk ("note this idea…", "let's build X", "X has a bug…", "release 1.2.0"): the CLAUDE.md written by `setup` tells Claude which skill each step uses. The steps themselves live in the skills, not in that CLAUDE.md, so updating the plugin updates every project.
+You don't need to call `interview`, `document`, `build`, `fix` or `chore` by name. Just talk ("note this idea…", "let's build X", "X has a bug…", "release 1.2.0"): the CLAUDE.md written by `setup` tells Claude which skill each step uses. The steps themselves live in the skills, not in that CLAUDE.md, so updating the plugin updates every project.
 
 ## How the cycle works
 
 ```
- idea ──► grilling (if behavior is open) ──► BACKLOG.md: Idea
+ idea ──► interview (if behavior is open) ──► BACKLOG.md: Idea
                                                   │
                                                   ▼
                                    build: critical test list, open points
@@ -72,7 +72,7 @@ The steps and their rules live in the skills; this is the map. Each step says wh
 
 ### 0. Brainstorm (new projects only)
 
-In an empty folder, describe the idea. `brainstorm` interviews you in `grilling` rounds, product first and stack second, each question with a recommended answer, then splits the first version into features in build order, scaffolds a project whose tests and build already run, and records the features in `BACKLOG.md` and the technical decisions in `SPEC.md`. No feature code is written. Then run `/minidev:setup`. Detail: `plugins/minidev/skills/brainstorm/SKILL.md`.
+In an empty folder, describe the idea. `brainstorm` interviews you in `interview` rounds, product first and stack second, each question with a recommended answer, then splits the first version into features in build order, scaffolds a project whose tests and build already run, and records the features in `BACKLOG.md` and the technical decisions in `SPEC.md`. No feature code is written. Then run `/minidev:setup`. Detail: `plugins/minidev/skills/brainstorm/SKILL.md`.
 
 ### 1. Setup (once per project)
 
@@ -80,7 +80,7 @@ In an empty folder, describe the idea. `brainstorm` interviews you in `grilling`
 
 ### 2. Idea
 
-A clear idea goes straight into `BACKLOG.md` as an **Idea**; one that leaves behavior open gets a `grilling` interview, whose approved summary is the entry. "Just note it" skips the interview. With pull requests, `setup` recommends keeping the backlog in the repository's GitHub issues instead: each entry is an issue, a feature in progress is labeled and assigned as soon as it starts, and the change's final message closes it (`Closes #<number>`). Detail: `plugins/minidev/skills/document/references/backlog.md` and `issues.md` next to it.
+A clear idea goes straight into `BACKLOG.md` as an **Idea**; one that leaves behavior open gets an `interview` session, whose approved summary is the entry. "Just note it" skips the interview. With pull requests, `setup` recommends keeping the backlog in the repository's GitHub issues instead: each entry is an issue, a feature in progress is labeled and assigned as soon as it starts, and the change's final message closes it (`Closes #<number>`). Detail: `plugins/minidev/skills/document/references/backlog.md` and `issues.md` next to it.
 
 ### 3. Build
 
@@ -162,8 +162,8 @@ It prints the hidden tests' pass rate and the mean cost per arm. A full run (2 c
 
 ## Credits
 
-`grilling` is from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, see `plugins/minidev/skills/grilling/LICENSE`). The patterns of useless tests in `test-value.md` are adapted from the `test-audit` skill in [mblode/agent-skills](https://github.com/mblode/agent-skills) (MIT), itself from OpenClaw's.
+`interview` is from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, see `plugins/minidev/skills/interview/LICENSE`). The patterns of useless tests in `test-value.md` are adapted from the `test-audit` skill in [mblode/agent-skills](https://github.com/mblode/agent-skills) (MIT), itself from OpenClaw's.
 
 ## License
 
-MIT, see `LICENSE` (also shipped inside the plugin, as `plugins/minidev/LICENSE`). `grilling` keeps its own MIT license from Matt Pocock.
+MIT, see `LICENSE` (also shipped inside the plugin, as `plugins/minidev/LICENSE`). `interview` keeps its own MIT license from Matt Pocock.

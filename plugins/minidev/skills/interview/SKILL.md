@@ -1,6 +1,6 @@
 ---
-name: grilling
-description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases, in any language (e.g. "grill me on this", "me sabatina sobre esse plano").
+name: interview
+description: Interview the user about a plan, decision or idea, a round of numbered questions at a time, each with a recommended answer, until nothing is left open and they confirm a shared understanding. Use it when the user wants to stress-test their thinking or settle an idea before it's built, in any language (e.g. "grill me on this plan", "me sabatina sobre esse plano"). Not for starting a new project (brainstorm) or for just noting an idea (document).
 ---
 
 Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
