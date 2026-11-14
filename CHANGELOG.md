@@ -19,6 +19,10 @@ applied to how the skills behave.
 - **`document`, `swarm`, `brainstorm` and `guide`: a backlog entry says what it touches, when it's planned and what it waits for**: an area is the part of the product an entry changes, never a phase like "Later"; the version it's planned for is its own field (`Version`, the milestone in GitHub issues) and the entries that must be built first are its `Needs` (GitHub's "blocked by" relation), which `document` keeps true as entries are added, finished, discarded or renamed. `brainstorm` writes the first version and its dependencies that way and shows them in its plan, `build` names an entry the feature still waits for in its start message, `guide` proposes the current version's first entry that isn't waiting, and `swarm` reads the backlog without the bodies, shortlists from the current version and opens only the shortlist.
 - **`document`: relabeling the issues is a reorganization, shown as a plan first**: features get GitHub's `enhancement` label, area labels are created with a description, a request to relabel or classify the issues lists what each open issue gains and loses before anything is written, and `in progress` comes off an issue once its change reaches the main branch. A release asks where the entries still planned for it go, and closes its milestone.
 
+### Fixed
+
+- **`guide`: a command you're told to type comes with a sentence on what it changes**: sending you to `/minidev:setup` (or `swarm`, `checkup`, `rethink`), it says what the command will change in your project, e.g. that setup prepares it and shows everything it will change first, not only the command. Closes #17.
+
 ## [0.32.0] - 2026-11-14
 
 A `setup` path for people who don't know git or GitHub, and `swarm` workers that make their own worktree when the environment can't.
