@@ -11,19 +11,26 @@ In Claude Code:
 /plugin install minidev@minidev
 ```
 
-Then, in each project where you want the cycle, run:
-
-```
-/minidev:setup
-```
-
 To get new versions later: `/plugin marketplace update minidev`.
+
+## First use
+
+New to programming, git or GitHub? You don't need to know the cycle's vocabulary: start with `/minidev:guide`, and call it again whenever you're stuck or don't know what to do next. It looks at your project, says in plain words where it stands and what the next step is, and explains a term (pull request, branch, test-first, spec, backlog) when you ask. It never changes anything by itself.
+
+Before you start, you need:
+
+- **Claude Code**, installed and signed in.
+- **git**, the tool that saves the history of your project. Check it with `git --version` in a terminal; if it isn't there, install it from [git-scm.com](https://git-scm.com).
+- **A GitHub account and `gh`**, GitHub's command-line tool (see [cli.github.com](https://cli.github.com)), signed in with `gh auth login`. They're needed for the pull-request mode of the cycle; without them the cycle still works, with changes merged locally.
+
+Then, in each project where you want the cycle, `/minidev:guide` will tell you to run `/minidev:setup` once (if you already know the cycle, run it yourself).
 
 ## What's inside
 
 | Piece | What it does |
 |---|---|
 | `brainstorm` skill | Starts a new project from an idea: interviews you about the product, decides the architecture and stack with you, picks the first feature, then scaffolds a project whose tests and build already run. |
+| `guide` skill | Tells you where your project stands and what to do next, in plain words, and explains a term of the cycle when you ask. Reads only, writes nothing. Runs only when you call `/minidev:guide`; start there if you're new. |
 | `setup` skill | Prepares a project for the cycle: git, CLAUDE.md, permissions, product documents. Runs only when you call `/minidev:setup`. |
 | `interview` skill | Interviews you about an idea, a round of questions at a time, until nothing is left open. |
 | `document` skill | The only writer of `BACKLOG.md`, `SPEC.md` and `CHANGELOG.md`. |
@@ -142,7 +149,7 @@ Each case runs 3 times by default (about $0.10 per run); add `--runs 1` for a qu
 
 ### Behavior evals
 
-`plugins/minidev/evals/behavior/` runs the cycle for real on a small fixture project (`fixture.sh`: a Node library set up for the cycle, with one backlog Idea and one known bug) and checks what Claude did, not only which skill fired: `build-flow` (a small feature: an In progress commit, feature branch, a `wip:` checkpoint, the `reviewer` and no `tester`, a `Critical tests:` block, the squash into main), `build-tester-flow` (the same feature with the tester asked for), `fix-flow` (a trivial fix: fix branch, `Regression tests:`, no tester and no review), `chore-prose-flow` (a typo in the README fixed with one commit on main: no branch, suite or review) `chore-text-flow` (a typo in an error message: no branch or review, the suite once) and `swarm-flow` (`/minidev:swarm` on the fixture with a second idea in its own module: both ideas set In progress in one commit, a worker per idea in a worktree, two squashes into main and no push; the known bug is left out, since it touches the same module as Note titles). Its first run (0.29.0, about $0.60) stopped before the workers: the eval harness gives subagents no worktree isolation, so the swarm stops as its step 1 says and `two-squashes` fails (BACKLOG.md, swarm). The prompt tells Claude the user approved every list in advance. The scaffold runs bash on your machine, and the eval sandbox blocks the system git, so the fixture gets its own copy in `.tools/`:
+`plugins/minidev/evals/behavior/` runs the cycle for real on a small fixture project (`fixture.sh`: a Node library set up for the cycle, with one backlog Idea and one known bug) and checks what Claude did, not only which skill fired: `build-flow` (a small feature: an In progress commit, feature branch, a `wip:` checkpoint, the `reviewer` and no `tester`, a `Critical tests:` block, the squash into main), `build-tester-flow` (the same feature with the tester asked for), `fix-flow` (a trivial fix: fix branch, `Regression tests:`, no tester and no review), `chore-prose-flow` (a typo in the README fixed with one commit on main: no branch, suite or review) `chore-text-flow` (a typo in an error message: no branch or review, the suite once) and `swarm-flow` (`/minidev:swarm` on the fixture with a second idea in its own module: both ideas set In progress in one commit, a worker per idea in a worktree, two squashes into main and no push; the known bug is left out, since it touches the same module as Note titles). Its first run (0.29.0, about $0.60) stopped before the workers: the eval harness gives subagents no worktree isolation, so the swarm stops as its step 1 says and `two-squashes` fails (BACKLOG.md, swarm). The three `guide-*` cases run `/minidev:guide` and check that it only looks and recommends, with no file written and no git change, and that the reply names the right next step in plain words: `guide-empty-flow` (an empty folder: `brainstorm`), `guide-no-cycle-flow` (code with a CLAUDE.md that doesn't use the cycle: `/minidev:setup`) and `guide-ready-flow` (the fixture as it is: build the one Idea in the backlog); `guide-empty-flow` and `guide-ready-flow` ask in Portuguese. Those checks of the reply are graded by a model, so a run can fail on wording. The prompt tells Claude the user approved every list in advance. The scaffold runs bash on your machine, and the eval sandbox blocks the system git, so the fixture gets its own copy in `.tools/`:
 
 ```
 claude plugin eval . --tag behavior --ablation none --no-publish --scaffold --allow-tools Bash Write Edit --runs 1 -j 3

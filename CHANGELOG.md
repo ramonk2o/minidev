@@ -8,6 +8,9 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+### Added
+- **`guide`: where the project stands and what to do next, in plain words**: `/minidev:guide` (run only by the user, so it never competes with the other skills) reads the folder, git, the CLAUDE.md, the backlog, the branch, uncommitted changes and open pull requests, and says in a few sentences where the project is, the one next step and the words or command that take it: `brainstorm` for an empty folder, `/minidev:setup` for a project that doesn't use the cycle yet, "continue X" or the first backlog entry for one that does. It explains a term of the cycle (pull request, branch, test-first, spec, backlog) in one sentence when asked. It writes nothing. The README's new "First use" section tells newcomers to start with it and to come back whenever they're stuck, and lists what to have installed (Claude Code, git, `gh` and a GitHub login). `brainstorm` and `setup` end by pointing to it.
+
 ### Changed
 - **`swarm` offers to delegate everything in one click**: the start message asks three questions with fixed wording instead of four that each run phrased its own way. Its recommended Delegation option says what delegating means (the orchestrator judges each item, asks its worker for fixes, brings it into the main branch when it's good and doesn't stop you until the summary), so it no longer takes a typed answer. The models question is gone: each item's model is shown in the batch, and changing one is an answer to Batch.
 

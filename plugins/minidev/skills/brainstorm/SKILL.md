@@ -95,4 +95,4 @@ Load the `document` skill and create the product documents with it; their format
 ## 8. Finish
 
 1. Offer the first commit with the scaffold and the documents. Don't commit without the OK.
-2. Tell the user the next steps: run `/minidev:setup` (pass on the documents' language, for its CLAUDE.md) to write the CLAUDE.md and permissions for the cycle, then build the first feature by name (e.g. "let's build <first feature>").
+2. Tell the user the next steps: run `/minidev:setup` (pass on the documents' language, for its CLAUDE.md) to write the CLAUDE.md and permissions for the cycle, then build the first feature by name (e.g. "let's build <first feature>"). When unsure what to do next, `/minidev:guide` says it.
