@@ -42,7 +42,7 @@ A release is made on the main branch, brought up to date (`../../build/reference
 
 When the user releases a version:
 1. **Pick the number** with Semantic Versioning: major for breaking changes, minor for new features, patch for fixes only. Propose it from the `[Unreleased]` entries; the user decides.
-2. **Show** the version, the date and the entries that go into it, and wait for the OK.
+2. **Show** the version, the date and the entries that go into it, and wait for the OK. If backlog entries are still planned for this version (their Version, or the open issues in its milestone), list them in the same message and ask where each goes: the next version, or none.
 3. **Move** the `[Unreleased]` entries under `## [<version>] - <YYYY-MM-DD>`, leaving `## [Unreleased]` empty above it. A short line under the heading can say where it went (e.g. "Submitted to the store as an update").
 4. **Update the links** at the end of the file:
    ```markdown
@@ -52,6 +52,7 @@ When the user releases a version:
    The first version links to `<repo>/tree/<version>`. `<repo>` is the remote's web address; with no remote, or a host without compare pages, leave the links out.
 5. **Tag** the release commit with an annotated tag named like the existing tags (e.g. `1.4.0`), locally.
 6. Push the commit and the tag, if the repository has a remote.
+7. With the backlog in GitHub issues, close the version's milestone if it has one: its number from `gh api repos/{owner}/{repo}/milestones`, then `gh api -X PATCH repos/{owner}/{repo}/milestones/<number> -f state=closed`.
 
 In pull request mode (the project's CLAUDE.md says so), the main branch can't take a direct push, so steps 5 and 6 change: make the release commit on a `release/<version>` branch instead and bring it in as in the `build` skill's `references/git-flow.md` (`../../build/references/git-flow.md` from this file), with "Release <version>" as the message. Then tag the squashed commit on the updated main branch and push only the tag (`git push <remote> <version>`, the remote as in that file's The main branch). When pull requests are merged by the reviewer, tag it once the reviewer has merged, when the user asks to continue (that file's Merge and push, Merged by the reviewer).
 

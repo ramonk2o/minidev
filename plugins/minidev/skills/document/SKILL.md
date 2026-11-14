@@ -1,6 +1,6 @@
 ---
 name: document
-description: In projects set up for the minidev cycle, or elsewhere when the user explicitly asks to change one of these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the features being built, and bugs or debt left for later; or the GitHub issues a project keeps them in), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done"), update, create or audit the spec ("does SPEC.md match the code?"), write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
+description: In projects set up for the minidev cycle, or elsewhere when the user explicitly asks to change one of these files, own a project's product documents and keep their roles apart, BACKLOG.md (ideas, the features being built, and bugs or debt left for later; or the GitHub issues a project keeps them in), SPEC.md (how the product works today) and CHANGELOG.md (what changed in each version), creating any of them that's missing, adapted to the project. Use it for ANY change to these files, even a one-word fix, and whenever the user wants to record, list, start, finish, discard, plan, relabel or clean up features or ideas ("note this idea", "what's in the backlog?", "X is done", "fix the issues' labels"), update, create or audit the spec ("does SPEC.md match the code?"), write changelog entries, or cut a release ("release 1.4.0", "prepare the new version"). Also use it when another skill (like build) needs a feature's status changed or these documents updated.
 ---
 
 # Document
@@ -22,8 +22,8 @@ Project instructions (CLAUDE.md, AGENTS.md…) may add project-specific details,
 ## Where to look
 
 Read the reference for the document you're about to change, before changing it:
-- `references/backlog.md`: statuses, the entry format and every backlog operation (create, capture, record a bug or debt, add, check for duplicates, present, start, finish, change status, discard, clean up, reorganize).
-- `references/issues.md`: the backlog in GitHub issues: how entries, statuses and each operation map to issues and labels, and migrating from BACKLOG.md.
+- `references/backlog.md`: statuses, the entry format, the relations between entries and every backlog operation (create, capture, record a bug or debt, add, check for duplicates, present, plan a version, start, finish, change status, discard, clean up, reorganize).
+- `references/issues.md`: the backlog in GitHub issues: how entries, statuses, versions, relations and each operation map to issues, labels and milestones, and migrating from BACKLOG.md.
 - `references/spec.md`: the spec's role, how to create one adapted to the project, and when and how to update it.
 - `references/spec-audit.md`: checking SPEC.md against the code, rule by rule, when it's created for existing code, when `setup` adopts a project, or when the user asks.
 - `references/changelog.md`: entry format, creating the file, and releases.
@@ -62,8 +62,8 @@ Each document starts with a short legend, so it's readable without this skill. T
 | Operation | Before writing |
 |---|---|
 | Capture a feature from the conversation | Show the draft, wait for OK (an interview summary the user already approved counts as that OK, and so does `build`'s start message, which shows the draft with the critical test list) |
-| Clear idea, bug or debt left for later, status change asked by the user | Write directly, then tell them |
-| Clean up, reorganize, new area, aligning a document's format | Show the plan, wait for OK |
+| Clear idea, bug or debt left for later, status change or version asked by the user | Write directly, then tell them |
+| Clean up, reorganize (relabeling issues included), new area, aligning a document's format | Show the plan, wait for OK |
 | Create SPEC.md | Show the proposed outline, wait for OK (an outline the user approved in a `brainstorm` plan counts as that OK) |
 | Update SPEC.md when a feature is finished, changelog entry | Write directly as part of finishing, then tell them |
 | Bug fix: changelog entry under Fixed if users could see the bug, SPEC.md if a rule changed, Bug entry removed | Write directly as part of the fix, then tell them |

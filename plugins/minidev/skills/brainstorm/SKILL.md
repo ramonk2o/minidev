@@ -60,7 +60,7 @@ Split the first version into features, each one something a user can see working
 1. **First feature: the thinnest path through the whole product.** One real use, end to end, crossing every part from step 3 (e.g. "create a note and see it in the list after reloading"). It proves the architecture early, while changing it is still cheap.
 2. **Then by dependency and value:** what others need comes first; among the rest, what makes the product useful sooner.
 
-For each feature, keep what step 2 and 3 decided about it: the rules become its Decisions, what's undecided its Open questions. Later ideas that came up go to the backlog too, after the first version's features.
+For each feature, keep what step 2 and 3 decided about it: the rules become its Decisions, what's undecided its Open questions, and the features that must be built before it become its Needs. Later ideas that came up go to the backlog too, planned for no version.
 
 ## 5. Review the plan
 
@@ -69,7 +69,7 @@ Show everything in one message:
 - **Product:** the problem, the people and the first version in a few sentences, plus what's out of scope.
 - **Technical decisions**, each with its reason.
 - **Scaffold:** what will be created (generator command, folders, test setup, a first smoke test) and the commands that will be run.
-- **Features in order**, with one line each, and the later ideas.
+- **Features in order**, each with one line, its area and what it needs, the first version's number (`0.1.0` unless the user picks another), and the later ideas with their areas.
 - **Documents' language:** the language BACKLOG.md and SPEC.md will be written in, recommending the conversation's (code, config and the README stay in English unless the user says otherwise).
 
 Wait for the user's OK; they may change any part. This is the summary that ends the interview, so its approval is also the OK for the backlog entries and the SPEC.md outline in step 7; `document` doesn't ask for them again.
@@ -89,7 +89,7 @@ Create the skeleton the plan approved. It has no product behavior yet: the first
 
 Load the `document` skill and create the product documents with it; their formats belong to that skill.
 
-- **BACKLOG.md:** the features from step 4 as Ideas, in the order to build them, and the later ideas after them. Each entry's Motivation comes from step 2, and its Constraints from the constraints of step 2 that apply only to that feature.
+- **BACKLOG.md:** the features from step 4 as Ideas, each in the area of the product it changes most (what a user would call that part, like "Editor" or "Sync", not the technical parts of step 3), with the first version's number as their Version and their Needs, as the plan showed them. The areas come in the order their first features are built, and inside an area the features are in the order to build them. Later ideas go in their areas too, with no Version. The areas are parts of the product: a "First version" or "Later" area would say when, which is the Version's job (`document`, `references/backlog.md`). Each entry's Motivation comes from step 2, and its Constraints from the constraints of step 2 that apply only to that feature.
 - **SPEC.md:** only what exists now: the Goal, the Constraints of the whole product from step 2 (platforms, offline use, privacy…), which aren't repeated in each entry, and the Technical decisions the scaffold put in place, with their reasons (naming the constraints that drove them, e.g. "SQLite in the browser: it must work offline"). No Behavior yet: the rules join the spec as each feature is built.
 
 ## 8. Finish
