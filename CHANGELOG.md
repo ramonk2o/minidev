@@ -8,11 +8,15 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
-### Fixed
-- **Trigger evals: the case for new behavior checks only that `fix` doesn't fire**: it also required `document` or `interview` to fire, but its prompt states a wish without asking for any action, so the model sometimes answers in text and the case failed on correct behavior.
+## [0.30.0] - 2026-11-14
+
+The `grilling` skill is now `interview` (a breaking change before 1.0: `/minidev:grilling` no longer exists), and a trigger eval stops failing on correct behavior.
 
 ### Changed
 - **`grilling` is now `interview`**: the skill has the name the rest of the plugin already uses for what it does, and a description that says what it does (rounds of numbered questions with a recommended answer, until nothing is left open) and what it isn't for (a new project is `brainstorm`, just noting an idea is `document`). "Grill me" and "me sabatina" still trigger it. `/minidev:grilling` no longer exists: use `/minidev:interview`. Projects set up with `setup` don't name the skill in their CLAUDE.md, so they keep working.
+
+### Fixed
+- **Trigger evals: the case for new behavior checks only that `fix` doesn't fire**: it also required `document` or `interview` to fire, but its prompt states a wish without asking for any action, so the model sometimes answers in text and the case failed on correct behavior.
 
 ## [0.29.0] - 2026-11-13
 
@@ -377,7 +381,8 @@ The plugin is renamed to minidev, and work happens on branches.
 ### Changed
 - Plugin and marketplace renamed to `minidev`. Features and fixes are built on their own branches and merged into main once checked.
 
-[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.29.0...HEAD
+[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.30.0...HEAD
+[0.30.0]: https://github.com/ramonk2o/minidev/compare/v0.29.0...v0.30.0
 [0.29.0]: https://github.com/ramonk2o/minidev/compare/v0.28.0...v0.29.0
 [0.28.0]: https://github.com/ramonk2o/minidev/compare/v0.27.0...v0.28.0
 [0.27.0]: https://github.com/ramonk2o/minidev/compare/v0.26.0...v0.27.0
