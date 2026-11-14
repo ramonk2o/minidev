@@ -34,9 +34,10 @@ Talk to the user in the language of the conversation. Everything written to the 
 
 1. The project uses the cycle, as `build` checks it (`../build/SKILL.md`, 1. Start). If not, offer `/minidev:setup` and stop.
 2. From its CLAUDE.md, note: where the backlog is (`BACKLOG.md`, or GitHub issues with `Backlog: GitHub issues`), the integration mode (`../build/references/git-flow.md`, Integration mode), the install, test, build and lint commands, and any setup a fresh checkout needs (environment files, a test database).
-3. How workers run: a separate session per item, each in its own worktree, where the environment can start one (in the Claude desktop app); otherwise a background subagent per item with `isolation: worktree`. If neither is available, say so and stop: the items run one after another with their own skill instead.
-4. The main branch is clean and up to date (`../build/references/git-flow.md`, The main branch). Uncommitted changes there: stop and ask.
-5. If the arguments or the backlog show items of an earlier batch still In progress with their branch, this is a resume: those items are the batch, each worker resuming as its skill's Resume says. Go to step 3 with them.
+3. In pull request mode, whether the main branch requires a review (`gh api repos/{owner}/{repo}/branches/<main branch>/protection --jq .required_pull_request_reviews`, or a pull request's `reviewDecision`): if it does, treat the project as merged by the reviewer here (step 3, Merge).
+4. How workers run: a separate session per item, each in its own worktree, where the environment can start one (in the Claude desktop app); otherwise a background subagent per item with `isolation: worktree`. If neither is available, say so and stop: the items run one after another with their own skill instead.
+5. The main branch is clean and up to date (`../build/references/git-flow.md`, The main branch). Uncommitted changes there: stop and ask.
+6. If work branches of an earlier batch are left (`feature/`, `fix/` or `chore/` branches and their worktrees, found as `../build/references/git-flow.md` says in Resume), this is a resume: those items are the batch. Each one goes back to its worker when that session still exists (a message to it); otherwise a new worker resumes it as its skill's Resume says, after its old worktree is removed (`git worktree remove`, only when it's clean; one with uncommitted changes is someone's work: leave the item out and say so). Go to step 3 with them.
 
 ## 2. Pick the batch
 
@@ -45,7 +46,7 @@ Read the open items: `BACKLOG.md`, or `gh issue list --state open --limit 100 --
 Pick up to the batch size, by priority, by what the current version needs, and by dependencies (an item that needs another waits for a later batch). Leave out:
 - items whose files overlap a picked one: estimate each item's files from its entry and a search of the code (`git grep`); two items in the same module don't go in one batch;
 - a second item that adds a database migration or changes a schema: at most one per batch;
-- items already In progress outside a resume (someone's work), and ideas whose key behavior is undecided across several connected decisions (they need a `grilling` interview, not a decision taken here).
+- items with a work branch or In progress outside a resume (someone's work), and ideas whose key behavior is undecided across several connected decisions (they need a `grilling` interview, not a decision taken here).
 
 For each picked item, prepare:
 - **Skill:** `build` for an Idea, `fix` for a Bug, `chore` for Debt or a behavior-preserving change.
@@ -67,17 +68,17 @@ Then ask, with the question tool when there is one (recommended option first), o
 3. **Merge:** I bring each one in, one at a time / leave each ready for you (open pull requests, or verified branches in local merge). In a project whose pull requests are merged by the reviewer, there's no question: the batch ends with the pull requests open.
 4. **Updates:** at every milestone / only problems and the end.
 
-The answer is the OK for the whole batch: from here on, take every decision without asking, and record each one where its item keeps its Decisions.
+The answer is the OK for the whole batch. It stands in for every stop the workers' skills would make for the user (their start messages, their end messages), except one: a worker whose work would change an existing test of current behavior stops and reports, and you decide in the user's place. From here on, take every decision without asking, and record each one where its item keeps its Decisions. Things to check by hand don't hold a merge back: they go to the final summary as pending.
 
 **Limits,** for the orchestrator and every worker, whatever the user approves:
-- no database migrations run (`db:migrate` and the like) and no development server started in a worktree;
+- no migration run against the development database or any database the worktrees share (`db:migrate` and the like), and no development server started in a worktree; a worker may create and migrate its own test database, named after its branch;
 - no push to the main branch (with local merge, the main branch stays local until the user pushes it), no force-push;
 - nothing destructive outside the worker's own worktree and branch;
 - the project's own rules in its CLAUDE.md.
 
 ## 4. Start the workers
 
-1. Write each item's Decisions with the `document` skill before its worker starts. With `BACKLOG.md`, also set every item In progress with its branch name, all in one commit on the main branch, so workers never edit BACKLOG.md on the main branch at the same time. With issues, each worker sets its own issue In progress.
+1. Write each item's Decisions with the `document` skill before its worker starts. With `BACKLOG.md`, also set every feature In progress with its branch name, all in one commit on the main branch, so workers never edit BACKLOG.md on the main branch at the same time (a Bug or Debt entry has no In progress: `document` keeps it as it is until its fix or chore is done). With issues, a feature's worker sets its own issue In progress, as `build` does.
 2. Start every worker at once, each with the brief in `references/brief.md` filled in, on its model. Tell the user one line per worker (its name and item).
 
 ## 5. While they run
@@ -85,7 +86,7 @@ The answer is the OK for the whole batch: from here on, take every decision with
 - Pass each worker's milestone to the user in a line (unless the user chose only problems).
 - A worker that's blocked, or reports a conflict, a red suite it can't fix or a plan that can't hold: decide the safest way out from its report. When the way out is bigger than the item (a redesign, a change to another item's files), drop the item: the worker commits a checkpoint and stops, its entry goes back to its status with a line on why, and the final summary names it.
 - A finding outside an item (a bug, debt, a decision for later) becomes a new backlog entry or issue with the `document` skill, never a fix in that item.
-- Before starting a worker or cueing a merge, check the usage when the environment shows it. Close to the limit, start nothing new: let the running workers reach a checkpoint, then go to step 7. Running `/minidev:swarm` again resumes (step 1.5).
+- Before starting a worker or cueing a merge, check the usage when the environment shows it. Close to the limit, start nothing new: let the running workers reach a checkpoint, then go to step 7. Running `/minidev:swarm` again resumes (step 1.6).
 
 ## 6. Bring them in, one at a time
 
@@ -95,7 +96,7 @@ Take the workers ready to merge in the order they got ready, except that an item
 
 ## 7. Final check and summary
 
-If anything reached the main branch, bring the local main branch up to date (`../build/references/git-flow.md`, The main branch) and run the tests, build and lint once there. A failure is a broken merged change: decide as `git-flow.md` says (When a merged change breaks), taking the safer of its two ways, and say so in the summary.
+If anything reached the main branch, bring the local main branch up to date (`../build/references/git-flow.md`, The main branch) and run the tests, build and lint once there. A failure is a broken merged change. Find the squashed commit that broke it and undo it with `git revert <commit>` (a new commit, never a rewrite; in pull request mode, on a branch with its own pull request, merged the same way), run the checks again, put the item back to its status before the batch, record a Bug entry for what failed with the `document` skill, and say so in the summary.
 
 Then, in one message:
 - what reached the main branch (each item, its pull request or commit);
