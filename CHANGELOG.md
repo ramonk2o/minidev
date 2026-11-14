@@ -8,6 +8,10 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+## [0.29.0] - 2026-11-13
+
+Swarm runs a few backlog items in parallel, from one start message to the main branch.
+
 ### Added
 - **swarm: a few backlog items in parallel, to the main branch**: `/minidev:swarm` picks a batch (2 items by default, 3 at most) whose files don't overlap and with at most one database migration, settles every open point and asks once, with the options filled in (the batch, the models, who merges, how often it reports). Then it runs without stopping: one worker per item in its own worktree (a separate session in the desktop app, a background subagent elsewhere), each through `build`, `fix` or `chore` on the cheapest model its item needs, brought into the main branch one at a time, and a final check of the main branch. It works with BACKLOG.md or GitHub issues, and with local merge (the main branch isn't pushed) or pull requests. Findings outside an item become new entries; running it again resumes a batch stopped by the usage limit.
 
@@ -367,7 +371,8 @@ The plugin is renamed to minidev, and work happens on branches.
 ### Changed
 - Plugin and marketplace renamed to `minidev`. Features and fixes are built on their own branches and merged into main once checked.
 
-[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.28.0...HEAD
+[Unreleased]: https://github.com/ramonk2o/minidev/compare/v0.29.0...HEAD
+[0.29.0]: https://github.com/ramonk2o/minidev/compare/v0.28.0...v0.29.0
 [0.28.0]: https://github.com/ramonk2o/minidev/compare/v0.27.0...v0.28.0
 [0.27.0]: https://github.com/ramonk2o/minidev/compare/v0.26.0...v0.27.0
 [0.26.0]: https://github.com/ramonk2o/minidev/compare/v0.25.3...v0.26.0
