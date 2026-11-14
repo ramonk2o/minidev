@@ -30,6 +30,7 @@ To get new versions later: `/plugin marketplace update minidev`.
 | `build` skill | Builds a backlog feature test-first, then has it checked by the `tester` agent and reviewed by the `reviewer` agent before committing. |
 | `fix` skill | Fixes a bug on its own branch, test-first when it can be reproduced, and records it in the changelog when users could see it. |
 | `chore` skill | Makes a change that keeps the behavior (refactoring, debt, dependency upgrades, migrations, tooling, typos) on its own branch, with the suite green before and after (a short path for prose-only changes). Also adds missing tests and, on request, prunes useless tests from the whole suite. |
+| `swarm` skill | Runs a few backlog items in parallel, one worker per item in its own worktree (each through `build`, `fix` or `chore`), then brings them into the main branch one at a time. Every choice is made in one message at the start; then it runs to the end. Runs only when you call `/minidev:swarm`. |
 | `tester` agent | Independent tester: runs the suite, checks every rule is covered, tries to break the feature. Never fixes code. |
 | `reviewer` agent | Independent code reviewer: reads the diff for what tests don't catch (risky logic, errors, security, design, leftovers) and checks the change's tests, the product's constraints and that SPEC/CHANGELOG match the code; reports blocking findings and suggestions. Told never to edit. |
 
@@ -101,6 +102,10 @@ Code, tests and the three documents reach main as **one squashed commit** whose 
 - **Later:** a bug or chore you don't want to do now goes to `BACKLOG.md` as a Bug or Debt entry.
 - **Release:** "release 1.4.0" moves `[Unreleased]` into a version in `CHANGELOG.md`, after you confirm it, then pushes the commit and the tag. Detail: `plugins/minidev/skills/document/references/changelog.md`.
 
+### Several at once
+
+`/minidev:swarm` runs a few backlog items in parallel, each through its own skill (`build`, `fix` or `chore`) in its own worktree, then brings them into the main branch one at a time. It picks items whose files don't overlap, decides their open points and asks you once, with the options filled in; after that OK it doesn't stop, and reports a line at each milestone. Defaults are sized for a small plan: two items, the cheapest model each needs, and an orchestrator that reads only the workers' short reports. Detail: `plugins/minidev/skills/swarm/SKILL.md`.
+
 ## The three documents
 
 Each answers one question, so they never repeat each other:
@@ -137,7 +142,7 @@ Each case runs 3 times by default (about $0.10 per run); add `--runs 1` for a qu
 
 ### Behavior evals
 
-`plugins/minidev/evals/behavior/` runs the cycle for real on a small fixture project (`fixture.sh`: a Node library set up for the cycle, with one backlog Idea and one known bug) and checks what Claude did, not only which skill fired: `build-flow` (a small feature: an In progress commit, feature branch, a `wip:` checkpoint, the `reviewer` and no `tester`, a `Critical tests:` block, the squash into main), `build-tester-flow` (the same feature with the tester asked for), `fix-flow` (a trivial fix: fix branch, `Regression tests:`, no tester and no review), `chore-prose-flow` (a typo in the README fixed with one commit on main: no branch, suite or review) and `chore-text-flow` (a typo in an error message: no branch or review, the suite once). The prompt tells Claude the user approved every list in advance. The scaffold runs bash on your machine, and the eval sandbox blocks the system git, so the fixture gets its own copy in `.tools/`:
+`plugins/minidev/evals/behavior/` runs the cycle for real on a small fixture project (`fixture.sh`: a Node library set up for the cycle, with one backlog Idea and one known bug) and checks what Claude did, not only which skill fired: `build-flow` (a small feature: an In progress commit, feature branch, a `wip:` checkpoint, the `reviewer` and no `tester`, a `Critical tests:` block, the squash into main), `build-tester-flow` (the same feature with the tester asked for), `fix-flow` (a trivial fix: fix branch, `Regression tests:`, no tester and no review), `chore-prose-flow` (a typo in the README fixed with one commit on main: no branch, suite or review) `chore-text-flow` (a typo in an error message: no branch or review, the suite once) and `swarm-flow` (`/minidev:swarm` on the fixture with a second idea in its own module: both ideas set In progress in one commit, a worker per idea in a worktree, two squashes into main and no push; the known bug is left out, since it touches the same module as Note titles). `swarm-flow` costs about as much as two `build-flow` runs; it hasn't been run yet. The prompt tells Claude the user approved every list in advance. The scaffold runs bash on your machine, and the eval sandbox blocks the system git, so the fixture gets its own copy in `.tools/`:
 
 ```
 claude plugin eval . --tag behavior --ablation none --no-publish --scaffold --allow-tools Bash Write Edit --runs 1 -j 3

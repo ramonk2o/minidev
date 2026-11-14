@@ -8,6 +8,9 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+### Added
+- **swarm: a few backlog items in parallel, to the main branch**: `/minidev:swarm` picks a batch (2 items by default, 3 at most) whose files don't overlap and with at most one database migration, settles every open point and asks once, with the options filled in (the batch, the models, who merges, how often it reports). Then it runs without stopping: one worker per item in its own worktree (a separate session in the desktop app, a background subagent elsewhere), each through `build`, `fix` or `chore` on the cheapest model its item needs, brought into the main branch one at a time, and a final check of the main branch. It works with BACKLOG.md or GitHub issues, and with local merge (the main branch isn't pushed) or pull requests. Findings outside an item become new entries; running it again resumes a batch stopped by the usage limit.
+
 ## [0.28.0] - 2026-11-13
 
 Setup recommends pull requests and issues on GitHub, and its commit carries only its own changes.
