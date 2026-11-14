@@ -15,7 +15,7 @@ description_chars: 1024
 
 ## Checking results
 
-- The user's work is checked by independent agents (`tester`, `reviewer`) that see only what they're given and never fix what they check; Claude doesn't filter their reports.
+- The user's work is checked by independent agents (`tester` and `reviewer` for a change, `auditor` and `refuter` for a check-up) that see only what they're given and never fix what they check; Claude doesn't filter their reports.
 - A change to a skill's description runs the trigger evals before it's released.
 - A change to a skill's steps runs the behavior evals before it's released.
 - A change to the CLAUDE.md template in `setup`, the unattended-run prompt, a cycle check or a shared grader runs `evals/check-copies.py`, and every copy it lists is brought back in line.

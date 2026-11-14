@@ -8,6 +8,10 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+### Added
+
+- **`checkup`: a health check-up of the whole project, for what no single change's review sees** (debt that piled up, architecture decisions that turned out wrong): `/minidev:checkup` collects numbers that need no model (a script reads git for the files that change most, where fixes concentrate and which files in different folders change together; the suite's time and skipped tests; outdated and vulnerable dependencies), shows them with what will run and what the last check-up cost, and on your OK starts independent `auditor` agents (architecture, decisions and growth, the backlog, documents and tests) and a `refuter` that tries to knock each finding down. You get a verdict per area beside the last check-up's and the refuted findings apart; the ones you approve become backlog entries, and `CHECKUP.md` keeps the result for the next one. It changes no code. `guide` says when a check-up is due.
+
 ## [0.32.0] - 2026-11-14
 
 A `setup` path for people who don't know git or GitHub, and `swarm` workers that make their own worktree when the environment can't.
