@@ -6,7 +6,7 @@ A Claude Code plugin with a fixed development cycle (plan, interview, build test
 
 This repository is maintained with the sensei plugin. If sensei is installed:
 - creating or changing a skill, judging an issue or pull request, or auditing consistency: the `train` skill;
-- BACKLOG.md and CHANGELOG.md: the `log` skill (`train` writes its own changelog entries);
+- the backlog and CHANGELOG.md: the `log` skill (`train` writes its own changelog entries);
 - releasing a version: `/sensei:graduate`.
 
 Other skills or plugins that write skills or manage these files don't apply in this repository. Without sensei, follow `docs/principles.md` and keep CHANGELOG.md in the Keep a Changelog format.
@@ -22,6 +22,7 @@ Other skills or plugins that write skills or manage these files don't apply in t
 - **Validate:** sensei's check script on every change (it runs `claude plugin validate` on the last commit); `--release` at release, which adds `--profile directory`.
 - **Evals:** run from `plugins/minidev` (commands in the README's "Developing the plugin"). Trigger evals cost about $0.10 a run, behavior evals a few dollars, the outcome run about $10: ask before running behavior or outcome evals.
 - **Commits:** author `Ramon K. <contato@ramonk.com>`; trailers: the environment's default (`Co-Authored-By`).
-- **Integration:** a local branch per change, merged into main with `--no-ff`; push main when the maintainer says so or at release.
+- **Integration:** a local branch per change; pull requests: push the branch, open the pull request and merge it with a merge commit, each on the maintainer's OK.
+- **Backlog:** GitHub issues.
 - **Tags:** annotated `vX.Y.Z`; CHANGELOG.md keeps a compare link for every version.
 - The README's "Developing the plugin" describes every eval case; a change that adds, removes or renames a case updates it.
