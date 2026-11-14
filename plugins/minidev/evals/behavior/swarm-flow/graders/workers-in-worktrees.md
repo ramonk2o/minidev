@@ -1,6 +1,6 @@
 ---
 type: tool_used
-tool: Agent
-input_match: '"isolation"\s*:\s*"worktree"'
+tool: Bash
+input_match: 'git worktree add'
 min: 2
 ---
