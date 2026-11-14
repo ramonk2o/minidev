@@ -45,12 +45,12 @@ Judge each point by what the product is for (SPEC.md's Goal), not by what the us
 | The point is | It goes to |
 |---|---|
 | Behavior that goes against SPEC.md or the tests | a Bug entry, for `fix` |
-| A change that keeps the behavior | a Debt entry, for `chore` |
+| A change the user can name that keeps the behavior (a refactor, an upgrade, a tool) | a Debt entry, for `chore` |
 | New or changed behavior, decided enough to build (what works as decided but the user now wants otherwise included) | an Idea |
 | New behavior with decisions the rounds left open | an Idea with them as Open questions; when several connect, the offer of an `interview` session on that entry, after this one ends |
 | Something an open entry already covers | a change to that entry |
 | Something that makes an open entry pointless | that entry, discarded |
-| About how the code is built, not what the product does | not here: `/minidev:checkup`, which the user types |
+| A doubt about how the code is built, with no change named (it's slow to change, hard to follow) | not here: `/minidev:checkup`, which the user types |
 | Dropped in the conversation | nothing; the plan lists it with the reason |
 
 ## 4. Rounds
@@ -58,7 +58,7 @@ Judge each point by what the product is for (SPEC.md's Goal), not by what the us
 Ask with the method of the `minidev:interview` skill: rounds of numbered questions, each with your recommended answer, only what can be decided now. Four things differ here:
 
 - **Many roots.** Ask across all the points in the same round. A model or rule that several points depend on goes first.
-- **A fact only the user has** (a number from outside the repository, how the team works) gets no recommended answer: say what it decides.
+- **A fact only the user has** (a number from outside the repository, how the team works) is asked as the decision it feeds, with the answer you'd take if the fact is what you expect ("four digits, unless the old numbers pass 9,999"). They can confirm without looking it up.
 - **Points may stay open.** Stop a point when its next question needs something the user doesn't know yet (a trial, a design, someone else's answer): it's recorded as an open question. Stop the rounds when what's left wouldn't change which entries exist or what they wait for.
 - **The plan is the confirmation.** `interview` ends by asking the user to confirm a shared understanding. Here the plan's approval (step 7) is that confirmation: don't ask for it apart.
 

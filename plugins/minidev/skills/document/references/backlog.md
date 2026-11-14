@@ -130,7 +130,9 @@ When the user states an idea:
 - **Vague:** ask 2 or 3 short questions first (what problem does it solve? how do they picture it working?).
 - **Leaves behavior open** (several connected decisions that would change what gets built): load the `minidev:interview` skill and interview the user with it. Write its final summary in this entry format, so approving the summary approves the text that will be recorded (see Capture).
 
-"Just note it" (or the same in the user's language) always skips the questions and the interview: record what was said, with anything undecided as Open questions.
+When one message brings several loose complaints about the product, most with no solution yet, offer `/minidev:rethink`, which the user types, before recording them one by one: it reads them together against the backlog and SPEC.md and ends in one plan. If they'd rather note them now, do.
+
+"Just note it" (or the same in the user's language) always skips the questions, the interview and that offer: record what was said, with anything undecided as Open questions.
 
 Only record it; don't implement it.
 
