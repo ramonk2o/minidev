@@ -22,6 +22,7 @@ applied to how the skills behave.
 ### Fixed
 
 - **`guide`: a command you're told to type comes with a sentence on what it changes**: sending you to `/minidev:setup` (or `swarm`, `checkup`, `rethink`), it says what the command will change in your project, e.g. that setup prepares it and shows everything it will change first, not only the command. Closes #17.
+- **`document`: a note asked in a session's worktree reaches the main branch**: when the session's branch has no commits of its own and the main branch is open in another folder, the change is written and committed there and the session's branch catches up, instead of staying on a branch nothing merges. Closes #12.
 
 ## [0.32.0] - 2026-11-14
 

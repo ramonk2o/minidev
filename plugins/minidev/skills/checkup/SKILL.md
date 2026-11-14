@@ -120,7 +120,7 @@ Ask which findings to record: all of them (recommended), some, or none. The user
 
 ## 7. Record
 
-When the main branch is checked out in another worktree, do this step from that folder (`../build/references/git-flow.md`, Worktrees); if it has uncommitted changes, stop and ask.
+When the main branch is checked out in another worktree, do this step from that folder, as `../build/references/git-flow.md` says (Worktrees, A direct change to the product documents).
 
 1. With the `document` skill, record each approved finding that gets an entry (its Record a bug or debt for later; as issues when the backlog lives there). The entry's Motivation holds the cost of waiting and what makes it come due; its Description holds what's owed, the evidence, and that it came from the check-up of this date.
 2. Write `CHECKUP.md` as `references/checkup-file.md` says: the verdicts, the numbers, the cost, this check-up's findings with their Status and refuted ones, and what it carries over from the last file.
