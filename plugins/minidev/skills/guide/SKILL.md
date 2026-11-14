@@ -13,7 +13,7 @@ Talk to the user in the language of the conversation, in plain words. A term of 
 
 ## 1. Read the state
 
-Look before asking. Use only commands that read (`git status`, `git branch`, `git log`, `ls`, and the read-only `gh` calls the resume rules use when `gh` is signed in). Don't repeat what other skills already detect: take their signals as they state them.
+Look before asking. Use only commands that read (`git status`, `git branch`, `git log`, `ls`, `gh auth status`, and the read-only `gh` calls the resume rules use once it's signed in). Don't repeat what other skills already detect: take their signals as they state them.
 
 | What you find | Next step |
 |---|---|
@@ -21,9 +21,11 @@ Look before asking. Use only commands that read (`git status`, `git branch`, `gi
 | It has code but isn't a git repository, or its CLAUDE.md doesn't say it uses the cycle (as `../build/SKILL.md`, 1. Start, checks it) | The user types `/minidev:setup` once per project. Without it the cycle's skills stop and offer it |
 | It uses the cycle, with work started: a work branch, uncommitted changes, or a pull request, merged ones included (which branches and pull requests to read, and how to go on, are in `../build/references/git-flow.md`, Resume) | Say what's in progress and how to go on: "continue X", or "the pull request was merged, update" |
 | It uses the cycle, nothing started, and the backlog has entries (`BACKLOG.md`, or the issues when its CLAUDE.md says `Backlog: GitHub issues`) | Propose the first entry, by its type (`../document/references/backlog.md`): an Idea is built ("let's build X"), a Bug is fixed, Debt is a chore. Several that don't touch the same files can run together with `/minidev:swarm`, which the user types |
-| It uses the cycle and the backlog is empty | Ask what they want to do: note or think through an idea (`document`, `interview`), fix something broken (`fix`), clean up without changing behavior (`chore`), or publish a version (`document`) |
+| It uses the cycle and the backlog is empty | Ask what they want to do, and route the answer as below |
 
-When the user said what they're stuck on, answer that first and then give the next step. When the state doesn't settle the next step, ask one short question instead of guessing.
+**`gh` missing or signed out.** When the project's backlog or pull requests live on GitHub (its CLAUDE.md says `Backlog: GitHub issues` or an integration with pull requests) and `gh` isn't installed or isn't signed in (`gh auth status`), don't treat the backlog as empty: say that you can't see GitHub yet. Tell the user to install `gh` from cli.github.com, sign in by typing `gh auth login` in a terminal and following its questions (a GitHub account is needed), and then call `/minidev:guide` again. Meanwhile, ask them to describe what's in the backlog so you can still suggest a step. You don't install or sign in for them.
+
+**What the user wants.** When the user says what they want or what they're stuck on, whatever the backlog holds, answer that first and route it: a new idea or a feature to think through goes to `document` or `interview` (then `build`), something broken to `fix`, a cleanup that changes no behavior to `chore`, a version to publish to `document`. Then give the next step. When the state doesn't settle the next step, ask one short question instead of guessing.
 
 ## 2. Say it
 
