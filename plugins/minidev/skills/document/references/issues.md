@@ -2,13 +2,14 @@
 
 When the project's CLAUDE.md says `Backlog: GitHub issues`, the backlog lives in the repository's GitHub issues instead of BACKLOG.md. The team sees what's wanted and what's being built as it changes, without waiting for a merge, and two people recording ideas don't conflict in a file. SPEC.md and CHANGELOG.md stay files, since they change in the same commit as the code.
 
-Everything in `backlog.md` still holds (what each field is for, how to fill it, when to ask) except where entries are stored, which this file replaces. Each entry's issue body is the entry in the format of `backlog.md` (Entry format), without the Status, Type, Version and Needs fields, which GitHub keeps outside the body (Mapping). Use `gh`, signed in (`gh auth status`). If it isn't, or the repository has issues turned off, stop and tell the user: don't fall back to BACKLOG.md, or the backlog ends up in two places.
+Everything in `backlog.md` still holds (what each field is for, how to fill it, when to ask) except where entries are stored, which this file replaces. Each entry's issue body is the entry in the format of `backlog.md` (Entry format), without its heading (the title carries the name) and without the Status, Type, Version and Needs fields, which GitHub keeps outside the body (Mapping). Use `gh`, signed in (`gh auth status`). If it isn't, or the repository has issues turned off, stop and tell the user: don't fall back to BACKLOG.md, or the backlog ends up in two places.
 
 ## Mapping
 
 | BACKLOG.md | Issues |
 |---|---|
-| Area (`##`) | label `area:<name>`; a second one when the entry changes that part too |
+| Area (`##`) | label `area:<name>`, lowercase with hyphens (`area:time-tracking`); a second one when the entry changes that part too |
+| Order inside an area | the issues' numbers, lowest first |
 | A feature (no Type) | label `enhancement` |
 | Type Bug, Debt | label `bug`, `debt` |
 | Version | the milestone titled with the version |
@@ -22,7 +23,7 @@ Everything in `backlog.md` still holds (what each field is for, how to fill it, 
 
 **Versions.** When the user plans an entry for a version with no milestone yet, create it (`gh api repos/{owner}/{repo}/milestones -f title="<version>"`) and say so. Set it with `--milestone "<version>"` on `gh issue create` or `gh issue edit`; clear it with `gh issue edit <number> --remove-milestone`. The current version (`backlog.md`, Entry format) is read from the `milestone` of the open issues, so a milestone with nothing open in it is ignored.
 
-**Relations.** Write a Needs with `--blocked-by <numbers>` on `gh issue create`, or `gh issue edit <number> --add-blocked-by <number>`; end it with `--remove-blocked-by <number>`; read it with `blockedBy` in `--json`. GitHub shows the relation on both issues, so the body has no Needs line. An issue waits only while one it's blocked by is still open: finishing an entry needs no edit to the ones that waited, while discarding one still asks (`backlog.md`, Relations between entries). If `gh` doesn't know these flags it's too old: tell the user to update it, and don't write the relation in the body instead, or it ends up in two places.
+**Relations.** Write a Needs with `--blocked-by <numbers>` on `gh issue create`, or `gh issue edit <number> --add-blocked-by <number>`; end it with `--remove-blocked-by <number>`, which is also what dropping a need writes; read it with `--json blockedBy,blocking` (what the issue waits for, and what waits for it). GitHub shows the relation on both issues, so the body has no Needs line. An issue waits only while one it's blocked by is still open: finishing an entry needs no edit to the ones that waited, while discarding one still asks (`backlog.md`, Relations between entries). If `gh` doesn't know these flags it's too old: tell the user to update it, and don't write the relation in the body instead, or it ends up in two places.
 
 ## Writing to issues
 
@@ -53,9 +54,9 @@ Each operation of `backlog.md` does the same thing, stored this way:
 - **A feature done outside `build`:** as in `backlog.md`; its commit's message ends with `Closes #<number>`, or close the issue as above once it's pushed.
 - **Bug and Debt done by `fix` or `chore`:** the branch is `fix/<number>-<short-name>` or `chore/<number>-<short-name>`, and the final message (or a chore's one-line commit) ends with `Closes #<number>`.
 - **Change status:** pausing removes the label and the assignee (`gh issue edit <number> --remove-label "in progress" --remove-assignee @me`); the branch stays, as in `backlog.md`.
-- **Discard:** only on the user's word, as in `backlog.md`: `gh issue close <number> --reason "not planned" --comment "<why discarded> (<date>)"`. The branch, if any, is handled as `backlog.md` says.
+- **Discard:** only on the user's word, as in `backlog.md`: `gh issue close <number> --reason "not planned" --comment "<why discarded> (<date>)"`. An `in progress` label and its assignee come off, and the branch, if any, is handled as `backlog.md` says.
 - **Revert** (`../../build/references/git-flow.md`, When a merged change breaks): GitHub doesn't reopen an issue when its change is reverted. On the revert's branch, as part of the revert, reopen it (`gh issue reopen <number>`), remove the `in progress` label and its assignees, and add what went wrong to its Open questions. The revert's own final message has no `Closes` line: it would close the issue again.
-- **Clean up and reorganize:** as in `backlog.md`, with the plan shown first. A request to relabel, classify or tag the issues is a reorganization. Here the plan is a list: each open issue with the labels and the milestone it gains and loses, the labels to create, each with its description, and the labels left with no issue, which are deleted only with the OK (`gh label delete <name> --yes`). Closed issues are history and keep their labels, except `in progress`, which comes off.
+- **Clean up and reorganize:** as in `backlog.md`, with the plan shown first. A request to relabel, classify or tag the issues is a reorganization. Here the plan is a list: each open issue with the labels and the milestone it gains and loses, the labels to create, each with its description, and the labels no open issue carries any more, which are deleted only with the OK (`gh label delete <name> --yes`; deleting one takes it off the closed issues too). An issue with no type label gets the one its body shows (`bug`, `debt` or `enhancement`), and a milestone is proposed, since only the user plans a version. Closed issues are history: they get no new labels, and lose only `in progress`.
 - **Debt entries from a spec audit, a test pruning or a new SPEC.md** are created as issues, one per area, after the approval those steps already ask for (for a new SPEC.md, the OK to its finished draft, which shows them as issues to create, visible to everyone who can see the repository).
 
 ## Migrate from BACKLOG.md

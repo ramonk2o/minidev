@@ -99,13 +99,13 @@ How to fill it:
 
 ## Relations between entries
 
-An entry that can't be built before another says so in **Needs**, so nobody starts it early and whoever picks the next work (`guide`, `swarm`) skips it until the other is done. Write it on the entry that waits, naming the one it needs, never on both: the other side is found by searching for the name. Only a real order counts: it uses what the other builds, or the other changes a rule it relies on. Two entries that merely touch the same area don't need each other.
+An entry that can't be built before another says so in **Needs**, so nobody starts it early and whoever picks the next work (`guide`, `swarm`) skips it until the other is done. Write it on the entry that waits, naming the one it needs, never on both: the other side is found by searching for the name. Only a real order counts: it uses what the other builds, or the other changes a rule it relies on. Two entries that merely touch the same area don't need each other. An entry waits only while one it names is still open in the backlog.
 
 Keep the relations true whenever you write an entry:
 - **Adding or capturing one:** while checking for duplicates, look for open entries the new one needs and open entries that now need it, and write Needs on the one that waits. A relation the user didn't state is an interpretation: it's part of the draft when one is shown; otherwise say it after writing, so they can undo it.
 - **Changing an entry's Description or Decisions:** see whether the change makes a relation or ends one.
 - **Finishing one** (a feature, or a Bug or Debt entry done by `fix` or `chore`): remove its name from every Needs that names it, in the same commit.
-- **Discarding one:** name the entries that needed it and ask, for each, whether the need is dropped or that entry is discarded too.
+- **Discarding one:** discard it, then, in the same reply, name the entries that needed it and ask, for each, whether the need is dropped or that entry is discarded too.
 - **Renaming or merging one:** update the Needs that name it.
 - **Starting a feature** whose Needs names an entry still open: name that entry and recommend building it first. The user decides.
 
@@ -176,4 +176,4 @@ Look for:
 Show what you intend to change and wait for the OK. Implemented ones leave the file (after checking they're in CHANGELOG.md); dropped ones go to Discarded.
 
 ### Reorganize
-When areas stopped making sense (an area too big, entries in the wrong place, areas that are phases such as "Later" or "First version"), propose the new structure and apply it only after it's approved. Areas that are phases become parts of the product, taken from SPEC.md's Behavior or the code's modules, and the phase moves to each entry's Version when it names a version; a "later" pile gets none. The first time you write to a backlog whose areas are phases, propose this before going on, as SKILL.md says (Documents not in this format).
+When areas stopped making sense (an area too big, entries in the wrong place, areas that are phases such as "Later" or "First version"), propose the new structure and apply it only after it's approved. Areas that are phases become parts of the product, taken from SPEC.md's Behavior or the code's modules, and the phase moves to each entry's Version when it names a version (proposed in the plan, since only the user plans one); a "later" pile gets none. The first time you write to a backlog whose areas are phases, propose this before going on, as SKILL.md says (Documents not in this format).

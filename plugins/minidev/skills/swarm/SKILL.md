@@ -42,13 +42,13 @@ Talk to the user in the language of the conversation. Everything written to the 
 
 ## 2. Pick the batch
 
-Read the open items without their bodies first, since a backlog can hold dozens and the batch takes two or three: in `BACKLOG.md`, each entry's area, name, Status, Type, Version and Needs (`grep -n -E '^#{2,3} |\*\*(Status|Type|Version|Needs):' BACKLOG.md`); with issues, `gh issue list --state open --limit 200 --json number,title,labels,milestone,assignees,blockedBy`. What these say is `document`'s: `../document/references/backlog.md` (Entry format, Relations between entries) and, for issues, `../document/references/issues.md` (Mapping). With numbers in the arguments, take only those; with a label or a version, only the items that have it. An area as the only filter works against the batch, since one area's items usually share files: say so in the start message.
+Read the open items without their bodies first, since a backlog can hold dozens and the batch takes two or three: in `BACKLOG.md`, each entry's area, name, Status, Type, Version and Needs (`grep -n -E '^#{2,3} |\*\*(Status|Type|Version|Needs):' BACKLOG.md`, with the field names as the file writes them, in the documents' language); with issues, `gh issue list --state open --limit 200 --json number,title,labels,milestone,assignees,blockedBy`. What these say is `document`'s: `../document/references/backlog.md` (Entry format, Relations between entries) and, for issues, `../document/references/issues.md` (Mapping). With numbers in the arguments, take only those; with a label or a version, only the items of that list that have it (filter the list you read, so the items they wait for still show as open). An area as the only filter works against the batch, since one area's items usually share files: say so in the start message.
 
-Shortlist about twice the batch size from that list: the current version's items first, then the rest, in the backlog's order (the file's, or the issues' numbers). Prefer items that share no area with one already shortlisted. Skip:
-- an item that waits for another still open (its Needs, or an issue it's blocked by that is in the open list): it goes in a later batch;
+Shortlist about twice the batch size from that list: the current version's items first, then the later versions', then the unplanned ones, each in the backlog's order (the file's; for issues, `../document/references/issues.md`, Mapping). Prefer items that share no area with one already shortlisted. Skip:
+- an item that waits for another still open (its Needs, or an issue it's blocked by that is in the open list): it goes in a later batch, even when the user named it;
 - an item In progress or with a work branch outside a resume (someone's work).
 
-Then read the shortlisted entries in full (an issue with `gh issue view <number> --comments`) and pick up to the batch size. Leave out:
+Then read the shortlisted entries in full (an issue with `gh issue view <number> --comments`) and pick up to the batch size, in the shortlist's order. Leave out:
 - items whose files overlap a picked one: estimate each item's files from its entry and a search of the code (`git grep`). The areas only ordered the candidates; the files decide, and two items in the same module don't go in one batch;
 - a second item that adds a database migration or changes a schema: at most one per batch;
 - ideas whose key behavior is undecided across several connected decisions (they need an `interview` session, not a decision taken here).
@@ -63,7 +63,7 @@ For each picked item, prepare:
 
 The batch's one stop. Show, in one message:
 - the items picked, each with its skill, model, files and decisions, in a line or two;
-- the shortlisted items left out, and any the user named, each with why in one line;
+- the shortlisted items left out, and the skipped ones that the user named or that belong to the current version, each with why in one line;
 - the limits below;
 - when step 1.5 found `.claude/worktrees/` not ignored, that `.gitignore` gets that line, committed on the main branch before the workers start;
 - in the desktop app, that the workers' git commands on the main branch's folder ask for permission unless the session's permission mode allows them (`setup` leaves them asking); and that a subagent worker's `git worktree add` asks too in a project set up before `setup` allowed it (run `/minidev:setup` again to add it), and a background subagent can't answer, so unless the mode allows it the worker stalls there. The orchestrator's `git worktree remove` (step 7) is not allowed by `setup` either; step 7 says what happens then.
