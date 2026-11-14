@@ -72,7 +72,7 @@ The steps and their rules live in the skills; this is the map. Each step says wh
 
 ### 0. Brainstorm (new projects only)
 
-In an empty folder, describe the idea. `brainstorm` interviews you in `interview` rounds, product first and stack second, each question with a recommended answer, then splits the first version into features in build order, scaffolds a project whose tests and build already run, and records the features in `BACKLOG.md` and the technical decisions in `SPEC.md`. No feature code is written. Then run `/minidev:setup`. Detail: `plugins/minidev/skills/brainstorm/SKILL.md`.
+In an empty folder, describe the idea. `brainstorm` interviews you with the `interview` skill, in rounds, product first and stack second, each question with a recommended answer, then splits the first version into features in build order, scaffolds a project whose tests and build already run, and records the features in `BACKLOG.md` and the technical decisions in `SPEC.md`. No feature code is written. Then run `/minidev:setup`. Detail: `plugins/minidev/skills/brainstorm/SKILL.md`.
 
 ### 1. Setup (once per project)
 
