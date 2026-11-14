@@ -62,7 +62,7 @@ The batch's one stop. Show, in one message:
 - the limits below;
 - in the desktop app, that the workers' git commands on the main branch's folder ask for permission unless the session's permission mode allows them (`setup` leaves them asking).
 
-Then ask, with the question tool when there is one, these questions with these options, in the user's language and without rewording them (recommended option first); otherwise as a numbered list with the defaults filled in, where "OK" accepts them all. Each item's model is part of the batch: changing one is an answer to Batch.
+Then ask, with the question tool when there is one, these questions with these options, in the user's language and without rewording them (recommended option first); otherwise as a numbered list with the defaults filled in, where "OK" accepts them all. With the question tool, each option's first words are its label and the rest its description. Each item's model is part of the batch: changing one is an answer to Batch.
 1. **Batch:** as shown / only the first item / other items or models (e.g. "#67 on Opus"). On a resume: the branches found, which to resume.
 2. **Delegation:** delegate everything: I judge each item, ask its worker for fixes when something fails, bring it into the main branch when it's good, and don't stop you until the summary / leave each one ready for you (open pull requests, or verified branches in local merge), also without stopping. In a project whose pull requests are merged by the reviewer, there's no question: the start message says the batch ends with the pull requests open and verified.
 3. **Updates:** at every milestone / only problems and the end.
