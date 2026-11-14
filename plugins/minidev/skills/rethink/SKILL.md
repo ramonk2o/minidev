@@ -112,7 +112,7 @@ Don't pass the conversation or your own doubts: an auditor told what to find fin
 
 ## 7. Approve and record
 
-Show the plan, then the auditor's report whole when the check ran, then what you'd change in the plan for each finding (recommended). Ask for the OK. The user may approve parts: write those, and ask about an approved entry that Needs one left out. A plan reshaped after the check (entries added, split or merged) is checked once more, and what changed is shown with the new report for another OK: the redrafted entries weren't seen yet. Any other fix (a Decision reworded, a Needs added or dropped, an answer, a cut) needs neither.
+Show the plan, then the auditor's report whole when the check ran, then what you'd change in the plan for each finding (recommended). Ask for the OK. The user may approve parts: write those, and ask about an approved entry that Needs one left out. A plan reshaped after the check (entries added, split or merged) is checked once more, and what changed is shown with the new report for another OK: the redrafted entries weren't seen yet, so nothing is written until then. Any other fix (a Decision reworded, a Needs added or dropped, an answer, a cut) needs neither.
 
 On the OK, write it with the `document` skill: the new entries in the order of their Needs, so each can name the ones it waits for, then the changes, then the discards. The approved plan is the OK for these writes (`../document/SKILL.md`, Confirmation). Each entry created or changed says where it came from in its Notes ("from the rethink of <date>").
 
