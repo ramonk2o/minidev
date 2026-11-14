@@ -10,7 +10,7 @@ applied to how the skills behave.
 
 ### Changed
 
-- **swarm: workers make their own worktree when the environment can't**: a subagent worker creates its worktree under `.claude/worktrees/` (which the swarm adds to `.gitignore` when missing) instead of relying on `isolation: worktree`, so a batch runs wherever a subagent and git exist. The orchestrator removes the clean worktrees of merged items at the end and lists the others as pending.
+- **swarm: workers make their own worktree when the environment can't**: a subagent worker creates its worktree under `.claude/worktrees/` (which the swarm adds to `.gitignore` when missing) instead of relying on `isolation: worktree`, so a batch runs wherever a subagent and git exist. The orchestrator removes the clean worktrees of merged items at the end and lists the others as pending. `setup` allows `git worktree add` so those workers don't stall on a permission prompt (projects set up earlier get it by running `/minidev:setup` again).
 
 ## [0.31.0] - 2026-11-14
 

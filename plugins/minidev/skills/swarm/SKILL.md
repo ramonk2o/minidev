@@ -62,7 +62,7 @@ The batch's one stop. Show, in one message:
 - the items left out and why, one line each;
 - the limits below;
 - when step 1.5 found `.claude/worktrees/` not ignored, that `.gitignore` gets that line, committed on the main branch before the workers start;
-- in the desktop app, that the workers' git commands on the main branch's folder ask for permission unless the session's permission mode allows them (`setup` leaves them asking); and that a subagent worker's `git worktree add`, which `setup` doesn't allow either, asks too and a background subagent can't answer it, so unless the mode allows it a background subagent stalls there.
+- in the desktop app, that the workers' git commands on the main branch's folder ask for permission unless the session's permission mode allows them (`setup` leaves them asking); and that a subagent worker's `git worktree add` asks too in a project set up before `setup` allowed it (run `/minidev:setup` again to add it), and a background subagent can't answer, so unless the mode allows it the worker stalls there. The orchestrator's `git worktree remove` (step 7) is not allowed by `setup` either; step 7 says what happens then.
 
 Then ask, with the question tool when there is one, these questions with these options, in the user's language and without rewording them (recommended option first); otherwise as a numbered list with the defaults filled in, where "OK" accepts them all. With the question tool, each option's first words are its label and the rest its description. Each item's model is part of the batch: changing one is an answer to Batch.
 1. **Batch:** as shown / only the first item / other items or models (e.g. "#67 on Opus"). On a resume: the branches found, which to resume.
@@ -101,7 +101,7 @@ Take the workers ready to merge in the order they got ready, except that an item
 
 If anything reached the main branch, bring the local main branch up to date (`../build/references/git-flow.md`, The main branch) and run the tests, build and lint once there. A failure is a broken merged change. Revert the squashed commit that broke it, as `../build/references/git-flow.md` says (When a merged change breaks, Revert), without asking the user: the batch's OK covers it. Say so in the summary.
 
-Then remove the worktrees workers made in `.claude/worktrees/` (`git worktree remove <folder>`) for items that reached the main branch, only when clean. A dropped item's, a stopped one's and one with uncommitted changes stay: step 1.6 resumes them, and the summary lists them as pending with their path.
+Then remove the worktrees workers made in `.claude/worktrees/` (`git worktree remove <folder>`) for items that reached the main branch, only when clean. If the removal would ask for permission, don't stop: leave them all and list the command in the summary. A dropped item's, a stopped one's and one with uncommitted changes stay: step 1.6 resumes them, and the summary lists them as pending with their path.
 
 Then, in one message:
 - what reached the main branch (each item, its pull request or commit);
