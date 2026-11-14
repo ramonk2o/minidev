@@ -1,6 +1,6 @@
 ---
 name: guide
-description: Tell someone who doesn't know the minidev development cycle where their project stands and what to do next, in plain words. It reads the folder, git, CLAUDE.md, the backlog, the current branch, uncommitted changes and open pull requests, names the next step and the skill or command for it, and explains a term of the cycle (pull request, branch, test-first, spec, backlog) in one sentence. It writes nothing and does no other skill's work. Run only when the user invokes it, optionally with what they're stuck on (e.g. "/minidev:guide", "/minidev:guide I don't know what to do next").
+description: Tell someone who doesn't know the minidev development cycle where their project stands and what to do next, in plain words. It reads the folder, git, CLAUDE.md, the backlog, the current branch, uncommitted changes and open pull requests, names the next step and the skill or command for it, and explains a term of the cycle (pull request, branch, test-first, spec, backlog, changelog) in one sentence. It writes nothing and does no other skill's work. Run only when the user invokes it, optionally with what they're stuck on (e.g. "/minidev:guide", "/minidev:guide I don't know what to do next").
 disable-model-invocation: true
 argument-hint: "[what you're stuck on]"
 ---
@@ -13,14 +13,14 @@ Talk to the user in the language of the conversation, in plain words. A term of 
 
 ## 1. Read the state
 
-Look before asking. Use only commands that read (`git status`, `git branch`, `git log`, `ls`, and `gh pr list` when `gh` is signed in). Don't repeat what other skills already detect: take their signals as they state them.
+Look before asking. Use only commands that read (`git status`, `git branch`, `git log`, `ls`, and the read-only `gh` calls the resume rules use when `gh` is signed in). Don't repeat what other skills already detect: take their signals as they state them.
 
 | What you find | Next step |
 |---|---|
 | The folder is empty, or holds only notes | Plan the project: `brainstorm` (say what you want to build, or `/minidev:brainstorm`) |
 | It has code but isn't a git repository, or its CLAUDE.md doesn't say it uses the cycle (as `../build/SKILL.md`, 1. Start, checks it) | The user types `/minidev:setup` once per project. Without it the cycle's skills stop and offer it |
-| It uses the cycle, with work started: a `feature/`, `fix/` or `chore/` branch, uncommitted changes, or an open pull request (the resume rules are in `../build/references/git-flow.md`, Resume) | Say what's in progress and how to go on: "continue X", or "the pull request was merged, update" |
-| It uses the cycle, nothing started, and the backlog has entries (`BACKLOG.md`, or the issues when its CLAUDE.md says `Backlog: GitHub issues`) | Propose the first entry: an Idea is built ("let's build X"), a Bug is fixed, Debt is a chore. Several that don't touch the same files can run together with `/minidev:swarm`, which the user types |
+| It uses the cycle, with work started: a work branch, uncommitted changes, or a pull request, merged ones included (which branches and pull requests to read, and how to go on, are in `../build/references/git-flow.md`, Resume) | Say what's in progress and how to go on: "continue X", or "the pull request was merged, update" |
+| It uses the cycle, nothing started, and the backlog has entries (`BACKLOG.md`, or the issues when its CLAUDE.md says `Backlog: GitHub issues`) | Propose the first entry, by its type (`../document/references/backlog.md`): an Idea is built ("let's build X"), a Bug is fixed, Debt is a chore. Several that don't touch the same files can run together with `/minidev:swarm`, which the user types |
 | It uses the cycle and the backlog is empty | Ask what they want to do: note or think through an idea (`document`, `interview`), fix something broken (`fix`), clean up without changing behavior (`chore`), or publish a version (`document`) |
 
 When the user said what they're stuck on, answer that first and then give the next step. When the state doesn't settle the next step, ask one short question instead of guessing.
