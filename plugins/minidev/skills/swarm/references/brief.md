@@ -4,7 +4,7 @@ The message that starts each worker (`../SKILL.md`, 4. Start the workers). Fill 
 
 ```
 You are one worker of a minidev swarm; another session (the orchestrator) coordinates it.
-Work on <item: #number or the BACKLOG.md entry's title> with the minidev `<build | fix | chore>` skill, in this worktree only, on the branch `<branch>`. <a feature, in BACKLOG.md: The item is already In progress on the main branch, naming that branch; the orchestrator set it.> <new item: Create that branch, or rename this worktree's branch to it, start the work fresh, and don't set the item's status again. | resumed item: The branch exists from an earlier batch, with its checkpoints: check it out and resume as your skill's Resume says; don't start over.>
+Work on <item: #number or the BACKLOG.md entry's title> with the minidev `<build | fix | chore>` skill, in <session: this worktree only | subagent: a worktree you make first, and nowhere else: `git worktree add .claude/worktrees/<branch with / as -> -b <branch> <main branch>` run from the project's folder, then work in that folder (for a resumed item, without `-b <branch> <main branch>`: just `<branch>`)>, on the branch `<branch>`. <a feature, in BACKLOG.md: The item is already In progress on the main branch, naming that branch; the orchestrator set it.> <new item: Create that branch (in a session, or rename this worktree's branch to it), start the work fresh, and don't set the item's status again. | resumed item: The branch exists from an earlier batch, with its checkpoints: check it out and resume as your skill's Resume says; don't start over.>
 
 Your skill's tester and reviewer run as usual. If you can't start them, stop and report: don't imitate them.
 

@@ -35,8 +35,9 @@ Talk to the user in the language of the conversation. Everything written to the 
 1. The project uses the cycle, as `build` checks it (`../build/SKILL.md`, 1. Start). If not, offer `/minidev:setup` and stop.
 2. From its CLAUDE.md, note: where the backlog is (`BACKLOG.md`, or GitHub issues with `Backlog: GitHub issues`), the integration mode (`../build/references/git-flow.md`, Integration mode), the install, test, build and lint commands, and any setup a fresh checkout needs (environment files, a test database).
 3. In pull request mode, whether the main branch requires a review (`gh api repos/{owner}/{repo}/branches/<main branch>/protection --jq .required_pull_request_reviews`, or a pull request's `reviewDecision`): if it does, or the answer is unknown (a 403: no admin rights), treat the project as merged by the reviewer here (step 3, Delegation). A 404 means the branch has no protection, or the plan offers none: no review is required.
-4. How workers run: a separate session per item, each in its own worktree, where the environment can start one (in the Claude desktop app); otherwise a background subagent per item with `isolation: worktree`. If neither is available, say so and stop: the items run one after another with their own skill instead.
+4. How workers run: a separate session per item, each in its own worktree, where the environment can start one (in the Claude desktop app); otherwise a background subagent per item, which makes its own worktree (step 4.2), never with `isolation: worktree`, which some environments refuse. If neither is available, say so and stop: the items run one after another with their own skill instead.
 5. The main branch is clean and up to date (`../build/references/git-flow.md`, The main branch). Uncommitted changes there: stop and ask.
+   Subagent workers make their worktrees in `.claude/worktrees/` of the project, so `git check-ignore .claude/worktrees/x` must succeed: if it doesn't, step 4.1 adds `.claude/worktrees/` to `.gitignore`.
 6. If work branches of an earlier batch are left (`feature/`, `fix/` or `chore/` branches and their worktrees, found as `../build/references/git-flow.md` says in Resume), they may be an earlier batch or someone's own work, so don't guess: the start message lists them and asks whether to resume them, with the ones whose worktree's session no longer exists checked by default. The ones the user keeps are the batch. Each one goes back to its worker when that session still exists (a message to it); otherwise a new worker resumes it as its skill's Resume says, after its old worktree is removed (`git worktree remove`, only when it's clean; one with uncommitted changes is someone's work: leave the item out and say so). Go to step 3 with them; at step 4, a resumed item skips 4.1 (its Decisions and status are already written) and gets the brief's resume line.
 
 ## 2. Pick the batch
@@ -60,6 +61,7 @@ The batch's one stop. Show, in one message:
 - the items picked, each with its skill, model, files and decisions, in a line or two;
 - the items left out and why, one line each;
 - the limits below;
+- when step 1.5 found `.claude/worktrees/` not ignored, that `.gitignore` gets that line, committed on the main branch before the workers start;
 - in the desktop app, that the workers' git commands on the main branch's folder ask for permission unless the session's permission mode allows them (`setup` leaves them asking).
 
 Then ask, with the question tool when there is one, these questions with these options, in the user's language and without rewording them (recommended option first); otherwise as a numbered list with the defaults filled in, where "OK" accepts them all. With the question tool, each option's first words are its label and the rest its description. Each item's model is part of the batch: changing one is an answer to Batch.
@@ -77,7 +79,7 @@ The answer is the OK for the whole batch. It stands in for every stop the worker
 
 ## 4. Start the workers
 
-1. Write each item's Decisions with the `document` skill before its worker starts. With `BACKLOG.md`, also set every feature In progress with its branch name, all in one commit on the main branch, so workers never edit BACKLOG.md on the main branch at the same time (a Bug or Debt entry has no In progress: `document` keeps it as it is until its fix or chore is done). With issues, a feature's worker sets its own issue In progress, as `build` does.
+1. If step 1.5 found `.claude/worktrees/` not ignored, add the line `.claude/worktrees/` to `.gitignore` and commit it on the main branch, before any worker starts (workers branch from the main branch). Write each item's Decisions with the `document` skill before its worker starts. With `BACKLOG.md`, also set every feature In progress with its branch name, all in one commit on the main branch, so workers never edit BACKLOG.md on the main branch at the same time (a Bug or Debt entry has no In progress: `document` keeps it as it is until its fix or chore is done). With issues, a feature's worker sets its own issue In progress, as `build` does.
 2. Start every worker at once, each with the brief in `references/brief.md` filled in, on its model. Tell the user one line per worker (its name and item).
 
 ## 5. While they run
@@ -97,9 +99,11 @@ Take the workers ready to merge in the order they got ready, except that an item
 
 If anything reached the main branch, bring the local main branch up to date (`../build/references/git-flow.md`, The main branch) and run the tests, build and lint once there. A failure is a broken merged change. Revert the squashed commit that broke it, as `../build/references/git-flow.md` says (When a merged change breaks, Revert), without asking the user: the batch's OK covers it. Say so in the summary.
 
+Then remove the worktrees workers made in `.claude/worktrees/` (`git worktree remove <folder>`) for items that reached the main branch, only when clean. A dropped item's, a stopped one's and one with uncommitted changes stay: step 1.6 resumes them, and the summary lists them as pending with their path.
+
 Then, in one message:
 - what reached the main branch (each item, its pull request or commit);
 - the items left out or dropped, and why;
 - the entries or issues opened during the batch;
 - the decisions taken, one line each;
-- what's pending: each item's To check by hand, pull requests left for review, a local main branch the user still has to push, workers stopped by the usage limit and how to resume them.
+- what's pending: each item's To check by hand, pull requests left for review, a local main branch the user still has to push, workers stopped by the usage limit and how to resume them, and the worktrees left in `.claude/worktrees/`.
