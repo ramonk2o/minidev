@@ -17,7 +17,29 @@
       "Bash(git tag*)",
       "Bash(git merge-base*)",
       "Bash(git rev-parse*)",
-      "Bash(git archive*)"
+      "Bash(gh auth status*)",
+      "Bash(gh pr view*)",
+      "Bash(gh pr list*)",
+      "Bash(gh pr checks*)",
+      "Bash(gh issue view*)",
+      "Bash(gh issue list*)",
+      "Bash(gh label list*)",
+      "Bash(gh repo view*)"
+    ],
+    "ask": [
+      "Bash(git tag -d*)",
+      "Bash(git tag * -d*)",
+      "Bash(git tag *--delete*)",
+      "Bash(git tag -f*)",
+      "Bash(git tag * -f*)",
+      "Bash(git tag *--force*)",
+      "Bash(git switch -f*)",
+      "Bash(git switch * -f*)",
+      "Bash(git switch *--force*)",
+      "Bash(git switch *--discard-changes*)",
+      "Bash(git switch -C*)",
+      "Bash(git switch * -C*)",
+      "Bash(git commit *--amend*)"
     ]
   }
 }
