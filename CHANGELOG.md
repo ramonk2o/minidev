@@ -8,6 +8,12 @@ applied to how the skills behave.
 
 ## [Unreleased]
 
+### Changed
+- **`swarm` offers to delegate everything in one click**: the start message asks three questions with fixed wording instead of four that each run phrased its own way. Its recommended Delegation option says what delegating means (the orchestrator judges each item, asks its worker for fixes, brings it into the main branch when it's good and doesn't stop you until the summary), so it no longer takes a typed answer. The models question is gone: each item's model is shown in the batch, and changing one is an answer to Batch.
+
+### Fixed
+- **`swarm` no longer takes an unprotected main branch for one that requires a review**: a 404 from the branch protection query (no protection, or a plan that offers none) means no review is required, as `setup` already reads it; only a 403 (no admin rights) leaves it unknown. Before, any failure ended the batch with the pull requests open and dropped the Delegation question.
+
 ## [0.30.0] - 2026-11-14
 
 The `grilling` skill is now `interview` (a breaking change before 1.0: `/minidev:grilling` no longer exists), and a trigger eval stops failing on correct behavior.
