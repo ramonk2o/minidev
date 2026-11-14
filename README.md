@@ -104,7 +104,7 @@ Code, tests and the three documents reach main as **one squashed commit** whose 
 
 ### Several at once
 
-`/minidev:swarm` runs a few backlog items in parallel, each through its own skill (`build`, `fix` or `chore`) in its own worktree, then brings them into the main branch one at a time. It picks items whose files don't overlap, decides their open points and asks you once, with the options filled in; after that OK it doesn't stop, and reports a line at each milestone. Defaults are sized for a small plan: two items, the cheapest model each needs, and an orchestrator that reads only the workers' short reports. Detail: `plugins/minidev/skills/swarm/SKILL.md`.
+`/minidev:swarm` runs a few backlog items in parallel, each through its own skill (`build`, `fix` or `chore`) in its own worktree, then brings them into the main branch one at a time. It picks items whose files don't overlap, decides their open points and asks you once, with the options filled in and one that delegates everything to the end; after that OK it doesn't stop, and reports a line at each milestone. Defaults are sized for a small plan: two items, the cheapest model each needs, and an orchestrator that reads only the workers' short reports. Detail: `plugins/minidev/skills/swarm/SKILL.md`.
 
 ## The three documents
 
