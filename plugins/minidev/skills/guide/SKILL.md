@@ -29,7 +29,9 @@ Look before asking. Use only commands that read (`git status`, `git branch`, `gi
 
 ## 2. Say it
 
-In a few sentences: where the project stands, the one next step you recommend, and the exact words or command that take it. Mention another path only when it's a real alternative. Don't recite the cycle or list every skill.
+Short, at most five or six sentences: one sentence on where the project stands, the one next step you recommend, and the exact words or command that take it. Mention another path only when it's a real alternative.
+
+Keep out what the user didn't ask for and the next skill will say when it starts: the names of files and tools (say "the project isn't set up yet", not that its CLAUDE.md lacks a line or that it's a git repository), the project's files and what's in them, a backlog entry's details, and how the next step works inside (its tests, reviews, branches). Don't recite the cycle or list every skill. Use the cycle's words (repository, branch, backlog, spec, pull request) only when the step needs them, each with a few words of explanation the first time; otherwise say it in everyday words. The first time, call the cycle "minidev's way of working" and say what it is in one short sentence (a fixed order of steps for planning, building and checking), without listing the steps, instead of "the cycle".
 
 `setup` and `swarm` run only when the user types their command, so give the command. For the others, offer to start the step and, on a yes, hand over to that skill without doing its work here. Then stop.
 
