@@ -57,5 +57,5 @@ Whether the documents still describe what exists, and whether the tests and depe
 
   Say in Checked how many rules you sampled and how many held.
 - **The project's instructions.** The commands CLAUDE.md names exist, the paths it names exist, and the last changes follow its Conventions.
-- **Tests.** From the numbers: skipped tests and why each is skipped, and how long the suite takes against the last check-up. In the modules that change most: tests that fit the patterns of useless tests (copied below this brief), above all tests tied to how the code is written, which had to be rewritten along with it (`git log` of the test files).
+- **Tests.** From the numbers: skipped tests and why each is skipped (read them; don't enable one to see), and how long the suite takes against the last check-up. In the modules that change most: tests that fit the patterns of useless tests (copied below this brief), above all tests tied to how the code is written, which had to be rewritten along with it (`git log` of the test files).
 - **Dependencies.** From the numbers: major versions behind, known vulnerabilities, packages no longer maintained. A finding only where waiting has a cost: a vulnerability in a path the product uses, a version whose support ends, an upgrade another one is waiting for.

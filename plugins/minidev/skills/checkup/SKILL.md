@@ -70,13 +70,13 @@ Numbers:
 Code graph: <its path, or "none">
 Backlog: <"BACKLOG.md", or "GitHub issues: gh issue list --state open --limit 200 --json number,title,labels,createdAt,body">
 Rules (Documents and tests only):
-<the Each rule section of ../document/references/spec-audit.md and the Patterns of useless tests section of ../build/references/test-value.md, each copied in full>
+<the Each rule section of ../document/references/spec-audit.md, and the list of patterns in the Patterns of useless tests section of ../build/references/test-value.md, without its paragraph on skipped tests, which tells its reader to enable them>
 
-Earlier check-ups, this area:
-<from CHECKUP.md: the findings Recorded whose entry is still open, the ones Handed over and Declined, and the Refuted lines, each as written; or "none">
+Earlier check-ups, every area:
+<from CHECKUP.md: the findings Recorded whose entry is still open, the ones Handed over and Declined, and the Refuted lines, each as written with its area; or "none">
 ```
 
-The two rule sections are copied, not pointed to: an agent may not be allowed to read files outside the project. Don't pass the conversation or your own view of what's wrong: an auditor told what to find finds it. Wait for the reports, which arrive on their own. When the environment shows each agent's tokens as it returns, note them for the Cost.
+The two rule sections are copied, not pointed to: an agent may not be allowed to read files outside the project. Every auditor gets the earlier findings of every area, since a problem filed under one area is often visible from another. Don't pass the conversation or your own view of what's wrong: an auditor told what to find finds it. Wait for the reports, which arrive on their own. When the environment shows each agent's tokens as it returns, note them for the Cost.
 
 When they have all returned, check that they left nothing behind: `git rev-parse HEAD` and `git status --short` are as noted. They're told to change nothing, but they have a shell; if something changed, show the user what: put a tracked file back with `git restore`, and leave a new file for them to decide.
 
@@ -97,7 +97,7 @@ One message, in this order:
    - **At risk:** one of high weight.
 
    The weights are the auditor's (`agents/auditor.md`, What counts as a finding).
-   A problem more than one auditor reported is one finding. It counts once, in the area whose brief asks for it (a SPEC.md rule the code contradicts is Documents and tests', whoever saw it), with the highest weight that stands, and the report says who else raised it. Otherwise one bug puts three areas at risk.
+   A problem more than one auditor reported is one finding. It counts once, in the area whose brief asks for it, with the highest weight that stands, and the report says who else raised it; otherwise one bug puts three areas at risk. A Technical decision, Data model or Constraint of SPEC.md the code no longer follows is Architecture's; a Behavior rule the code contradicts is Documents and tests'. When two briefs still ask for it, it goes to the area of the auditor that weighed it highest.
 3. **The findings that stand,** highest weight first: each one's evidence, cost of waiting, what makes it come due, and where it would go (the table below). Then, a line each, the earlier ones still open.
 4. **Refuted,** a line each with the refuter's reason.
 5. **The numbers that moved** since the last check-up.
