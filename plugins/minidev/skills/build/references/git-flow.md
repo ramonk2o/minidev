@@ -26,7 +26,7 @@ Check `git worktree list` once at the start. Git won't switch to a branch that's
 
 At the end, the branch can't be deleted while this worktree has it checked out: first `git switch --detach <main branch>` (after the squash, it's the tested state), then delete it. The next piece of work in the same session starts its own branch from there.
 
-**A direct change to the product documents** (`document` asked on its own, a check-up's findings) on a session branch with no commits of its own, while the main branch is checked out in another worktree: it doesn't go on the session's branch, where nothing would bring it to the main branch, and neither bullet above applies (it isn't work of its own branch). Write and commit it in the main branch's worktree (its files, with `git -C <its path>`), then bring the session's branch level with it (`git merge --ff-only <main branch>`, run in the session's folder). If that worktree has uncommitted changes, stop and ask the user: they're someone's work in progress.
+**A direct change to the product documents** (`document` asked on its own, a check-up's findings) on a session branch with no commits of its own, or the detached HEAD a finished piece of work leaves (At the end, above), while the main branch is checked out in another worktree: it doesn't go on the session's branch, where nothing would bring it to the main branch, and neither bullet above applies (it isn't work of its own branch). Write and commit it in the main branch's worktree (its files, with `git -C <its path>`), then bring the session's branch level with it (`git merge --ff-only <main branch>`, run in the session's folder). If that worktree has uncommitted changes, stop and ask the user: they're someone's work in progress.
 
 ## Start the branch
 
