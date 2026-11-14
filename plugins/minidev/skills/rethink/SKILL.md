@@ -21,8 +21,8 @@ Talk to the user in the language of the conversation.
 
 - **The backlog:** every open entry and the discarded ones (`../document/references/backlog.md`; `../document/references/issues.md` when it lives in GitHub issues). With issues, also the closed ones a point touches: an earlier decision lives there.
 - **SPEC.md:** the rules, data, technical decisions and constraints the points touch.
-- **What's In progress,** and on which branch.
-- **The product:** where a point is about what the user sees, enough of the code to know what it does today.
+- **What's In progress,** and on which branch: read the branch for what's already being built.
+- **The product:** where a point is about what the user sees, enough of the main branch's code to know what it does today.
 
 Facts are yours to find. Don't ask the user what the repository answers.
 
@@ -38,16 +38,16 @@ One message:
   - your own view when you have one: a better way, a cost they didn't mention, or a recommendation not to do it, with the reason and what you'd do instead.
 
   Two points that are one problem are shown as one; a point that is a symptom of another says so.
-- **The first round of questions** (step 4).
+- **The first round of questions,** asked as step 4 says: load `minidev:interview` before writing this message.
 
 Judge each point by what the product is for (SPEC.md's Goal), not by what the user seems to want to hear. A point that isn't worth its cost is told so once, with the reason; the decision is theirs.
 
 | The point is | It goes to |
 |---|---|
-| Behavior that's wrong today | a Bug entry, for `fix` |
+| Behavior that goes against SPEC.md or the tests | a Bug entry, for `fix` |
 | A change that keeps the behavior | a Debt entry, for `chore` |
-| New or changed behavior, decided enough to build | an Idea |
-| New behavior with decisions still open | an Idea with them as Open questions; when several connect, the offer of an `interview` session |
+| New or changed behavior, decided enough to build (what works as decided but the user now wants otherwise included) | an Idea |
+| New behavior with decisions the rounds left open | an Idea with them as Open questions; when several connect, the offer of an `interview` session on that entry, after this one ends |
 | Something an open entry already covers | a change to that entry |
 | Something that makes an open entry pointless | that entry, discarded |
 | About how the code is built, not what the product does | not here: `/minidev:checkup`, which the user types |
@@ -55,7 +55,7 @@ Judge each point by what the product is for (SPEC.md's Goal), not by what the us
 
 ## 4. Rounds
 
-Load the `minidev:interview` skill and ask with its method: rounds of numbered questions, each with your recommended answer, only what can be decided now. Four things differ here:
+Ask with the method of the `minidev:interview` skill: rounds of numbered questions, each with your recommended answer, only what can be decided now. Four things differ here:
 
 - **Many roots.** Ask across all the points in the same round. A model or rule that several points depend on goes first.
 - **A fact only the user has** (a number from outside the repository, how the team works) gets no recommended answer: say what it decides.
@@ -68,8 +68,8 @@ Judge the answers too. When an answer can't hold against the data, a SPEC.md rul
 
 Draft every entry in `document`'s format (`../document/references/backlog.md`, Entry format), then build the plan from the drafts:
 
-- **New entries,** in the order they'll be created: name, type, its area (marked when the area is new), a line or two, its Decisions and Open questions, and what it Needs.
-- **Entries that change:** what changes in each (a Decision replaced, scope moved to another entry, an Open question answered).
+- **New entries,** in the order they'll be created, which is the order to build them where no Needs decides it: name, type, its area (marked when the area is new), a line or two, its Decisions and Open questions, and what it Needs.
+- **Entries that change:** what changes in each (a Decision replaced, scope moved to another entry, an Open question answered). For an issue someone else opened, show the new text itself (`../document/references/issues.md`, Writing to issues).
 - **Entries discarded,** each with the reason and, for every entry that Needs it, whether that need is dropped or that entry is discarded too.
 - **Dropped:** the points that led to no entry, each with the reason.
 - **A doubt that still decides an entry's text,** with the answer you'll use if they approve without answering.
@@ -112,8 +112,8 @@ Don't pass the conversation or your own doubts: an auditor told what to find fin
 
 ## 7. Approve and record
 
-Show the plan, then the auditor's report whole when the check ran, then what you'd change in the plan for each finding (recommended). Ask for the OK; the user may approve parts. A plan reshaped after the check (entries added, split or merged) is checked again, and what changed is shown with the new report for one more OK: the redrafted entries weren't seen yet. An answer or a cut needs neither.
+Show the plan, then the auditor's report whole when the check ran, then what you'd change in the plan for each finding (recommended). Ask for the OK. The user may approve parts: write those, and ask about an approved entry that Needs one left out. A plan reshaped after the check (entries added, split or merged) is checked once more, and what changed is shown with the new report for another OK: the redrafted entries weren't seen yet. Any other fix (a Decision reworded, a Needs added or dropped, an answer, a cut) needs neither.
 
-On the OK, write it with the `document` skill: the new entries in the order of their Needs, so each can name the ones it waits for, then the changes, then the discards. The approved plan is the OK for these writes (`../document/SKILL.md`, Confirmation). Each entry written says where it came from in its Notes ("from the rethink of <date>").
+On the OK, write it with the `document` skill: the new entries in the order of their Needs, so each can name the ones it waits for, then the changes, then the discards. The approved plan is the OK for these writes (`../document/SKILL.md`, Confirmation). Each entry created or changed says where it came from in its Notes ("from the rethink of <date>").
 
 End with what was written, what stayed open and in which entry, and the step you'd take first, with its skill. A fix or an interview the user accepted starts now, with its own skill.
